@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             DermaSuiteTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "alessandro",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
