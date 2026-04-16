@@ -24,6 +24,8 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = Color.White
 )
 
+// questa funzione ha dei colori predefiniti non si possono aggiungere colori,
+// posso solo usare le variabili già prefissate dalla funzione
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryColor,
     secondary = WaterGreen,
