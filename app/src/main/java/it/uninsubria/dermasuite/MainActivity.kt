@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DermaSuiteTheme {
+                // Oggetto che effettivamente esegue l'ordine di cambiare la pagina
                 val navController = rememberNavController()
 
                 // NavHost definisce i percorsi dell'app
