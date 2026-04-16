@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.theme.Placeholder
 import it.uninsubria.dermasuite.viewmodels.StartPageViewModel
 
@@ -54,7 +55,7 @@ fun StartPageScreen(
         // Logo e Titolo
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(id = R.mipmap.ic_dermasuite_home), // Questo è il logo
+                painter = painterResource(id = R.mipmap.ic_launcher_foreground), // Questo è il logo
                 contentDescription = "Logo DermaSuite",
                 modifier = Modifier.size(110.dp)
             )
@@ -90,7 +91,7 @@ fun StartPageScreen(
 
         // --- SPAZIO TRA IMMAGINE E BOTTONI ---
         // Riduci questo valore per avvicinare i bottoni all'immagine
-        Spacer(modifier = Modifier.height(32.dp))
+        //Spacer(modifier = Modifier.height(10.dp))
 
 
         // Bottoni di azione
@@ -98,24 +99,7 @@ fun StartPageScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
-                onClick = onNavigateToLogin,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                shape = RoundedCornerShape(28.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.btn_home_login),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-
+            DermaButton(stringResource(R.string.btn_home_login),onNavigateToLogin)
 
             TextButton(onClick = onNavigateToRegister) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -129,7 +113,7 @@ fun StartPageScreen(
                     // Aggiunge un piccolo spazio tra il testo e la freccia
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    // Opzione B: Se hai un tuo file vettoriale in drawable
+                    // Se hai un tuo file vettoriale in drawable
                     Icon(
                         painter = painterResource(id = R.drawable.freccetta),
                         contentDescription = null,
