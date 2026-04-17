@@ -4,4 +4,5 @@
     <string name="subtitle_home">Il tuo studio clinico per l\'analisi della salute della pelle.</string>
     <string name="btn_home_login">Accedi</string>
     <string name="btn_home_register">Crea account</string>
+    <string name="privacy_disclaimer">Per continuare, accetti i nostri termini di servizio e la nostra informativa sulla privacy.</string>
 </resources>
