@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.viewmodels.StartPageViewModel
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
+import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -37,6 +38,13 @@ class MainActivity : ComponentActivity() {
                     // Rotta per il Login (placeholder)
                     composable("login_screen") {
                         // Qui caricherai la tua LoginScreen()
+                    }
+
+                    // Rotta per la Registrazione
+                    composable("register_screen") {
+                        DermaRegisterPageScreen(
+                            onNavigateToLogin = { navController.navigate("login_screen") }
+                        )
                     }
                 }
             }

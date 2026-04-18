@@ -19,10 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 
 @Composable
-fun PrivacyDisclaimerBox(){
+fun DermaPrivacyDisclaimerBox(
+    text: String
+){
     Card(
         colors = CardDefaults.cardColors(containerColor = Color(0xFFE0F7F9)),
         shape = MaterialTheme.shapes.large,
@@ -37,7 +38,7 @@ fun PrivacyDisclaimerBox(){
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text= stringResource(R.string.privacy_disclaimer),
+                text = text,
                 style = MaterialTheme.typography.bodySmall,
                 color = Color(0xFF006064)
             )
@@ -48,8 +49,8 @@ fun PrivacyDisclaimerBox(){
 
 @Preview(showBackground = true)
 @Composable
-fun PrivacyDisclaimerBoxPreview() {
+private fun DermaPrivacyDisclaimerBoxPreview() {
     it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        PrivacyDisclaimerBox()
+        DermaPrivacyDisclaimerBox("Questo è un disclaimer")
     }
 }

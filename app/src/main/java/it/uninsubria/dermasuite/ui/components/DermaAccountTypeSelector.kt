@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,10 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 
 @Composable
-fun AccountTypeSelector(
+fun DermaAccountTypeSelector(
     selectedType: String, //Paziente o medico
     onTypeSelected: (String) -> Unit
 ) {
@@ -54,7 +52,7 @@ fun AccountTypeSelector(
 }
 
 @Composable
-fun AccountTypeButton(
+private fun AccountTypeButton(
     text: String,
     iconRes: Int,
     isSelected: Boolean,
@@ -70,7 +68,7 @@ fun AccountTypeButton(
     //ANDIAMO A CREARE IL BOTTONE A MANO
     Surface( //andiamo a creare una "scatola" e all'interno creiamo il bottone
         onClick = onClick,
-        modifier = Modifier.height(56.dp),
+        modifier = modifier,
         shape = MaterialTheme.shapes.large,
         color = backgroundColor,
         contentColor = contentColor,
@@ -102,8 +100,8 @@ fun AccountTypeButton(
 
 @Preview(showBackground = true)
 @Composable
-fun AccountTypeSelectorPreview() {
+private fun DermaAccountTypeSelectorPreview() {
     it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        AccountTypeSelector(selectedType = "Paziente", onTypeSelected = {})
+        DermaAccountTypeSelector(selectedType = "Paziente", onTypeSelected = {})
     }
 }
