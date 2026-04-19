@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -28,6 +29,10 @@ fun DermaTextField(
     placeholder: String, //prende la stringa da mettere come placheholder
     leadingIconRes: Int? = null, // prende (se c'è l'id del icona drawable che dobbiamo mettere
     isPassword: Boolean = false,
+    // AGGIUNTA: permettiamo di decidere se è a riga singola (default true)
+    singleLine: Boolean = true,
+    // AGGIUNTA: per gestire il tasto della tastiera (es. Next o Done)
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     modifier: Modifier = Modifier
 ){
     Column(modifier = modifier.fillMaxWidth()){
@@ -41,13 +46,15 @@ fun DermaTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.tertiary) },
+            singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
+            placeholder = { Text(placeholder, color = Color.Gray) },
             leadingIcon = if (leadingIconRes != null) {
                 {
                     Icon(
                         painter = painterResource(id = leadingIconRes),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.tertiary,
+                        tint = Color.Gray,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -64,6 +71,9 @@ fun DermaTextField(
                 }else null,
             shape = MaterialTheme.shapes.medium,
             colors = TextFieldDefaults.colors(
+                focusedTextColor = Color.Gray,
+                disabledTextColor = Color.Gray,
+                unfocusedTextColor = Color.Gray,
                 focusedContainerColor = Color(0xFFF1F4F8),
                 unfocusedContainerColor = Color(0xFFF1F4F8),
                 focusedIndicatorColor = Color.Transparent,

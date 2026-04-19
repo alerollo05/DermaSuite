@@ -86,6 +86,7 @@ fun DermaRegisterPageScreen(
                 label = "Nome",
                 value = uiState.nome,
                 onValueChange = { viewModel.onNomeChanged(it) },
+                leadingIconRes = R.drawable.ic_button_paziente,
                 placeholder = "Inserisci il tuo nome"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -93,6 +94,7 @@ fun DermaRegisterPageScreen(
                 label = "Cognome",
                 value = uiState.cognome,
                 onValueChange = { viewModel.onCognomeChanged(it) },
+                leadingIconRes = R.drawable.ic_button_paziente,
                 placeholder = "Inserisci il tuo cognome"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -106,6 +108,7 @@ fun DermaRegisterPageScreen(
                 label = "Username",
                 value = uiState.username,
                 onValueChange = { viewModel.onUsernameChanged(it) },
+                leadingIconRes = R.drawable.ic_chiocciola,
                 placeholder = "Inserisci il tuo username"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -114,6 +117,7 @@ fun DermaRegisterPageScreen(
                 value = uiState.password,
                 isPassword = true,
                 onValueChange = { viewModel.onPasswordChanged(it) },
+                leadingIconRes = R.drawable.ic_scudo_password,
                 placeholder = "Inserisci la password",
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -121,6 +125,7 @@ fun DermaRegisterPageScreen(
                 label = "Conferma Password",
                 value = uiState.confirmPassword,
                 onValueChange = { viewModel.onConfirmPasswordChanged(it) },
+                leadingIconRes = R.drawable.ic_scudo_password,
                 placeholder = "Conferma la password",
                 isPassword = true
             )
@@ -133,6 +138,7 @@ fun DermaRegisterPageScreen(
                 text = stringResource(R.string.btn_register_create_account),
                 onClick = { viewModel.onRegisterClick() }
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

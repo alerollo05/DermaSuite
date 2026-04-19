@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Icon
@@ -62,12 +63,12 @@ fun DermaDatePicker(
                 value = value,
                 onValueChange = {},
                 readOnly = true,
-                placeholder = { Text("dd/mm/yyyy") },
+                placeholder = { Text("dd/mm/yyyy" , color = Color.Gray) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_date_picker_calendar),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.tertiary,
+                        tint = Color.Gray,
                         modifier = Modifier.size(20.dp)
                     )
                 },
@@ -75,10 +76,11 @@ fun DermaDatePicker(
                 shape = MaterialTheme.shapes.medium,
                 enabled = false, // Disabilitato per evitare focus/tastiera
                 colors = TextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledTextColor = Color.Gray,
+                    unfocusedTextColor = Color.Gray,
+                    focusedTextColor = Color.Gray,
                     disabledContainerColor = Color(0xFFF1F4F8),
                     disabledLeadingIconColor = MaterialTheme.colorScheme.tertiary,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     disabledIndicatorColor = Color.Transparent
                 )
             )
@@ -104,19 +106,49 @@ fun DermaDatePickerDialog(
     onDismissRequest: () -> Unit,
     onConfirm: () -> Unit
 ) {
+    val bluScuroDerma = Color(0xFF001A3F) // Il blu dei tuoi bottoni
+    val grigioTesto = Color(0xFF49454F)   // Grigio scuro per i numeri dei giorni
+    val biancoPuro = Color.White
+
     DatePickerDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("OK")
+                Text("OK", color = bluScuroDerma)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismissRequest) {
-                Text("Annulla")
+                Text("Annulla", color = grigioTesto)
             }
-        }
+        },
+        colors = DatePickerDefaults.colors(
+        containerColor = Color.White
+        )
     ) {
-        DatePicker(state = state)
+        DatePicker(state = state,
+            showModeToggle = false,
+            colors = DatePickerDefaults.colors(
+                containerColor = biancoPuro,
+
+                titleContentColor = bluScuroDerma,
+                headlineContentColor = bluScuroDerma,
+
+                // Mese corrente e freccette
+                navigationContentColor = bluScuroDerma,
+
+                // Giorni della settimana (M, T, W...)
+                weekdayContentColor = Color.Gray,
+
+                // --- I NUMERI DEI GIORNI ---
+                dayContentColor = grigioTesto,            // Numeri normali
+                selectedDayContainerColor = bluScuroDerma, // Cerchio giorno selezionato
+                selectedDayContentColor = biancoPuro,     // Numero dentro il cerchio blu
+
+                // Giorno di oggi
+                todayContentColor = bluScuroDerma,
+                todayDateBorderColor = bluScuroDerma
+            )
+        )
     }
 }

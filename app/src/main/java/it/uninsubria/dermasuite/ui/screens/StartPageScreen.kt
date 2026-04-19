@@ -87,7 +87,7 @@ fun StartPageScreen(
 
         // --- SPAZIO TRA IMMAGINE E BOTTONI ---
         // Riduci questo valore per avvicinare i bottoni all'immagine
-        //Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
 
         // Bottoni di azione

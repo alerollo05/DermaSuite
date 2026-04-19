@@ -55,7 +55,7 @@ fun DermaSuiteTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        shapes = Shapes, //andiamon ad aggiungere al tema le impostazioni che abbiamo dato nel file shape per gli arrotondamenti
+        shapes = Shapes, //andiamo ad aggiungere al tema le impostazioni che abbiamo dato nel file shape per gli arrotondamenti
         content = content
     )
 }

@@ -1,11 +1,13 @@
 package it.uninsubria.dermasuite.ui.components
 
+import android.R.attr.bottom
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,11 +28,13 @@ fun DermaAccountTypeSelector(
     selectedType: String, //Paziente o medico
     onTypeSelected: (String) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth())
+    Column(modifier = Modifier.fillMaxWidth().height(80.dp))
      {
          Text(text = "TIPO DI ACCOUNT",
              style = MaterialTheme.typography.labelLarge,
-             color = MaterialTheme.colorScheme.primary)
+             color = MaterialTheme.colorScheme.primary,
+             modifier = Modifier.padding(bottom = 8.dp)
+         )
          Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)){
              //diamo la spaziatura orizzontale ai bottoni in modo tale da rendere il tutto più bello
              AccountTypeButton(
@@ -65,11 +69,11 @@ private fun AccountTypeButton(
     val contentColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
     val shadowElevation = if (isSelected) 4.dp else 0.dp
 
-    //ANDIAMO A CREARE IL BOTTONE A MANO
+    //ANDIAMO A CREARE LO SLIDER DEI BOTTONI A MANO
     Surface( //andiamo a creare una "scatola" e all'interno creiamo il bottone
         onClick = onClick,
         modifier = modifier,
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.medium,
         color = backgroundColor,
         contentColor = contentColor,
         shadowElevation = shadowElevation
