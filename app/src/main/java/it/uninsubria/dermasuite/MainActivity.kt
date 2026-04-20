@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
                         LoginPageScreen(
                             //onLoginSuccess = { navController.navigate("dashboard_screen")},
                             onNavigateToRegister = { navController.navigate("register_screen")},
-                            onNavigateToStart = { navController.navigate("start_screen")}
-
+                            onNavigateToStart = { navController.navigate("start_screen")},
+                            onLoginSuccess = {navController.navigate("dashboard_screen")}
                         )
                     }
 
