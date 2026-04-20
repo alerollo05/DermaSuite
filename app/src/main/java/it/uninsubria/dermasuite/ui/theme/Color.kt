@@ -5,7 +5,8 @@ import androidx.compose.ui.graphics.Color
 // Colori Primari e Secondari
 val PrimaryColor = Color(0xFF0D2E5E)      // Il blu principale
 val WaterGreen = Color(0x003F39FF)        // Il verde acqua "Secondary"
-val WaterGreenHover = Color(0x61F9E9FF)   // Variante più scura per gli stati hover
+val WaterGreenHover = Color(0xFF6C757D)
+//val WaterGreenHover = Color(0x61F9E9FF)   // Variante più scura per gli stati hover
 
 // Colori di Stato e UI
 val White = Color(0xFFFFFFFF)

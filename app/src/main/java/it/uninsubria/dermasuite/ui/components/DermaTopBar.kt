@@ -1,8 +1,11 @@
 package it.uninsubria.dermasuite.ui.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -15,10 +18,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,17 +45,17 @@ fun DermaTopBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically){
                 if(title == "DermaSuite"){
-                    Icon(
-                        painter = painterResource(R.mipmap.ic_launcher_foreground),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
+                    Image(
+                        painter = painterResource(id = R.mipmap.ic_launcher_foreground), // Usa foreground drawable
+                        contentDescription = "Logo DermaSuite",
+                        modifier = Modifier.size(50.dp) // Dimensione adatta alla TopBar
+                            .clip(MaterialTheme.shapes.medium))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
 
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
             }

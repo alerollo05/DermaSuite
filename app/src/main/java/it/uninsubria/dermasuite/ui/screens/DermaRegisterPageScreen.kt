@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.DermaAccountTypeSelector
 import it.uninsubria.dermasuite.ui.components.DermaButton
+import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaDatePicker
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaPrivacyDisclaimerBox
@@ -29,7 +30,8 @@ import it.uninsubria.dermasuite.viewmodels.RegisterPageViewModel
 @Composable
 fun DermaRegisterPageScreen(
     viewModel: RegisterPageViewModel = viewModel(),
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToStart: () -> Unit
 ){
     // Estraiamo lo stato attuale dal ViewModel.
     // Ogni volta che uiState cambia nel VM, questa riga lo rileva e aggiorna la UI.
@@ -43,8 +45,8 @@ fun DermaRegisterPageScreen(
         topBar = {
             DermaTopBar(
                 title = "DermaSuite",
-                showBackButton = false,
-                onBackClick = onNavigateToLogin,
+                showBackButton = true,
+                onBackClick = onNavigateToStart,
                 actions = {
                     // Esempio di utilizzo dello slot 'actions' per l'icona profilo
                     /*
@@ -58,17 +60,10 @@ fun DermaRegisterPageScreen(
                 }
             )
         }
-    ) { innerPadding ->
+    ) { padding ->
         //Serve a calcolare lo spazio occupato dalla topBar e dalla BottomBar in modo tale che il contenuto
         //che mettiamo noi non sia coperto dalle barre
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp)
-        ) {
+        DermaColumnScreen(innerPadding = padding){
             Spacer(modifier = Modifier.height(40.dp))
 
             //Mettiamo l'intestazione della pagina
@@ -86,6 +81,7 @@ fun DermaRegisterPageScreen(
                 label = "Nome",
                 value = uiState.nome,
                 onValueChange = { viewModel.onNomeChanged(it) },
+                leadingIconRes = R.drawable.ic_button_paziente,
                 placeholder = "Inserisci il tuo nome"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -93,6 +89,7 @@ fun DermaRegisterPageScreen(
                 label = "Cognome",
                 value = uiState.cognome,
                 onValueChange = { viewModel.onCognomeChanged(it) },
+                leadingIconRes = R.drawable.ic_button_paziente,
                 placeholder = "Inserisci il tuo cognome"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -106,6 +103,7 @@ fun DermaRegisterPageScreen(
                 label = "Username",
                 value = uiState.username,
                 onValueChange = { viewModel.onUsernameChanged(it) },
+                leadingIconRes = R.drawable.ic_chiocciola,
                 placeholder = "Inserisci il tuo username"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -114,6 +112,7 @@ fun DermaRegisterPageScreen(
                 value = uiState.password,
                 isPassword = true,
                 onValueChange = { viewModel.onPasswordChanged(it) },
+                leadingIconRes = R.drawable.ic_scudo_password,
                 placeholder = "Inserisci la password",
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -121,6 +120,7 @@ fun DermaRegisterPageScreen(
                 label = "Conferma Password",
                 value = uiState.confirmPassword,
                 onValueChange = { viewModel.onConfirmPasswordChanged(it) },
+                leadingIconRes = R.drawable.ic_scudo_password,
                 placeholder = "Conferma la password",
                 isPassword = true
             )
@@ -133,6 +133,7 @@ fun DermaRegisterPageScreen(
                 text = stringResource(R.string.btn_register_create_account),
                 onClick = { viewModel.onRegisterClick() }
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -140,7 +141,7 @@ fun DermaRegisterPageScreen(
 @Composable
 private fun DermaRegisterPageScreenPreview() {
     it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-    DermaRegisterPageScreen(onNavigateToLogin = {})
+    DermaRegisterPageScreen(onNavigateToLogin = {}, onNavigateToStart = {})
     }
 }
 
