@@ -43,7 +43,7 @@ fun DermaRegisterPageScreen(
         topBar = {
             DermaTopBar(
                 title = "DermaSuite",
-                showBackButton = false,
+                showBackButton = true,
                 onBackClick = onNavigateToLogin,
                 actions = {
                     // Esempio di utilizzo dello slot 'actions' per l'icona profilo

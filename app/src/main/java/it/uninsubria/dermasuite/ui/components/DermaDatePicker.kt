@@ -11,6 +11,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -26,23 +27,61 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
+import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DermaDatePicker(
    label: String,
    value: String,
    onDataSelected: (String) -> Unit,
-   modifier: Modifier = Modifier //
+   modifier: Modifier = Modifier
 ) {
-    //Siccome in compose possiamo far cambiare l'interfaccia in base allo stato delle variabili
-    //creiamo una variabile che ci servirà a dire quando far comparire il date picker e quando non ci servirà
     var showDialog by remember { mutableStateOf(false) }
     //Creiamo una variabie che memorizza lo stato che assume il datepicker
-    val datePickerState = rememberDatePickerState()
+
+
+    // Calcoliamo i due estremi temporali
+    val dateLimits = remember {
+        val calendar = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+
+        // 1. Limite superiore: 18 anni fa (non puoi essere più giovane di così)
+        calendar.add(java.util.Calendar.YEAR, -18)
+        val maxDate = calendar.timeInMillis
+
+        // 2. Limite inferiore: 120 anni fa (non puoi essere più anziano di così)
+        // Reset del calendar a oggi prima di sottrarre 120
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.add(java.util.Calendar.YEAR, -120)
+        val minDate = calendar.timeInMillis
+
+        Pair(minDate, maxDate)
+    }
+
+    val (minDateLimit, maxDateLimit) = dateLimits
+
+    val datePickerState = rememberDatePickerState(
+        initialDisplayedMonthMillis = maxDateLimit, // Parte sempre dal 2008 (18 anni fa)
+        selectableDates = object : androidx.compose.material3.SelectableDates {
+
+            // ABILITA SOLO LE DATE COMPRESE NEL RANGE
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return utcTimeMillis in minDateLimit..maxDateLimit
+            }
+
+            // Blocca anche la selezione degli anni troppo lontani nel menu a tendina
+            override fun isSelectableYear(year: Int): Boolean {
+                val calendar = java.util.Calendar.getInstance()
+                val currentYear = calendar.get(java.util.Calendar.YEAR)
+                return year in (currentYear - 120)..(currentYear - 18)
+            }
+        }
+    )
 
     //Creiamo il formato della data
     val formatter = remember { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) }
@@ -106,7 +145,7 @@ fun DermaDatePickerDialog(
     onDismissRequest: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    val bluScuroDerma = Color(0xFF001A3F) // Il blu dei tuoi bottoni
+    val bluScuroDerma = Color(0xFF001A3F)
     val grigioTesto = Color(0xFF49454F)   // Grigio scuro per i numeri dei giorni
     val biancoPuro = Color.White
 
@@ -152,3 +191,14 @@ fun DermaDatePickerDialog(
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun DermaDatePickerPreview() {
+    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
+    DermaDatePicker(label = "Data di Nascita", value = "12/12/2000", onDataSelected = {})
+    }
+}
+
+
+

@@ -2,9 +2,11 @@ package it.uninsubria.dermasuite.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -45,11 +47,12 @@ fun DermaButton(
                 style = MaterialTheme.typography.labelLarge, // Quello che abbiamo impostato in Plus Jakarta nel file Type.kt
                 color = Color.White,
             )
+            Spacer(modifier = Modifier.width(10.dp)) // Questo spazio serve a separare il testo dall'icona
             Icon(
                 painter = painterResource(R.drawable.ic_arrow),
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp).align(Alignment.Bottom)
             )
         }
 

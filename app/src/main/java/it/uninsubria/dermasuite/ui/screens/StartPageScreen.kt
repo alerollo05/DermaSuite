@@ -53,7 +53,7 @@ fun StartPageScreen(
             Image(
                 painter = painterResource(id = R.mipmap.ic_launcher_foreground), // Questo è il logo
                 contentDescription = "Logo DermaSuite",
-                modifier = Modifier.size(110.dp)
+                modifier = Modifier.size(110.dp).clip(MaterialTheme.shapes.large)
             )
             Text(
                 text = stringResource(R.string.app_name),
@@ -81,8 +81,8 @@ fun StartPageScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(260.dp)
-                .clip(RoundedCornerShape(32.dp)),
-            contentScale = ContentScale.Crop
+                .clip(shape = MaterialTheme.shapes.medium),
+            contentScale = ContentScale.Crop,
         )
 
         // --- SPAZIO TRA IMMAGINE E BOTTONI ---
