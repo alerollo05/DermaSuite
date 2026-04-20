@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_login">Welcome Back</string>
+    <string name="subtitle_login">Access your clinical dashboard and diagnostic suite with secure credential</string>
+    <string name="textfield_user">Username</string>
+    <string name="textfield_password">Password</string>
+    <string name="placeholder_user">Insert Username</string>
+    <string name="placeholder_password">Insert Password</string>
+    <string name="btn_signin_login">Sign In</string>
+    <string name="txt_signup_login">New to the site?</string>
+    <string name="txt_btn_signup_login">Sign Up</string>
+</resources>

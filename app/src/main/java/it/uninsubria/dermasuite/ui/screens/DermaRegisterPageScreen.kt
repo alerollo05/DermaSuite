@@ -72,7 +72,7 @@ fun DermaRegisterPageScreen(
 
             //Mettiamo l'intestazione della pagina
             DermaHeading(
-                titolo = stringResource(R.string.heading_register),
+                titolo = stringResource(R.string.titolo_register),
                 sottotitolo = stringResource(R.string.subtitle_register)
             )
             Spacer(modifier = Modifier.height(40.dp))
@@ -82,50 +82,50 @@ fun DermaRegisterPageScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             DermaTextField(
-                label = "Nome",
+                label = stringResource(R.string.textfield_name),
                 value = uiState.nome,
                 onValueChange = { viewModel.onNomeChanged(it) },
                 leadingIconRes = R.drawable.ic_button_paziente,
-                placeholder = "Inserisci il tuo nome"
+                placeholder = stringResource(R.string.placeholder_name)
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = "Cognome",
+                label = stringResource(R.string.textfield_surname),
                 value = uiState.cognome,
                 onValueChange = { viewModel.onCognomeChanged(it) },
                 leadingIconRes = R.drawable.ic_button_paziente,
-                placeholder = "Inserisci il tuo cognome"
+                placeholder = stringResource(R.string.placeholder_surname)
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaDatePicker(
-                label = "Data di Nascita",
+                label = stringResource(R.string.textfield_birth),
                 value = uiState.dataNascita,
                 onDataSelected = { viewModel.onDataNascitaChanged(it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = "Username",
+                label = stringResource(R.string.textfield_user),
                 value = uiState.username,
                 onValueChange = { viewModel.onUsernameChanged(it) },
                 leadingIconRes = R.drawable.ic_chiocciola,
-                placeholder = "Inserisci il tuo username"
+                placeholder = stringResource(R.string.placeholder_user)
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = "Password",
+                label = stringResource(R.string.textfield_password),
                 value = uiState.password,
                 isPassword = true,
                 onValueChange = { viewModel.onPasswordChanged(it) },
                 leadingIconRes = R.drawable.ic_scudo_password,
-                placeholder = "Inserisci la password",
+                placeholder = stringResource(R.string.placeholder_password),
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = "Conferma Password",
+                label = stringResource(R.string.textfield_confirm_password_register),
                 value = uiState.confirmPassword,
                 onValueChange = { viewModel.onConfirmPasswordChanged(it) },
                 leadingIconRes = R.drawable.ic_scudo_password,
-                placeholder = "Conferma la password",
+                placeholder = stringResource(R.string.placeholder_confirm_password_register),
                 isPassword = true
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -140,11 +140,11 @@ fun DermaRegisterPageScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Row(verticalAlignment = Alignment.CenterVertically){
                 Text(
-                    text = "Already have an account?"
+                    text = stringResource(R.string.txt_signin_register)
                 )
                 TextButton(onNavigateToLogin) {
                     Text(
-                        text = "Sing in"
+                        text = stringResource(R.string.txt_btn_signin_register)
                     )
                 }
 

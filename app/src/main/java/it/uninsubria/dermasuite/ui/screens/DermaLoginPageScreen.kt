@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -78,13 +79,13 @@ fun LoginPageScreen(
                 horizontalAlignment = Alignment.CenterHorizontally // 2. Centra i componenti Text
             ) {
                 Text(
-                    text = "Welcome Back",
+                    text = stringResource(R.string.title_login) ,
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center // 3. Centra il testo internamente
                 )
                 Text(
-                    text = "Access your clinical dashboard and diagnostic suite with secure credential",
+                    text = stringResource(R.string.subtitle_login),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center, // 3. Centra il testo internamente
@@ -109,34 +110,34 @@ fun LoginPageScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     DermaTextField(
-                        label = "Username",
+                        label = stringResource(R.string.textfield_user),
                         value = uiState.username,
                         onValueChange = { viewModel.onUsernameChanged(it)},
-                        placeholder = "Inserisci username"
+                        placeholder = stringResource(R.string.placeholder_user)
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
 
                     DermaTextField(
-                        label = "Password",
+                        label = stringResource(R.string.textfield_password),
                         value = uiState.password,
                         onValueChange = {viewModel.onPasswordChanged(it)},
-                        placeholder = "Inserisci password"
+                        placeholder = stringResource(R.string.placeholder_password)
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    DermaButton("Sign In",onLoginSuccess)
+                    DermaButton(stringResource(R.string.btn_signin_login),onLoginSuccess)
                 }
             }
 
             Row(verticalAlignment = Alignment.CenterVertically){
                 Text(
-                    text = "New to the site? "
+                    text = stringResource(R.string.txt_signup_login)
                 )
                 TextButton(onNavigateToRegister) {
                     Text(
-                        text = "Sing up"
+                        text = stringResource(R.string.txt_btn_signup_login)
                     )
                 }
 
