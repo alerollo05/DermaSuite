@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.DermaAccountTypeSelector
 import it.uninsubria.dermasuite.ui.components.DermaButton
+import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaDatePicker
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaPrivacyDisclaimerBox
@@ -34,10 +35,6 @@ fun DermaRegisterPageScreen(
     // Estraiamo lo stato attuale dal ViewModel.
     // Ogni volta che uiState cambia nel VM, questa riga lo rileva e aggiorna la UI.
     val uiState = viewModel.uiState
-
-    //Lo mettiamo in modo tale che se i campi sono troppi posso fare lo scrool per vederli tutti
-    // e tenere in memoria gli stati
-    val scrollState = rememberScrollState()
 
     Scaffold(
         topBar = {
@@ -58,17 +55,10 @@ fun DermaRegisterPageScreen(
                 }
             )
         }
-    ) { innerPadding ->
+    ) { padding ->
         //Serve a calcolare lo spazio occupato dalla topBar e dalla BottomBar in modo tale che il contenuto
         //che mettiamo noi non sia coperto dalle barre
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp)
-        ) {
+        DermaColumnScreen(innerPadding = padding){
             Spacer(modifier = Modifier.height(40.dp))
 
             //Mettiamo l'intestazione della pagina
