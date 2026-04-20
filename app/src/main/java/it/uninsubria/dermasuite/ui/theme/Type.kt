@@ -44,6 +44,7 @@ val Typography = Typography(
         lineHeight = 26.sp,
         fontWeight = FontWeight.SemiBold
     ),
+
     // Body Large - 16/150
     bodyLarge = TextStyle(
         fontSize = 16.sp,
@@ -59,12 +60,18 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal
     ),
     // Button / Label - 14/100
+    // Style usato per le scritte nei bottoni come ad esempio nella login
+    // Ho commentato quello che c'era prima nel TextStyle
     labelLarge = TextStyle(
-        fontSize = 14.sp,
+        fontSize = 18.sp,
+        fontFamily = PlusJakartaSans, //impostiamo la famiglia di font
+        fontWeight = FontWeight.SemiBold
+        //lineHeight = 24.sp,
+        /*fontSize = 14.sp,
         fontFamily = PlusJakartaSans, //impostiamo la famiglia di font
         lineHeight = 14.sp,
         fontWeight = FontWeight.Medium,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.5.sp*/
     ),
     // Caption - 12/140
     labelSmall = TextStyle(

@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable //specifichiamo che questa funzione serve a disegnare un componente UI
@@ -23,7 +24,7 @@ fun DermaButton(
         modifier = modifier
             .fillMaxWidth() // Si allarga per tutta la larghezza disponibile (come nei tuoi design)
             .height(56.dp),  // Forza un'altezza precisa di 56 "density pixels" per farlo sembrare moderno e "cliccabile"
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
@@ -34,5 +35,12 @@ fun DermaButton(
             style = MaterialTheme.typography.labelLarge, // Quello che abbiamo impostato in Plus Jakarta
             color = Color.White
         )
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun DermaButtonPreview() {
+    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
+        DermaButton("Login", onClick = {})
     }
 }
