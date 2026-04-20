@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -44,6 +45,14 @@ fun DermaRegisterPageScreen(
     //Lo mettiamo in modo tale che se i campi sono troppi posso fare lo scrool per vederli tutti
     // e tenere in memoria gli stati
     val scrollState = rememberScrollState()
+
+    // Effetto per navigare automaticamente se la registrazione ha successo
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+           // Navigazione alla schermata di login
+            onNavigateToLogin()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -112,6 +121,14 @@ fun DermaRegisterPageScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
+                label = "Email",
+                value = uiState.email,
+                onValueChange = { viewModel.onEmailChanged(it) },
+                leadingIconRes = R.drawable.ic_mail,
+                placeholder = "Inserisci la tua email"
+            )
+
+            DermaTextField(
                 label = "Password",
                 value = uiState.password,
                 isPassword = true,
@@ -133,8 +150,18 @@ fun DermaRegisterPageScreen(
                 text = stringResource(R.string.privacy_disclaimer)
             )
             Spacer(modifier = Modifier.height(24.dp))
+            // Mostra un errore se presente
+            if (uiState.errorMessage != null) {
+                Text(
+                    text = uiState.errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
             DermaButton(
-                text = stringResource(R.string.btn_register_create_account),
+                text = if (uiState.isLoading) "Creazione in corso..." else stringResource(R.string.btn_register_create_account),
                 onClick = { viewModel.onRegisterClick() }
             )
             Spacer(modifier = Modifier.height(24.dp))

@@ -4,6 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import it.uninsubria.dermasuite.firebase.AuthRepository
+import kotlinx.coroutines.launch
 
 // Raggruppa tutti i dati in un unico oggetto (Single Source of Truth).
 // È immutabile: per cambiare un valore, ne creiamo una copia. Questo evita bug di inconsistenza
@@ -13,18 +16,22 @@ data class RegisterUiState(
     val nome: String = "",
     val cognome: String = "",
     val username: String = "",
+    val email: String = "",
     val dataNascita: String = "",
     val accountType: String = "Paziente", // Valore di default
     val password: String = "",
     val confirmPassword: String = "",
 
     // Stato della logica UI
+    val isSuccess: Boolean = false,
     val isLoading: Boolean = false,       // Serve per mostrare una rotellina di caricamento
     val errorMessage: String? = null      // Per mostrare eventuali errori di validazione
 )
 
 
 class RegisterPageViewModel : ViewModel() {
+
+    private val repository = AuthRepository()
 
     /*
      Il "by mutableStateOf" rende questa variabile reattiva
@@ -59,6 +66,9 @@ class RegisterPageViewModel : ViewModel() {
     fun onAccountTypeSelected(nuovoTipo: String) {
         uiState = uiState.copy(accountType = nuovoTipo)
     }
+    fun onEmailChanged(nuovaEmail: String) {
+        uiState = uiState.copy(email = nuovaEmail)
+    }
 
     fun onPasswordChanged(nuovaPass: String) {
         uiState = uiState.copy(password = nuovaPass)
@@ -81,19 +91,24 @@ class RegisterPageViewModel : ViewModel() {
             return
         }
         //Altre validazioni da fare
-        if (uiState.nome.isBlank() || uiState.username.isBlank()) {
+        if (uiState.nome.isBlank() || uiState.username.isBlank() || uiState.email.isBlank()) {
             uiState = uiState.copy(errorMessage = "Compila tutti i campi obbligatori")
             return
         }
 
-        // 3. Avvio caricamento
-        uiState = uiState.copy(isLoading = true)
+        // Connessione a Firebase tramite Repository
+        viewModelScope.launch {
+            uiState = uiState.copy(isLoading = true, errorMessage = null)
+            val result = repository.registerUser(uiState)
 
-        /**
-         * Logica Futura:
-         * Qui inserirai la chiamata a Firebase o al tuo server.
-         * Una volta finita la chiamata, imposterai isLoading = false.
-         */
-        println("Registrazione in corso per ${uiState.username}...")
+            uiState = if (result.isSuccess) {
+                uiState.copy(isLoading = false, isSuccess = true)
+            } else {
+                uiState.copy(
+                    isLoading = false,
+                    errorMessage = result.exceptionOrNull()?.message ?: "Errore durante la registrazione"
+                )
+            }
+        }
     }
 }
