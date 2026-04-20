@@ -33,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
     background = Background, // il grigio chiarissimo di sfondo
     onPrimary = White,
     onBackground = Black,
-    onSurface = Black
+    onSurface = Placeholder
 )
 
 @Composable

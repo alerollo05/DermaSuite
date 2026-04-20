@@ -1,9 +1,9 @@
 package it.uninsubria.dermasuite.ui.screens
 
 import androidx.compose.foundation.Image
-import it.uninsubria.dermasuite.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import it.uninsubria.dermasuite.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,9 +46,9 @@ fun StartPageScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Logo e Titolo
+        verticalArrangement = Arrangement.Center,
+    ){
+        // Logo e Titolo e sottotitolo
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = painterResource(id = R.mipmap.ic_launcher_foreground), // Questo è il logo

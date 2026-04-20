@@ -30,7 +30,8 @@ import it.uninsubria.dermasuite.viewmodels.RegisterPageViewModel
 @Composable
 fun DermaRegisterPageScreen(
     viewModel: RegisterPageViewModel = viewModel(),
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToStart: () -> Unit
 ){
     // Estraiamo lo stato attuale dal ViewModel.
     // Ogni volta che uiState cambia nel VM, questa riga lo rileva e aggiorna la UI.
@@ -41,7 +42,7 @@ fun DermaRegisterPageScreen(
             DermaTopBar(
                 title = "DermaSuite",
                 showBackButton = false,
-                onBackClick = onNavigateToLogin,
+                onBackClick = onNavigateToStart,
                 actions = {
                     // Esempio di utilizzo dello slot 'actions' per l'icona profilo
                     /*
@@ -130,7 +131,7 @@ fun DermaRegisterPageScreen(
 @Composable
 private fun DermaRegisterPageScreenPreview() {
     it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-    DermaRegisterPageScreen(onNavigateToLogin = {})
+    DermaRegisterPageScreen(onNavigateToLogin = {}, onNavigateToStart = {})
     }
 }
 
