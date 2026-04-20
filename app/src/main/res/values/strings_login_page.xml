@@ -7,6 +7,6 @@
     <string name="placeholder_user">Insert Username</string>
     <string name="placeholder_password">Insert Password</string>
     <string name="btn_signin_login">Sign In</string>
-    <string name="txt_signup_login">New to the site?</string>
+    <string name="txt_signup_login">New to the app?</string>
     <string name="txt_btn_signup_login">Sign Up</string>
 </resources>
