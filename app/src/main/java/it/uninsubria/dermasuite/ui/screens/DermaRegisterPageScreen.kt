@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.DermaAccountTypeSelector
 import it.uninsubria.dermasuite.ui.components.DermaButton
+import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaDatePicker
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaPrivacyDisclaimerBox
@@ -29,7 +30,8 @@ import it.uninsubria.dermasuite.viewmodels.RegisterPageViewModel
 @Composable
 fun DermaRegisterPageScreen(
     viewModel: RegisterPageViewModel = viewModel(),
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToStart: () -> Unit
 ){
     // Estraiamo lo stato attuale dal ViewModel.
     // Ogni volta che uiState cambia nel VM, questa riga lo rileva e aggiorna la UI.
@@ -44,7 +46,7 @@ fun DermaRegisterPageScreen(
             DermaTopBar(
                 title = "DermaSuite",
                 showBackButton = true,
-                onBackClick = onNavigateToLogin,
+                onBackClick = onNavigateToStart,
                 actions = {
                     // Esempio di utilizzo dello slot 'actions' per l'icona profilo
                     /*
@@ -58,17 +60,10 @@ fun DermaRegisterPageScreen(
                 }
             )
         }
-    ) { innerPadding ->
+    ) { padding ->
         //Serve a calcolare lo spazio occupato dalla topBar e dalla BottomBar in modo tale che il contenuto
         //che mettiamo noi non sia coperto dalle barre
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp)
-        ) {
+        DermaColumnScreen(innerPadding = padding){
             Spacer(modifier = Modifier.height(40.dp))
 
             //Mettiamo l'intestazione della pagina
@@ -146,7 +141,7 @@ fun DermaRegisterPageScreen(
 @Composable
 private fun DermaRegisterPageScreenPreview() {
     it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-    DermaRegisterPageScreen(onNavigateToLogin = {})
+    DermaRegisterPageScreen(onNavigateToLogin = {}, onNavigateToStart = {})
     }
 }
 
