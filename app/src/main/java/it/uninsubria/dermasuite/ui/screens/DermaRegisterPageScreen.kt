@@ -49,7 +49,8 @@ fun DermaRegisterPageScreen(
     // Effetto per navigare automaticamente se la registrazione ha successo
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-           // Navigazione alla schermata di login
+            // Invece di onRegistrationSuccess (alla dashboard),
+            // usa onNavigateToLogin per fargli fare il login manuale
             onNavigateToLogin()
         }
     }
@@ -81,7 +82,7 @@ fun DermaRegisterPageScreen(
 
             //Mettiamo l'intestazione della pagina
             DermaHeading(
-                titolo = stringResource(R.string.heading_register),
+                titolo = stringResource(R.string.titolo_register),
                 sottotitolo = stringResource(R.string.subtitle_register)
             )
             Spacer(modifier = Modifier.height(40.dp))
