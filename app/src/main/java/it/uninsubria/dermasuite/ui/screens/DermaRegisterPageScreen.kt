@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -45,6 +46,14 @@ fun DermaRegisterPageScreen(
     // e tenere in memoria gli stati
     val scrollState = rememberScrollState()
 
+    // Effetto per navigare automaticamente se la registrazione ha successo
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+           // Navigazione alla schermata di login
+            onNavigateToLogin()
+        }
+    }
+
     Scaffold(
         topBar = {
             DermaTopBar(
@@ -72,7 +81,7 @@ fun DermaRegisterPageScreen(
 
             //Mettiamo l'intestazione della pagina
             DermaHeading(
-                titolo = stringResource(R.string.titolo_register),
+                titolo = stringResource(R.string.heading_register),
                 sottotitolo = stringResource(R.string.subtitle_register)
             )
             Spacer(modifier = Modifier.height(40.dp))
@@ -82,50 +91,58 @@ fun DermaRegisterPageScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             DermaTextField(
-                label = stringResource(R.string.textfield_name),
+                label = "Nome",
                 value = uiState.nome,
                 onValueChange = { viewModel.onNomeChanged(it) },
                 leadingIconRes = R.drawable.ic_button_paziente,
-                placeholder = stringResource(R.string.placeholder_name)
+                placeholder = "Inserisci il tuo nome"
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = stringResource(R.string.textfield_surname),
+                label = "Cognome",
                 value = uiState.cognome,
                 onValueChange = { viewModel.onCognomeChanged(it) },
                 leadingIconRes = R.drawable.ic_button_paziente,
-                placeholder = stringResource(R.string.placeholder_surname)
+                placeholder = "Inserisci il tuo cognome"
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaDatePicker(
-                label = stringResource(R.string.textfield_birth),
+                label = "Data di Nascita",
                 value = uiState.dataNascita,
                 onDataSelected = { viewModel.onDataNascitaChanged(it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = stringResource(R.string.textfield_user),
+                label = "Username",
                 value = uiState.username,
                 onValueChange = { viewModel.onUsernameChanged(it) },
                 leadingIconRes = R.drawable.ic_chiocciola,
-                placeholder = stringResource(R.string.placeholder_user)
+                placeholder = "Inserisci il tuo username"
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = stringResource(R.string.textfield_password),
+                label = "Email",
+                value = uiState.email,
+                onValueChange = { viewModel.onEmailChanged(it) },
+                leadingIconRes = R.drawable.ic_mail,
+                placeholder = "Inserisci la tua email"
+            )
+
+            DermaTextField(
+                label = "Password",
                 value = uiState.password,
                 isPassword = true,
                 onValueChange = { viewModel.onPasswordChanged(it) },
                 leadingIconRes = R.drawable.ic_scudo_password,
-                placeholder = stringResource(R.string.placeholder_password),
+                placeholder = "Inserisci la password",
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
-                label = stringResource(R.string.textfield_confirm_password_register),
+                label = "Conferma Password",
                 value = uiState.confirmPassword,
                 onValueChange = { viewModel.onConfirmPasswordChanged(it) },
                 leadingIconRes = R.drawable.ic_scudo_password,
-                placeholder = stringResource(R.string.placeholder_confirm_password_register),
+                placeholder = "Conferma la password",
                 isPassword = true
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -133,18 +150,28 @@ fun DermaRegisterPageScreen(
                 text = stringResource(R.string.privacy_disclaimer)
             )
             Spacer(modifier = Modifier.height(24.dp))
+            // Mostra un errore se presente
+            if (uiState.errorMessage != null) {
+                Text(
+                    text = uiState.errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
             DermaButton(
-                text = stringResource(R.string.btn_register_create_account),
+                text = if (uiState.isLoading) "Creazione in corso..." else stringResource(R.string.btn_register_create_account),
                 onClick = { viewModel.onRegisterClick() }
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(verticalAlignment = Alignment.CenterVertically){
                 Text(
-                    text = stringResource(R.string.txt_signin_register)
+                    text = "Already have an account?"
                 )
                 TextButton(onNavigateToLogin) {
                     Text(
-                        text = stringResource(R.string.txt_btn_signin_register)
+                        text = "Sing in"
                     )
                 }
 

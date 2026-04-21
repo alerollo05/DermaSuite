@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="it.uninsubria.dermasuite" />
+                  <option name="mobileSdkAppId" value="1:678065762840:android:16ff148363078b49a7096d" />
+                  <option name="projectId" value="dermasuite" />
+                  <option name="projectNumber" value="678065762840" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
