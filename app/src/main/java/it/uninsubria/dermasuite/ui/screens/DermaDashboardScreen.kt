@@ -8,14 +8,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import it.uninsubria.dermasuite.ui.components.DermaButton
 
 @Composable
-fun DashboardPageScreen(){
+fun DashboardPageScreen(
+    onNavigateToStart: () -> Unit
+){
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(text = "Ciao a tutti!", fontSize = 24.sp)
+        DermaButton("Log Out", onClick = {onNavigateToStart()})
     }
 
 }

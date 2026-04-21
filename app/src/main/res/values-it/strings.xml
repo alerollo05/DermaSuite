@@ -32,4 +32,5 @@
     <string name="security_account">Sicurezza account</string>
     <string name="txt_signin_register">Hai già un profilo?</string>
     <string name="txt_btn_signin_register">Accedi</string>
+    <string name="loading_button">Caricamento...</string>
 </resources>
