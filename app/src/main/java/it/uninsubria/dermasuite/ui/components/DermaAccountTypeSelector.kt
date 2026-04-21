@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.uninsubria.dermasuite.R
 
 @Composable
 fun DermaAccountTypeSelector(
@@ -30,7 +32,7 @@ fun DermaAccountTypeSelector(
 ) {
     Column(modifier = Modifier.fillMaxWidth().height(80.dp))
      {
-         Text(text = "TIPO DI ACCOUNT",
+         Text(text = stringResource(R.string.account_type).uppercase(),
              style = MaterialTheme.typography.labelLarge,
              color = MaterialTheme.colorScheme.primary,
              modifier = Modifier.padding(bottom = 8.dp)
@@ -38,14 +40,14 @@ fun DermaAccountTypeSelector(
          Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)){
              //diamo la spaziatura orizzontale ai bottoni in modo tale da rendere il tutto più bello
              AccountTypeButton(
-                 text = "Paziente",
+                 text = stringResource(R.string.patient), //Andiamo a prendere il testo da strings.xml)
                  iconRes = it.uninsubria.dermasuite.R.drawable.ic_button_paziente, // Andiamo a passargli l'id dell'icona SVG corrispondente a uno o all'altro
                  isSelected = selectedType == "Paziente", //Vado a controllare e se è selezionato paziente, metto la var a ture
                  onClick = { onTypeSelected("Paziente")}, //Quando clicco seleziono il fatto di aver scelto il paziente
                  modifier = Modifier.weight(1f)
              )
              AccountTypeButton(
-                 text = "Medico",
+                 text = stringResource(R.string.doctor),
                  iconRes = it.uninsubria.dermasuite.R.drawable.ic_button_medico, // Andiamo a passargli l'id dell'icona SVG corrispondente a uno o all'altro
                  isSelected = selectedType == "Medico",//Vado a controllare e se è selezionato medico, metto la var a ture
                  onClick = { onTypeSelected("Medico")}, //Quando clicco seleziono il fatto di aver scelto il medico
