@@ -67,7 +67,9 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("dashboard_screen"){
-                        DashboardPageScreen()
+                        DashboardPageScreen(
+                            onNavigateToStart = {navController.navigate("start_screen")}
+                        )
                     }
                 }
             }
