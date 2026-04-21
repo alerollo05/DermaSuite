@@ -11,8 +11,10 @@
     <string name="title_login">Bentornato</string>
     <string name="subtitle_login">"Accedi alla tua dashboard clinica e alla suite diagnostica con credenziali sicure "</string>
     <string name="textfield_user">Username</string>
+    <string name="textfield_email">Email</string>
     <string name="textfield_password">Password</string>
     <string name="placeholder_user">Inserisci Username</string>
+    <string name="placeholder_email">Inserisci Email</string>
     <string name="placeholder_password">Inserisci Password</string>
     <string name="btn_signin_login">Accedi</string>
     <string name="txt_signup_login">Nuovo utente?</string>

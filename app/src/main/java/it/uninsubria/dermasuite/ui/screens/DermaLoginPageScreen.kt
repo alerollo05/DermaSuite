@@ -15,9 +15,13 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -45,7 +49,24 @@ fun LoginPageScreen(
 ){
     val uiState = viewModel.uiState
 
+    val snackbarHostState = remember { SnackbarHostState() } // Creazione stato della snackbar
+
+    // Lanciamo la Snackbar quando c'è un errore
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
+
+    // Gestione automatica del successo: quando isSuccess diventa true, naviga alla dashboard_screen
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            onLoginSuccess()
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             DermaTopBar(
                 title = "DermaSuite",
@@ -110,10 +131,10 @@ fun LoginPageScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     DermaTextField(
-                        label = stringResource(R.string.textfield_user),
-                        value = uiState.username,
-                        onValueChange = { viewModel.onUsernameChanged(it)},
-                        placeholder = stringResource(R.string.placeholder_user)
+                        label = stringResource(R.string.textfield_email),
+                        value = uiState.email,
+                        onValueChange = { viewModel.onEmailChanged(it)},
+                        placeholder = stringResource(R.string.placeholder_email),
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
@@ -122,12 +143,17 @@ fun LoginPageScreen(
                         label = stringResource(R.string.textfield_password),
                         value = uiState.password,
                         onValueChange = {viewModel.onPasswordChanged(it)},
-                        placeholder = stringResource(R.string.placeholder_password)
+                        placeholder = stringResource(R.string.placeholder_password),
+                        isPassword = true
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    DermaButton(stringResource(R.string.btn_signin_login),onLoginSuccess)
+                    DermaButton(
+                        text = if (uiState.isLoading) "Accesso..." else stringResource(R.string.btn_signin_login),
+                        onClick = { viewModel.onLoginClick() },
+                        enabled = !uiState.isLoading
+                        )
                 }
             }
 

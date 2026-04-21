@@ -36,14 +36,27 @@ class AuthRepository {
             //Salva i dati nella collezione "users" usando l'UID come ID documento
             db.collection("users").document(uid).set(userMap).await()
 
+            // Forzo il logout dopo la registrazione e quindi chiudo la sessione, perchè se no dopo essersi registrati aprendo
+            // l app mi passa direttamente alla dashboard, perchè l'SDK di Firebase ha salvato internamente un "token"
+            // di autenticazione nella memoria protetta del dispositivo
+            auth.signOut()
+
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
+    suspend fun loginUser(email: String, pass: String): Result<Unit> {
+        return try {
+            auth.signInWithEmailAndPassword(email, pass).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
-        //Effettua il login dell'utente.
+    //Effettua il login dell'utente.
 
     suspend fun signIn(email: String, pass: String): Result<Boolean> {
         return try {
