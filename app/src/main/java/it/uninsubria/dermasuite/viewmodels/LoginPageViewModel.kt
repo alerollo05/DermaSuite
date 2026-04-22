@@ -1,5 +1,6 @@
 package it.uninsubria.dermasuite.viewmodels
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,7 +14,8 @@ data class LoginUiState(
     val password: String = "",
     val isLoading: Boolean = false,       // Serve per mostrare una rotellina di caricamento
     val errorMessage: String? = null,      // Per mostrare eventuali errori di validazione
-    val isSuccess: Boolean = false
+    val isSuccess: Boolean = false,        // Per navigare alla dashboard
+    val userRole: String? = null           //Per scegliere quale dashborad mostrare tra paziente e medico
 )
 class LoginPageViewModel (private val repository: AuthRepository = AuthRepository()) : ViewModel() {
     /*
@@ -35,7 +37,6 @@ class LoginPageViewModel (private val repository: AuthRepository = AuthRepositor
     }
 
     fun onLoginClick(){
-
         if (uiState.email.isBlank() || uiState.password.isBlank()) {
             uiState = uiState.copy(errorMessage = "Compila tutti i campi")
             return
@@ -43,18 +44,38 @@ class LoginPageViewModel (private val repository: AuthRepository = AuthRepositor
 
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true, errorMessage = null)
+            //ESEGUIAMO IL LOGIN
             val result = repository.loginUser(uiState.email, uiState.password)
 
-            uiState = if (result.isSuccess) {
-                uiState.copy(isLoading = false, isSuccess = true)
+            if (result.isSuccess) {
+                val currentUserUid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+                if (currentUserUid != null) {
+                    val userData = repository.getUserData(currentUserUid)
+                    if (userData != null) {
+                        uiState = uiState.copy(
+                            userRole = userData.role,
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    } else {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorMessage = "Dati utente non trovati"
+                        )
+                    }
+                } else {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorMessage = "Errore durante il login: UID nullo"
+                    )
+                }
             } else {
-                uiState.copy(isLoading = false, errorMessage = "Email o Password errati")
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorMessage = "Email o Password errati"
+                )
             }
         }
     }
 
-    // Logica di business, ad esempio analytics o controllo sessioni
-    fun trackStartPageImpression() {
-        // ...
-    }
 }

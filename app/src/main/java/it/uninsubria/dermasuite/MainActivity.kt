@@ -9,7 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import it.uninsubria.dermasuite.ui.screens.DashboardPageScreen
+import it.uninsubria.dermasuite.ui.screens.DermaCheckRoleAndNavigateScreen
+import it.uninsubria.dermasuite.ui.screens.DermaDashBoardMedicoScreen
+import it.uninsubria.dermasuite.ui.screens.DermaDashBoardPazienteScreen
 import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.viewmodels.StartPageViewModel
@@ -27,8 +29,7 @@ class MainActivity : ComponentActivity() {
 
         // Decidi la rotta di partenza
         // Se l'utente esiste (non è null), vai alla dashboard, altrimenti alla start_screen
-        val destinationIniziale = if (currentUser != null) "dashboard_screen" else "start_screen"
-
+        val destinationIniziale = if (currentUser != null) "check_role_screen" else "start_screen"
         setContent {
             DermaSuiteTheme {
                 // Oggetto che effettivamente esegue l'ordine di cambiare la pagina
@@ -54,7 +55,18 @@ class MainActivity : ComponentActivity() {
                         LoginPageScreen(
                             onNavigateToRegister = { navController.navigate("register_screen")},
                             onNavigateToStart = { navController.navigate("start_screen")},
-                            onLoginSuccess = {navController.navigate("dashboard_screen")}
+                            onLoginSuccess = { role ->
+                                // Quando il login ha successo, il ViewModel ci restituisce il ruolo
+                                if (role == "Medico") {
+                                    navController.navigate("dashboard_screen_medico") {
+                                        popUpTo("login_screen") { inclusive = true }
+                                    }
+                                } else {
+                                    navController.navigate("dashboard_screen_paziente") {
+                                        popUpTo("login_screen") { inclusive = true }
+                                    }
+                                }
+                            }
                         )
                     }
 
@@ -66,10 +78,29 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable("dashboard_screen"){
-                        DashboardPageScreen(
-                            onNavigateToStart = {navController.navigate("start_screen")}
+                    composable("dashboard_screen_paziente"){
+                        DermaDashBoardPazienteScreen(
+                            onLogout = {
+                                Firebase.auth.signOut()
+                                navController.navigate("start_screen") {
+                                    popUpTo(0)
+                                }
+                            }
                         )
+                    }
+                    composable(route = "dashboard_screen_medico"){
+                        DermaDashBoardMedicoScreen(
+                            onLogout = {
+                                Firebase.auth.signOut()
+                                navController.navigate("start_screen") {
+                                    popUpTo(0)
+                                }
+                            }
+                        )
+                    }
+                    // Pagina intermedia per decidere dove andare se l'utente era già loggato
+                    composable("check_role_screen") {
+                        DermaCheckRoleAndNavigateScreen(navController)
                     }
                 }
             }

@@ -44,7 +44,7 @@ import it.uninsubria.dermasuite.viewmodels.LoginPageViewModel
 fun LoginPageScreen(
     onNavigateToRegister: () -> Unit,
     onNavigateToStart: () -> Unit,
-    onLoginSuccess: () -> Unit, // Questo ti porta alla dashboard una volta verificato l' accesso
+    onLoginSuccess: (String) -> Unit, // Questo ti porta alla dashboard una volta verificato l' accesso
     viewModel: LoginPageViewModel = viewModel()
 ){
     val uiState = viewModel.uiState
@@ -58,10 +58,10 @@ fun LoginPageScreen(
         }
     }
 
-    // Gestione automatica del successo: quando isSuccess diventa true, naviga alla dashboard_screen
+    // Gestione automatica del successo: quando isSuccess diventa true, naviga alla dashboard_screen corretta in basee al ruolo
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            onLoginSuccess()
+            onLoginSuccess(uiState.userRole!!)
         }
     }
 
