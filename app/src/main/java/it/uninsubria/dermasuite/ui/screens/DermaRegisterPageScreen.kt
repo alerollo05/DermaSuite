@@ -11,10 +11,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,9 +45,14 @@ fun DermaRegisterPageScreen(
     // Ogni volta che uiState cambia nel VM, questa riga lo rileva e aggiorna la UI.
     val uiState = viewModel.uiState
 
-    //Lo mettiamo in modo tale che se i campi sono troppi posso fare lo scrool per vederli tutti
-    // e tenere in memoria gli stati
-    val scrollState = rememberScrollState()
+    val snackbarHostState = remember { SnackbarHostState() } // Creazione stato della snackbar
+
+    // Lanciamo la Snackbar quando c'è un errore
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
 
     // Effetto per navigare automaticamente se la registrazione ha successo
     LaunchedEffect(uiState.isSuccess) {
@@ -56,6 +64,7 @@ fun DermaRegisterPageScreen(
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             DermaTopBar(
                 title = "DermaSuite",
@@ -151,14 +160,6 @@ fun DermaRegisterPageScreen(
                 text = stringResource(R.string.privacy_disclaimer)
             )
             Spacer(modifier = Modifier.height(24.dp))
-            // Mostra un errore se presente
-            if (uiState.errorMessage != null) {
-                Text(
-                    text = uiState.errorMessage,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
 
             Spacer(modifier = Modifier.height(24.dp))
             DermaButton(
