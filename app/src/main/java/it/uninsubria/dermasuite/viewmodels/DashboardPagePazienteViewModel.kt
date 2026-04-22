@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import it.uninsubria.dermasuite.firebase.AuthRepository
 import kotlinx.coroutines.launch
 
-class DashboardPageViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel() {
+class DashboardPagePazienteViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel() {
 
     // Stato per il nome dell'utente, se cambia il composable lo ridisegnerà e nel frattempo che carica scrive
     // la scritta caricamento, private set serve a dire che solo dentro la classe DashboardPageViewModel possiamo

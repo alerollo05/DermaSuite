@@ -9,25 +9,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.ui.components.DermaButton
+import it.uninsubria.dermasuite.viewmodels.DashboardPagePazienteViewModel
 
 @Composable
 fun DermaDashBoardPazienteScreen(
-    onLogout: () -> Unit, //Questo è il logout che possiamo andare a richiamare dentro un bottone nella UI
+    onNavigateToStart: () -> Unit,
+    viewModel: DashboardPagePazienteViewModel = viewModel() // Iniezione del ViewModel
 ){
+    val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Ciao a tutti i pazienti!", fontSize = 24.sp, color = Color.Gray)
-            Spacer(modifier = Modifier.height(16.dp))
-            DermaButton("Log Out", onClick = {onLogout()})
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Qui appare il nome recuperato da Firestore
+            Text(text = "Ciao, $nomeUtente!", fontSize = 24.sp)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            DermaButton("Log Out", onClick = {
+                // Esegue il logout reale e poi naviga
+                viewModel.logout {
+                    onNavigateToStart()
+                }
+            })
         }
     }
 }
