@@ -21,7 +21,7 @@ fun DashboardPageScreen(
     onNavigateToStart: () -> Unit,
     viewModel: DashboardPageViewModel = viewModel() // Iniezione del ViewModel
 ){
-    val nomeUtente = viewModel.userName
+    val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
 
     Box(
         modifier = Modifier.fillMaxSize(),
