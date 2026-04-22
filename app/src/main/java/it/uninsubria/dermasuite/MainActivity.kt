@@ -10,11 +10,10 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import it.uninsubria.dermasuite.ui.screens.DermaCheckRoleAndNavigateScreen
-import it.uninsubria.dermasuite.ui.screens.DermaDashBoardMedicoScreen
-import it.uninsubria.dermasuite.ui.screens.DermaDashBoardPazienteScreen
+import it.uninsubria.dermasuite.ui.screens.medico.DermaDashBoardMedicoScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaDashBoardPazienteScreen
 import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
-import it.uninsubria.dermasuite.viewmodels.StartPageViewModel
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
 
