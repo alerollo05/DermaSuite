@@ -2,7 +2,7 @@ package it.uninsubria.dermasuite.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import it.uninsubria.dermasuite.viewmodels.DermaUser
+import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.viewmodels.RegisterUiState
 import kotlinx.coroutines.tasks.await
 
@@ -23,6 +23,10 @@ class AuthRepository {
             val authResult = auth.createUserWithEmailAndPassword(state.email, state.password).await()
             val uid = authResult.user?.uid ?: throw Exception("Errore durante il recupero dell'UID utente")
 
+            //Convertiamo la data di nascita in formato TimeStamp
+            val timestampNascita = state.dataNascitaMillis?.let {
+                com.google.firebase.Timestamp(java.util.Date(it))}
+
            //I nomi delle proprietà diventeranno direttamente le chiavi su fireStore
             val newUser = DermaUser(
                 uid,
@@ -30,7 +34,7 @@ class AuthRepository {
                 state.cognome,
                 state.email,
                 state.username,
-                state.dataNascita,
+                timestampNascita,
                 state.accountType
             )
 

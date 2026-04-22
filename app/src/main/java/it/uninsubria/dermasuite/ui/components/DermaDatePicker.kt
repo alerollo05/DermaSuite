@@ -39,7 +39,7 @@ import java.util.Locale
 fun DermaDatePicker(
    label: String,
    value: String,
-   onDataSelected: (String) -> Unit,
+   onDataSelected: (Long) -> Unit,
    modifier: Modifier = Modifier
 ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -83,8 +83,7 @@ fun DermaDatePicker(
         }
     )
 
-    //Creiamo il formato della data
-    val formatter = remember { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) }
+
     //Definisco l'interfaccia del date picker
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
@@ -131,7 +130,8 @@ fun DermaDatePicker(
             onDismissRequest = { showDialog = false },
             onConfirm = {
                 datePickerState.selectedDateMillis?.let { millis ->
-                    onDataSelected(formatter.format(millis))
+                    //Passiamo il long del tipo time stamp direttamente al viewModel
+                    onDataSelected(millis)
                 }
                 showDialog = false
             }
