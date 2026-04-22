@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import it.uninsubria.dermasuite.firebase.AuthRepository
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 // Raggruppa tutti i dati in un unico oggetto (Single Source of Truth).
 // È immutabile: per cambiare un valore, ne creiamo una copia. Questo evita bug di inconsistenza
@@ -17,7 +19,10 @@ data class RegisterUiState(
     val cognome: String = "",
     val username: String = "",
     val email: String = "",
+    //usiamo il tipo stringa per mostrare la data nell UI
     val dataNascita: String = "",
+    //andiamo a creare un tipo long per andare a memorizzarlo su firestore
+    val dataNascitaMillis: Long? = null,
     val accountType: String = "Paziente", // Valore di default
     val password: String = "",
     val confirmPassword: String = "",
@@ -42,6 +47,9 @@ class RegisterPageViewModel : ViewModel() {
         private set //Imposta il fatto che solo questo viewmodel può modificare questo valore,
                     // mentre tutti gli altri possono solo leggere i valori
 
+    // Formattatore per trasformare i millisecondi in testo leggibile (dd/MM/yyyy)
+    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
 
     // Creiamo delle funzioni di aggiornamento per ogni campo di testo
     // Ogni volta che l'utente scrive un carattere, chiamiamo una di queste funzioni
@@ -59,8 +67,12 @@ class RegisterPageViewModel : ViewModel() {
         uiState = uiState.copy(username = nuovoUsername)
     }
 
-    fun onDataNascitaChanged(nuovaData: String) {
-        uiState = uiState.copy(dataNascita = nuovaData)
+    //In questo modo traduco i millisecondi inviati dal DermaDatePicker in un formato leggibile
+    fun onDataNascitaChanged(millis: Long) {
+        uiState = uiState.copy(
+            dataNascitaMillis = millis,
+            dataNascita = dateFormatter.format(java.util.Date(millis))
+        )
     }
 
     fun onAccountTypeSelected(nuovoTipo: String) {
@@ -91,7 +103,7 @@ class RegisterPageViewModel : ViewModel() {
             return
         }
         //Altre validazioni da fare
-        if (uiState.nome.isBlank() || uiState.username.isBlank() || uiState.email.isBlank()) {
+        if (uiState.nome.isBlank() || uiState.username.isBlank() || uiState.email.isBlank()|| uiState.dataNascitaMillis == null) {
             uiState = uiState.copy(errorMessage = "Compila tutti i campi obbligatori")
             return
         }
