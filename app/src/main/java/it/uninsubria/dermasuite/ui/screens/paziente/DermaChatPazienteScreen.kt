@@ -20,24 +20,19 @@ import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
-import it.uninsubria.dermasuite.viewmodels.DashboardPagePazienteViewModel
 
 @Composable
-fun DermaDashBoardPazienteScreen(
+fun DermaChatPazienteScreen(
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
-    onNavigateToProfileP: () -> Unit,
-    onNavigateDashboardPASI: () -> Unit,
-    onLogout: () -> Unit,
-    viewModel: DashboardPagePazienteViewModel = viewModel() // Iniezione del ViewModel
+    onNavigateToDashboardP: () -> Unit,
+    onNavigateToProfileP: () -> Unit
 ){
     // Definiamo le azioni per questa specifica schermata
     val dashboardActions = listOf(
-        BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", { /* Sei già qui */ }),
-        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
+        BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", onNavigateToDashboardP),
+        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", { /* Sei già qui */ }),
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", onNavigateToProfileP)
     )
-    val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
 
     Scaffold(
         bottomBar = {
@@ -51,19 +46,11 @@ fun DermaDashBoardPazienteScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     // Qui appare il nome recuperato da Firestore
-                    Text(text = "Ciao, $nomeUtente!", fontSize = 24.sp)
+                    Text(text = "CHAT PAGE", fontSize = 24.sp)
 
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    DermaButton("Log Out", onClick = {onLogout} )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    DermaButton("PASI",onClick = {onNavigateDashboardPASI()})
                 }
 
+            }
         }
-    }
-
     }
 }

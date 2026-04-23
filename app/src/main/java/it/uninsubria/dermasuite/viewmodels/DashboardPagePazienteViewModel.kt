@@ -43,8 +43,4 @@ class DashboardPagePazienteViewModel(private val repository: AuthRepository = Au
         }
     }
 
-    fun logout(onSuccess: () -> Unit) {
-        repository.signOut()
-        onSuccess()
-    }
 }

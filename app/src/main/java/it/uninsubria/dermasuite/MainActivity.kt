@@ -16,6 +16,9 @@ import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaChatPazienteScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaProfilePazienteScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -77,9 +80,37 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable("dashboard_screen_paziente"){
+                    composable("dashboard_screen_paziente") {
                         DermaDashBoardPazienteScreen(
-                            onNavigateToStart = {navController.navigate("start_screen")},
+                            navController = navController,
+                            onLogout = {
+                                Firebase.auth.signOut()
+                                navController.navigate("start_screen") {
+                                    popUpTo(0)
+                                }
+                            },
+                            onNavigateToChatP = { navController.navigate("chat_screen_paziente") },
+                            onNavigateToProfileP = { navController.navigate("profile_screen_paziente") },
+                            onNavigateDashboardPASI = {navController.navigate("pasi_page_screen")}
+                        )
+                    }
+                    composable("pasi_page_screen"){
+                        DermaPASIScreen(
+                            onBack = {navController.navigate("dashboard_screen_paziente")}
+                        )
+                    }
+                    composable("chat_screen_paziente") {
+                        DermaChatPazienteScreen(
+                            navController = navController,
+                            onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                        )
+                    }
+                    composable("profile_screen_paziente") {
+                        DermaProfilePazienteScreen(
+                            navController = navController,
+                            onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")}
                         )
                     }
                     composable(route = "dashboard_screen_medico"){
@@ -96,6 +127,7 @@ class MainActivity : ComponentActivity() {
                     composable("check_role_screen") {
                         DermaCheckRoleAndNavigateScreen(navController)
                     }
+
                 }
             }
         }
