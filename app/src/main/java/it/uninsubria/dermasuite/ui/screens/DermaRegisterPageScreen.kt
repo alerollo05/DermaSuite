@@ -45,22 +45,21 @@ fun DermaRegisterPageScreen(
     // Ogni volta che uiState cambia nel VM, questa riga lo rileva e aggiorna la UI.
     val uiState = viewModel.uiState
 
-    // Effetto per navigare automaticamente se la registrazione ha successo
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            // Invece di onRegistrationSuccess (alla dashboard),
-            // usa onNavigateToLogin per fargli fare il login manuale
-            onNavigateToLogin()
-        }
-    }
-
-
     val snackbarHostState = remember { SnackbarHostState() } // Creazione stato della snackbar
 
     // Lanciamo la Snackbar quando c'è un errore
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let {
             snackbarHostState.showSnackbar(it)
+        }
+    }
+
+    // Effetto per navigare automaticamente se la registrazione ha successo
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            // Invece di onRegistrationSuccess (alla dashboard),
+            // usa onNavigateToLogin per fargli fare il login manuale
+            onNavigateToLogin()
         }
     }
 
@@ -160,6 +159,8 @@ fun DermaRegisterPageScreen(
             DermaPrivacyDisclaimerBox(
                 text = stringResource(R.string.privacy_disclaimer)
             )
+            Spacer(modifier = Modifier.height(24.dp))
+
             Spacer(modifier = Modifier.height(24.dp))
             DermaButton(
                 text = if (uiState.isLoading) stringResource(R.string.loading_button) else stringResource(R.string.btn_register_create_account),

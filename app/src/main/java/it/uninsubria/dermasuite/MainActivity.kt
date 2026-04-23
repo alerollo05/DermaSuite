@@ -79,12 +79,7 @@ class MainActivity : ComponentActivity() {
 
                     composable("dashboard_screen_paziente"){
                         DermaDashBoardPazienteScreen(
-                            onLogout = {
-                                Firebase.auth.signOut()
-                                navController.navigate("start_screen") {
-                                    popUpTo(0)
-                                }
-                            }
+                            onNavigateToStart = {navController.navigate("start_screen")},
                         )
                     }
                     composable(route = "dashboard_screen_medico"){

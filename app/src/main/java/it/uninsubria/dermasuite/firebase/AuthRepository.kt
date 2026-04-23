@@ -44,7 +44,7 @@ class AuthRepository {
             // Forzo il logout dopo la registrazione e quindi chiudo la sessione, perchè se no dopo essersi registrati aprendo
             // l app mi passa direttamente alla dashboard, perchè l'SDK di Firebase ha salvato internamente un "token"
             // di autenticazione nella memoria protetta del dispositivo
-            auth.signOut()
+            signOut()
 
             Result.success(Unit)
         } catch (e: Exception) {
