@@ -14,13 +14,13 @@ import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
+
 @Composable
-fun DermaPASIScreen(
+fun DermaPASIHistoryScreen(
     onBack: () -> Unit,
+    navController: NavController,
     onNavigateToChatP: () -> Unit,
-    onNavigateToProfileP: () -> Unit,
-    onNavigateToPasiHistory: () -> Unit,
-    navController: NavController
+    onNavigateToProfileP: () -> Unit
 ){
     val listaIcone = listOf(
         BottomBarAction(
@@ -34,35 +34,37 @@ fun DermaPASIScreen(
         BottomBarAction(
             "HISTORY", R.drawable.ic_history,
             "pasi_history_screen",
-            {onNavigateToPasiHistory()}),
+            {}),
         BottomBarAction(
             "PROFILE", R.drawable.ic_profile,
             "profile_screen_paziente",
             {onNavigateToProfileP()})
     )
+
     Scaffold(
         topBar = {
             DermaTopBar(
-                title = "Calcolo PASI",
+                title = "History PASI",
                 showBackButton = true,
                 onBackClick = onBack
             )
         },
         bottomBar = {
             DermaBottomBar(
-                    navController = navController,
-                    actions = listaIcone
+                navController = navController,
+                actions = listaIcone
             )
         }
-    ) { padding ->
-
-        DermaColumnScreen(innerPadding = padding) {
+    ){
+        padding ->
+        DermaColumnScreen(innerPadding = padding){
             DermaHeading(
-                titolo = "Calcolo PASI",
+                titolo = "Hisotry PASI",
                 sottotitolo = "Descrizione del pasi",
                 modifier = Modifier.padding(16.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+
 }

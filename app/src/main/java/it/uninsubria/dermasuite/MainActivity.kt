@@ -17,6 +17,7 @@ import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaChatPazienteScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaProfilePazienteScreen
 
@@ -96,7 +97,19 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("pasi_page_screen"){
                         DermaPASIScreen(
-                            onBack = {navController.navigate("dashboard_screen_paziente")}
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToPasiHistory = {navController.navigate("pasi_history_screen")}
+                        )
+                    }
+                    composable("pasi_history_screen"){
+                        DermaPASIHistoryScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
                         )
                     }
                     composable("chat_screen_paziente") {

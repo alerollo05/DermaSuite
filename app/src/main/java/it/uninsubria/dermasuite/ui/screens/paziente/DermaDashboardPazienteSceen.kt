@@ -55,7 +55,7 @@ fun DermaDashBoardPazienteScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    DermaButton("Log Out", onClick = {onLogout} )
+                    DermaButton("Log Out", onClick = {onLogout()} )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
