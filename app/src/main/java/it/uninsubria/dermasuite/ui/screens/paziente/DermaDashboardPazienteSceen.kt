@@ -19,7 +19,9 @@ import it.uninsubria.dermasuite.viewmodels.paziente.DashboardPagePazienteViewMod
 @Composable
 fun DermaDashBoardPazienteScreen(
     onLogout: () -> Unit, //Questo è il logout che possiamo andare a richiamare dentro un bottone nella UI
-    viewmodel: DashboardPagePazienteViewModel = viewModel()
+    viewmodel: DashboardPagePazienteViewModel = viewModel(),
+    onNavigateDashboardPASI: () -> Unit,
+    onNavigateToStart: () -> Unit
 ){
 
     val nomeUtente = viewmodel.username //Andiamo a prendere il nome dell'utente dal viewModel
@@ -36,6 +38,9 @@ fun DermaDashBoardPazienteScreen(
             Text(text = "Ciao, $nomeUtente!", fontSize = 24.sp)
             Spacer(modifier = Modifier.height(16.dp))
             DermaButton("Log Out", onClick = {onLogout()})
+            Spacer (modifier = Modifier.height(16.dp))
+            DermaButton("Calcolo PASI", onClick = {onNavigateDashboardPASI()})
+
         }
     }
 }

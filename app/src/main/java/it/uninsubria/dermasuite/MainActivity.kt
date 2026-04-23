@@ -16,6 +16,7 @@ import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -80,6 +81,13 @@ class MainActivity : ComponentActivity() {
                     composable("dashboard_screen_paziente"){
                         DermaDashBoardPazienteScreen(
                             onNavigateToStart = {navController.navigate("start_screen")},
+                            onLogout = {
+                                Firebase.auth.signOut()
+                                navController.navigate("start_screen") {
+                                    popUpTo(0) //Serve a non tornare alla pagina di caricamente della rotella che gira
+                                }
+                            },
+                            onNavigateDashboardPASI = {navController.navigate("pasi_page_screen")}
                         )
                     }
                     composable(route = "dashboard_screen_medico"){
@@ -95,6 +103,14 @@ class MainActivity : ComponentActivity() {
                     // Pagina intermedia per decidere dove andare se l'utente era già loggato
                     composable("check_role_screen") {
                         DermaCheckRoleAndNavigateScreen(navController)
+                    }
+
+                    //Pagina del calcolo PASI
+                    composable("pasi_page_screen"){
+                        DermaPASIScreen(
+                            //Andiamo a creare il bottone di ritorno per la pagina precedente (Dashboard del paziente)
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                        )
                     }
                 }
             }
