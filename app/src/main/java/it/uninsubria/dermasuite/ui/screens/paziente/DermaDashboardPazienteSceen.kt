@@ -20,7 +20,7 @@ import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
-import it.uninsubria.dermasuite.viewmodels.DashboardPagePazienteViewModel
+import it.uninsubria.dermasuite.viewmodels.paziente.DashboardPagePazienteViewModel
 
 @Composable
 fun DermaDashBoardPazienteScreen(
