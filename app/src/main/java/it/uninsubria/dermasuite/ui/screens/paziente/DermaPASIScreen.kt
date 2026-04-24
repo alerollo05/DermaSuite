@@ -7,6 +7,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.BottomBarAction
@@ -14,13 +15,17 @@ import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
+import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
+import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
+
 @Composable
 fun DermaPASIScreen(
     onBack: () -> Unit,
     onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateToPasiHistory: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    viewModel: PasiPageViewModel = viewModel()
 ){
     val listaIcone = listOf(
         BottomBarAction(
@@ -55,6 +60,8 @@ fun DermaPASIScreen(
             )
         }
     ) { padding ->
+        //Andiamo a recuperare i dati relativi al distretto selezionato al momento
+        val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: DistrictState()
 
         DermaColumnScreen(innerPadding = padding) {
             DermaHeading(
