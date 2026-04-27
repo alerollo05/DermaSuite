@@ -14,4 +14,5 @@ val Black = Color(0xFF000000)
 val Background = Color(0xF7F9FBFF)
 val Grey = Color(0xFF9E9E9E)
 val Placeholder = Color(0xFF6C757D)      // Il grigio-azzurro dei testi nei campi
-val ErrorColor = Color(0xFFDC3545)       // Il rosso per i messaggi di errore
+val BgBottomBar = Color(0xFFEFF6FF)
+val ErrorColor = Color(0xFFDC3545) // Il rosso per i messaggi di errore

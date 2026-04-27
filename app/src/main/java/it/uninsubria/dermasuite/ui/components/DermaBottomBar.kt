@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import it.uninsubria.dermasuite.ui.theme.BgBottomBar
 
 // Modello per ogni pulsante della barra
 data class BottomBarAction(
@@ -45,7 +46,7 @@ fun DermaBottomBar(
             NavigationBarItem(
                 selected = isSelected,
                 onClick = action.onClick,
-                alwaysShowLabel = true, // Forza il testo a rimanere sempre visibile
+                alwaysShowLabel = true, // Forza il testo sotto l'icona a rimanere sempre visibile
                 label = null, // Qua ci andrebbe il Text sotto l icona ma se lo metto qua viene evidenziata solo l icona e non il label sotto (Quando si è nello screen corrente)
                 icon = {
                     Column(
@@ -70,7 +71,7 @@ fun DermaBottomBar(
                 },
                 // Colore di sfondo highlighting dell'icona quando viene cliccata
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                    indicatorColor = BgBottomBar
                 )
             )
         }

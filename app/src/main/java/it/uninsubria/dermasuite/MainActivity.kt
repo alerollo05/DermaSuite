@@ -17,6 +17,7 @@ import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaChatPazienteScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaEASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaProfilePazienteScreen
@@ -84,15 +85,10 @@ class MainActivity : ComponentActivity() {
                     composable("dashboard_screen_paziente") {
                         DermaDashBoardPazienteScreen(
                             navController = navController,
-                            onLogout = {
-                                Firebase.auth.signOut()
-                                navController.navigate("start_screen") {
-                                    popUpTo(0)
-                                }
-                            },
                             onNavigateToChatP = { navController.navigate("chat_screen_paziente") },
                             onNavigateToProfileP = { navController.navigate("profile_screen_paziente") },
-                            onNavigateDashboardPASI = {navController.navigate("pasi_page_screen")}
+                            onNavigateDashboardPASI = {navController.navigate("pasi_page_screen")},
+                            onNavigateDashboardEASI = {navController.navigate("easi_page_screen")}
                         )
                     }
                     composable("pasi_page_screen"){
@@ -102,6 +98,15 @@ class MainActivity : ComponentActivity() {
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToPasiHistory = {navController.navigate("pasi_history_screen")}
+                        )
+                    }
+                    composable("easi_page_screen"){
+                        DermaEASIScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToEasiHistory = {navController.navigate("easi_history_screen")}
                         )
                     }
                     composable("pasi_history_screen"){
@@ -114,6 +119,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("chat_screen_paziente") {
                         DermaChatPazienteScreen(
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
                             navController = navController,
                             onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
@@ -121,6 +127,13 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("profile_screen_paziente") {
                         DermaProfilePazienteScreen(
+                            onLogout = {
+                                Firebase.auth.signOut()
+                                navController.navigate("start_screen") {
+                                    popUpTo(0)
+                                }
+                            },
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
                             navController = navController,
                             onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")}

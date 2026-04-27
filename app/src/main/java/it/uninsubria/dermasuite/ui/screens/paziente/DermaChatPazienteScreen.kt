@@ -20,9 +20,11 @@ import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
+import it.uninsubria.dermasuite.ui.components.DermaTopBar
 
 @Composable
 fun DermaChatPazienteScreen(
+    onBack: () -> Unit,
     navController: NavController,
     onNavigateToDashboardP: () -> Unit,
     onNavigateToProfileP: () -> Unit
@@ -35,6 +37,13 @@ fun DermaChatPazienteScreen(
     )
 
     Scaffold(
+        topBar = {
+            DermaTopBar(
+                title = "Chat",
+                showBackButton = true,
+                onBackClick = onBack
+            )
+        },
         bottomBar = {
             DermaBottomBar(navController = navController, actions = dashboardActions)
         }
