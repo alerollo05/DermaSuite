@@ -1,4 +1,4 @@
-package it.uninsubria.dermasuite.viewmodels
+package it.uninsubria.dermasuite.viewmodels.medico
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +9,8 @@ import com.google.firebase.auth.FirebaseAuth
 import it.uninsubria.dermasuite.firebase.AuthRepository
 import kotlinx.coroutines.launch
 
-class DashboardPagePazienteViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel() {
+
+class DashboardPageMedicoViewModel (private val repository: AuthRepository = AuthRepository()) : ViewModel()  {
 
     // Stato per il nome dell'utente, se cambia il composable lo ridisegnerà e nel frattempo che carica scrive
     // la scritta caricamento, private set serve a dire che solo dentro la classe DashboardPageViewModel possiamo
@@ -43,4 +44,8 @@ class DashboardPagePazienteViewModel(private val repository: AuthRepository = Au
         }
     }
 
+    fun logout(onSuccess: () -> Unit) {
+        repository.signOut()
+        onSuccess()
+    }
 }

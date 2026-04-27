@@ -7,7 +7,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.BottomBarAction
@@ -15,17 +14,13 @@ import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
 
 @Composable
-fun DermaPASIScreen(
+fun DermaPASIHistoryScreen(
     onBack: () -> Unit,
-    onNavigateToChatP: () -> Unit,
-    onNavigateToProfileP: () -> Unit,
-    onNavigateToPasiHistory: () -> Unit,
     navController: NavController,
-    viewModel: PasiPageViewModel = viewModel()
+    onNavigateToChatP: () -> Unit,
+    onNavigateToProfileP: () -> Unit
 ){
     val listaIcone = listOf(
         BottomBarAction(
@@ -39,37 +34,37 @@ fun DermaPASIScreen(
         BottomBarAction(
             "HISTORY", R.drawable.ic_history,
             "pasi_history_screen",
-            {onNavigateToPasiHistory()}),
+            {}),
         BottomBarAction(
             "PROFILE", R.drawable.ic_profile,
             "profile_screen_paziente",
             {onNavigateToProfileP()})
     )
+
     Scaffold(
         topBar = {
             DermaTopBar(
-                title = "Calcolo PASI",
+                title = "History PASI",
                 showBackButton = true,
                 onBackClick = onBack
             )
         },
         bottomBar = {
             DermaBottomBar(
-                    navController = navController,
-                    actions = listaIcone
+                navController = navController,
+                actions = listaIcone
             )
         }
-    ) { padding ->
-        //Andiamo a recuperare i dati relativi al distretto selezionato al momento
-        val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: DistrictState()
-
-        DermaColumnScreen(innerPadding = padding) {
+    ){
+        padding ->
+        DermaColumnScreen(innerPadding = padding){
             DermaHeading(
-                titolo = "Calcolo PASI",
+                titolo = "Hisotry PASI",
                 sottotitolo = "Descrizione del pasi",
                 modifier = Modifier.padding(16.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+
 }

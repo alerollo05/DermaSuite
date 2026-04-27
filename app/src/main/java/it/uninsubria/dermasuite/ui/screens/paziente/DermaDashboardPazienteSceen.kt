@@ -20,7 +20,8 @@ import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
-import it.uninsubria.dermasuite.viewmodels.DashboardPagePazienteViewModel
+import it.uninsubria.dermasuite.ui.components.DermaTopBar
+import it.uninsubria.dermasuite.viewmodels.paziente.DashboardPagePazienteViewModel
 
 @Composable
 fun DermaDashBoardPazienteScreen(
@@ -40,6 +41,9 @@ fun DermaDashBoardPazienteScreen(
     val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
 
     Scaffold(
+        topBar= {
+            DermaTopBar(title = "DermaSuite", showBackButton = false, onBackClick = {})
+        },
         bottomBar = {
             DermaBottomBar(navController = navController, actions = dashboardActions)
         }

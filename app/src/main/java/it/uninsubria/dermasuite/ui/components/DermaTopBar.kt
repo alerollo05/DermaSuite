@@ -32,11 +32,11 @@ fun DermaTopBar(
     showBackButton: Boolean = false,
     onBackClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
-    //mettendo un @Composable, andiamo a dire che in quel capo potrà essere messo dentro anche un
+    //mettendo un @Composable, andiamo a dire che in quel campo potrà essere messo dentro anche un
     //contenuto grafico di tipo composable (ES. icona dell'avatar dell'utente, icona export dello storico ecc.)
     //Lo chiamo action appunto perchè mi permette di fare delle azioni aggiuntive
     //Con RowScope andiamo a dire che i componenti UI che inseriremo verranno racchiusi nell scope di una riga
-    //Quindi potrai usare i modifier specifice delle righe
+    //Quindi potrai usare i modifier specifici delle righe
     //-> Unit lo mettiamo per indicare che è una funzione che non restituisce nulla,
     //ma fa solo un azione (disegnare)
     //mentre le {} sono il valore di default, se non inserisco nulla non disegno e faccio nulla
