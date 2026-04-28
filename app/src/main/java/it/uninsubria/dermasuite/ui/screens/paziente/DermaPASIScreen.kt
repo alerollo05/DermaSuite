@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,8 +13,11 @@ import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
+import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
+import it.uninsubria.dermasuite.ui.components.DermaDistrictSelector
 import it.uninsubria.dermasuite.ui.components.DermaHeading
+import it.uninsubria.dermasuite.ui.components.DermaSelectorParameterCard
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
@@ -63,6 +67,8 @@ fun DermaPASIScreen(
         //Andiamo a recuperare i dati relativi al distretto selezionato al momento
         val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: DistrictState()
 
+        var pasiSuccess = false
+
         DermaColumnScreen(innerPadding = padding) {
             DermaHeading(
                 titolo = "Calcolo PASI",
@@ -70,6 +76,61 @@ fun DermaPASIScreen(
                 modifier = Modifier.padding(16.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
+            DermaDistrictSelector(
+              "Distretto",
+                selectedDistrict = viewModel.currentDistrict,
+                onDistrictSelected = { viewModel.currentDistrict = it },
+                isComplete = viewModel.isDistrictComplete(viewModel.currentDistrict)
+            )
+            DermaSelectorParameterCard(
+                title = "Eritema",
+                subtitle = "Seleziona il punteggio relativo all'eritema",
+                IconRes = R.drawable.ic_home,
+                selectedValue = currentData.eritema,
+                onValueChange = { viewModel.updateDistrictParameters(eritema = it) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DermaSelectorParameterCard(
+                title = "Indurimento",
+                subtitle = "Seleziona il punteggio relativo all'indurimento",
+                IconRes = R.drawable.ic_home,
+                selectedValue = currentData.indurimento,
+                onValueChange = { viewModel.updateDistrictParameters(indurimento = it) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DermaSelectorParameterCard(
+                title = "Desquamazione",
+                subtitle = "Seleziona il punteggio relativo alla desquamazione",
+                IconRes = R.drawable.ic_home,
+                selectedValue = currentData.desquamazione,
+                onValueChange = { viewModel.updateDistrictParameters(desquamazione = it) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DermaSelectorParameterCard(
+                title = "Area",
+                subtitle = "Seleziona il punteggio relativo all'area",
+                IconRes = R.drawable.ic_home,
+                selectedValue = currentData.percentualeArea,
+                onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            DermaButton(
+                text = "Calcola PASI",
+                onClick = {
+                    viewModel.calculateTotalPasiAndSave(
+                        onSucces = {pasiSuccess = true},
+                        onError = {pasiSuccess = false}
+                    )
+                }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+
+            if(pasiSuccess){
+               Text(
+                   text = "PASI calcolati correttamente",
+                   modifier = Modifier.padding(16.dp)
+               )
+            }
         }
     }
 }
