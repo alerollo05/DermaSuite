@@ -10,17 +10,3 @@ enum class DistrettoCorpo(val displayName: String, val technicalName: String, va
         TRUNK("Tronco", "TRUNK", 0.3f,R.drawable.ic_torso_umano),
         LEGS("Art-Inf", "LEGS", 0.4f,R.drawable.ic_gamba_umana)
 }
-
-//Funzione helper per mappare la percentuale al punteggio Area (A)
-//Cerchiamo di racchiudere dei range di are in 6 valori di base
-fun mapPercentageToAreaScore(percentage: Int): Int {
-    return when {
-        percentage == 0 -> 0
-        percentage < 10 -> 1
-        percentage in 10..29 -> 2
-        percentage in 30..49 -> 3
-        percentage in 50..69 -> 4
-        percentage in 70..89 -> 5
-        else -> 6
-    }
-}

@@ -15,6 +15,8 @@ class PasiPageViewModel(): ViewModel() {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
 
+    //Aggiungiamo una variabile per stampare la card del risultato, una volta fatto il calcolo il risultato finale
+    var showResult by mutableStateOf(false)
 
     //Creiamo una variabile per tenere traccia del distretto attualmente selezionato
     var currentDistrict by mutableStateOf(DistrettoCorpo.HEAD)
@@ -66,12 +68,11 @@ class PasiPageViewModel(): ViewModel() {
             //cacloliamo per la specifica area la somma dei parametri
             val s = data.eritema + data.indurimento + data.desquamazione
             //Andiamo a prendere l'are interessata del distretto per poi fare il calcolo
-            val a = mapPercentageToAreaScore(data.percentualeArea)
+            val a = data.percentualeArea.toDouble()
             //andiamo a prendere i pesi dei distretti dalla classe enum
             total += (s * a * district.weight)
         }
         totalPasiResult = Math.round(total * 10.0) /10.0
-
         //Calcoliamo il livello di severità in base al punteggio
         serverityClass = when {
             totalPasiResult < 5 -> "Lieve"
@@ -79,7 +80,10 @@ class PasiPageViewModel(): ViewModel() {
             else -> "Severa"
         }
 
-        salvaPasi(onSuccess = onSucces, onError = onError,serverityClass)
+        salvaPasi(onSuccess = {
+            showResult= true //Attiviamo la card quando il salvataggio è andato a buon fine
+            onSucces},
+            onError = onError,serverityClass)
 
         }
     //Creiamo un metodo per andare a fare il salvataggio dei dati sul DB firestore
