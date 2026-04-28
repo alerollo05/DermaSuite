@@ -31,8 +31,8 @@ fun DermaButton(
     Button(
         onClick = onClick,
         modifier = modifier
-            .fillMaxWidth() // Si allarga per tutta la larghezza disponibile (come nei tuoi design)
-            .height(56.dp),  // Forza un'altezza precisa di 56 "density pixels" per farlo sembrare moderno e "cliccabile"
+            .fillMaxWidth() // Si allarga per tutta la larghezza disponibile
+            .height(56.dp),
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary
