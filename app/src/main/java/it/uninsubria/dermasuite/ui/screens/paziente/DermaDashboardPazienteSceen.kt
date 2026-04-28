@@ -36,6 +36,8 @@ fun DermaDashBoardPazienteScreen(
     onNavigateToProfileP: () -> Unit,
     onNavigateDashboardPASI: () -> Unit,
     onNavigateDashboardEASI: () -> Unit = {},
+    onNavigateDashboardBMI: () -> Unit = {},
+    onNavigateDashboardBSA: () -> Unit = {},
     viewModel: DashboardPagePazienteViewModel = viewModel() // Iniezione del ViewModel
 ){
     // Definiamo le azioni per questa specifica schermata
@@ -65,7 +67,6 @@ fun DermaDashBoardPazienteScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    DermaButton("PASI",onClick = {onNavigateDashboardPASI()})
 
                     ElevatedCard(
                         onClick = { onNavigateDashboardPASI() },
@@ -110,7 +111,7 @@ fun DermaDashBoardPazienteScreen(
                     }
 
                     ElevatedCard(
-                        onClick = { onNavigateDashboardPASI() },
+                        onClick = { onNavigateDashboardBMI() },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),
@@ -130,7 +131,7 @@ fun DermaDashBoardPazienteScreen(
                         }
                     }
                     ElevatedCard(
-                        onClick = { onNavigateDashboardPASI() },
+                        onClick = { onNavigateDashboardBSA() },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),

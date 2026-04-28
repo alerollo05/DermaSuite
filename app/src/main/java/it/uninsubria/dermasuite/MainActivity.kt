@@ -16,7 +16,12 @@ import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIHistoryScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaBSAHistoryScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaBSAScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaChatPazienteScreen
+import it.uninsubria.dermasuite.ui.screens.paziente.DermaEASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaEASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
@@ -88,7 +93,9 @@ class MainActivity : ComponentActivity() {
                             onNavigateToChatP = { navController.navigate("chat_screen_paziente") },
                             onNavigateToProfileP = { navController.navigate("profile_screen_paziente") },
                             onNavigateDashboardPASI = {navController.navigate("pasi_page_screen")},
-                            onNavigateDashboardEASI = {navController.navigate("easi_page_screen")}
+                            onNavigateDashboardEASI = {navController.navigate("easi_page_screen")},
+                            onNavigateDashboardBMI = {navController.navigate("bmi_page_screen")},
+                            onNavigateDashboardBSA = {navController.navigate("bsa_page_screen")}
                         )
                     }
                     composable("pasi_page_screen"){
@@ -109,10 +116,52 @@ class MainActivity : ComponentActivity() {
                             onNavigateToEasiHistory = {navController.navigate("easi_history_screen")}
                         )
                     }
+                    composable("bmi_page_screen"){
+                        DermaBMIScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToBmiHistory = {navController.navigate("bmi_history_screen")}
+                        )
+                    }
+                    composable("bsa_page_screen"){
+                        DermaBSAScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToBsaHistory = {navController.navigate("bsa_history_screen")}
+                        )
+                    }
                     composable("pasi_history_screen"){
                         DermaPASIHistoryScreen(
                             navController = navController,
-                            onBack = {navController.navigate("dashboard_screen_paziente")},
+                            onBack = {navController.navigate("pasi_page_screen")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                        )
+                    }
+                    composable("easi_history_screen"){
+                        DermaEASIHistoryScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("easi_page_screen")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                        )
+                    }
+                    composable("bmi_history_screen"){
+                        DermaBMIHistoryScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("bmi_page_screen")},
+                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                        )
+                    }
+                    composable("bsa_history_screen"){
+                        DermaBSAHistoryScreen(
+                            navController = navController,
+                            onBack = {navController.navigate("bsa_page_screen")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
                         )
