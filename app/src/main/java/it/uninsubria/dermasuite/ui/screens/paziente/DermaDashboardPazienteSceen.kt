@@ -1,5 +1,6 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
+import android.R.attr.icon
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,15 +9,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,103 +63,171 @@ fun DermaDashBoardPazienteScreen(
         }
     ) { padding ->
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
-            Column(
-                modifier = Modifier.fillMaxWidth(), // 1. Prende tutta la larghezza
-                horizontalAlignment = Alignment.CenterHorizontally // 2. Centra i componenti Text
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(text = "Ciao, $nomeUtente!", fontSize = 24.sp)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+
+            ElevatedCard(
+                onClick = { onNavigateDashboardPASI() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                ),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    // Qui appare il nome recuperato da Firestore
-                    Text(text = "Ciao, $nomeUtente!", fontSize = 24.sp)
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_pasi),
+                        contentDescription = null,
+                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Text(
+                        text = "PASI",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A1A1A)
+                    )
 
-                    Spacer(modifier = Modifier.height(20.dp))
-
-
-                    ElevatedCard(
-                        onClick = { onNavigateDashboardPASI() },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(text = "PASI", fontSize = 24.sp)
-                        }
-                    }
-
-                    ElevatedCard(
-                        onClick = { onNavigateDashboardEASI() },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(text = "EASI", fontSize = 24.sp)
-                        }
-                    }
-
-                    ElevatedCard(
-                        onClick = { onNavigateDashboardBMI() },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(text = "BMI", fontSize = 24.sp)
-                        }
-                    }
-                    ElevatedCard(
-                        onClick = { onNavigateDashboardBSA() },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(text = "BSA", fontSize = 24.sp)
-                        }
-                    }
+                    Text(
+                        text = "Psoriasis Area and Severity Index.\n" +
+                                "Quantitative assessment of plaque severity.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        lineHeight = 20.sp
+                    )
                 }
+            }
 
+            ElevatedCard(
+                onClick = { onNavigateDashboardEASI() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                ),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_easi),
+                        contentDescription = null,
+                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Text(
+                        text = "EASI",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A1A1A)
+                    )
+
+                    Text(
+                        text = "Eczema Area and Severity Index.\n" +
+                                "Validated tool for atopic dermatitis extent.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+
+            ElevatedCard(
+                onClick = { onNavigateDashboardBMI() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                ),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_bmi),
+                        contentDescription = null,
+                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Text(
+                        text = "BMI",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A1A1A)
+                    )
+
+                    Text(
+                        text = "Body Mass Index calculation for metabolic profile and systemic therapy dosing.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+            ElevatedCard(
+                onClick = { onNavigateDashboardBSA() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                ),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_bsa),
+                        contentDescription = null,
+                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Text(
+                        text = "BSA",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A1A1A)
+                    )
+
+                    Text(
+                        text = "Body Surface Area.\n"+
+                                "Critical metric for calculating pharmacological coverage.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
         }
-    }
-
     }
 }
