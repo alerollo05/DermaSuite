@@ -19,7 +19,7 @@ import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
 fun DermaDistrictSelector(
     label: String,
     selectedDistrict: DistrettoCorpo,
-    isComplete : Boolean,
+    chkComplete: (DistrettoCorpo) -> Boolean, //Devi fornirmi una funzione che accetta un distretto corpo e restituisce un bool
     onDistrictSelected: (DistrettoCorpo) -> Unit
 ){
     Column(
@@ -46,7 +46,7 @@ fun DermaDistrictSelector(
                     iconRes = distretto.iconRes,
                     isSelected = selectedDistrict == distretto,
                     onSelect = { onDistrictSelected(distretto) },
-                    isComplete = isComplete,
+                    isComplete = chkComplete(distretto),
                     modifier = Modifier.weight(1f)
                 )
             }

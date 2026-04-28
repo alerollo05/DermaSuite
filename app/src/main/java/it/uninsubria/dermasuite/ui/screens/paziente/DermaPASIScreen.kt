@@ -80,14 +80,14 @@ fun DermaPASIScreen(
               "Distretto",
                 selectedDistrict = viewModel.currentDistrict,
                 onDistrictSelected = { viewModel.currentDistrict = it },
-                isComplete = viewModel.isDistrictComplete(viewModel.currentDistrict)
+                chkComplete = { distretto -> viewModel.isDistrictComplete(distretto) }
             )
             DermaSelectorParameterCard(
                 title = "Eritema",
                 subtitle = "Seleziona il punteggio relativo all'eritema",
                 IconRes = R.drawable.ic_home,
                 selectedValue = currentData.eritema,
-                onValueChange = { viewModel.updateDistrictParameters(eritema = it) }
+                onValueChange = { viewModel.updateDistrictParameters(eritema = it) },
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaSelectorParameterCard(
