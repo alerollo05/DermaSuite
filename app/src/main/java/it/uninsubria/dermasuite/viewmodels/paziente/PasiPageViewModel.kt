@@ -82,9 +82,8 @@ class PasiPageViewModel(): ViewModel() {
 
         salvaPasi(onSuccess = {
             showResult= true //Attiviamo la card quando il salvataggio è andato a buon fine
-            onSucces},
+            onSucces()},
             onError = onError,serverityClass)
-
         }
     //Creiamo un metodo per andare a fare il salvataggio dei dati sul DB firestore
     private fun salvaPasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){

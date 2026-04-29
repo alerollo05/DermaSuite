@@ -31,21 +31,21 @@ fun DermaSelectorParameterCard(
     IconRes: Int,
     selectedValue: Int,
     isCompleted: Boolean = selectedValue != -1, // Calcolato automaticamente se non passato
-    isArea: Boolean,
+    maxValue: Int ,
     //Il valore che viene modificato dall'utente
     onValueChange: (Int) -> Unit
-){
-    
+) {
+
     Card(
-        modifier = Modifier.fillMaxWidth().padding( vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(2.dp)
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth()){
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Icon(
                     painter = painterResource(id = IconRes),
                     contentDescription = null,
@@ -59,14 +59,14 @@ fun DermaSelectorParameterCard(
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                if(isCompleted){
+                if (isCompleted) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_checkbox_ok),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp)
                     )
-                }else{
+                } else {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_checkbox_no),
                         contentDescription = null,
@@ -85,58 +85,31 @@ fun DermaSelectorParameterCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if(isArea){
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ){
-                    (0..6).forEach {
-                            score ->
-                        val isSelected = selectedValue == score
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(48.dp)
-                                .clip(MaterialTheme.shapes.medium)
-                                .background(if(isSelected) MaterialTheme.colorScheme.primary else Color(0xFFF8F9FA)
+            Row(modifier = Modifier.fillMaxWidth()) {
+                (0..maxValue).forEach { score ->
+                    val isSelected = selectedValue == score
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(48.dp)
+                            .padding(horizontal = 2.dp) // Piccolo padding tra i box
+                            .clip(MaterialTheme.shapes.medium)
+                            .background(
+                                if (isSelected) MaterialTheme.colorScheme.primary else Color(
+                                    0xFFF8F9FA
                                 )
-                                .clickable{onValueChange(score)}, //Quando lo clicco metto come valore score
-                            contentAlignment = Alignment.Center
-                        ){
-                            Text(
-                                text = score.toString(),
-                                color = if(isSelected) Color.White else MaterialTheme.colorScheme.primary
                             )
-                        }
-                    }
-                }
-            }else {
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    (0..4).forEach { score ->
-                        val isSelected = selectedValue == score
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(48.dp)
-                                .clip(MaterialTheme.shapes.medium)
-                                .background(
-                                    if (isSelected) MaterialTheme.colorScheme.primary else Color(
-                                        0xFFF8F9FA
-                                    )
-                                )
-                                .clickable { onValueChange(score) }, //Quando lo clicco metto come valore score
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = score.toString(),
-                                color = if (isSelected) Color.White else MaterialTheme.colorScheme.primary
-                            )
-                        }
+                            .clickable { onValueChange(score) },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = score.toString(),
+                            color = if (isSelected) Color.White else MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }
         }
-    }
 
+    }
 }

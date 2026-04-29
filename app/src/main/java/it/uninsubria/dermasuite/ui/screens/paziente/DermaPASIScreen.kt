@@ -87,7 +87,7 @@ fun DermaPASIScreen(
                 subtitle = "Seleziona il punteggio relativo all'eritema",
                 IconRes = R.drawable.ic_home,
                 selectedValue = currentData.eritema,
-                isArea = false,
+                maxValue = 4,
                 onValueChange = { viewModel.updateDistrictParameters(eritema = it) },
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -95,7 +95,7 @@ fun DermaPASIScreen(
                 title = "Indurimento",
                 subtitle = "Seleziona il punteggio relativo all'indurimento",
                 IconRes = R.drawable.ic_home,
-                isArea = false,
+                maxValue = 4,
                 selectedValue = currentData.indurimento,
                 onValueChange = { viewModel.updateDistrictParameters(indurimento = it) }
             )
@@ -104,7 +104,7 @@ fun DermaPASIScreen(
                 title = "Desquamazione",
                 subtitle = "Seleziona il punteggio relativo alla desquamazione",
                 IconRes = R.drawable.ic_home,
-                isArea = false,
+                maxValue = 4,
                 selectedValue = currentData.desquamazione,
                 onValueChange = { viewModel.updateDistrictParameters(desquamazione = it) }
             )
@@ -113,7 +113,7 @@ fun DermaPASIScreen(
                 title = "Area",
                 subtitle = "Seleziona il punteggio relativo all'area",
                 IconRes = R.drawable.ic_home,
-                isArea = true,
+                maxValue = 6,
                 selectedValue = currentData.percentualeArea,
                 onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
             )
