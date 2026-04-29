@@ -1,5 +1,6 @@
 package it.uninsubria.dermasuite.ui.components
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,13 +20,13 @@ import androidx.compose.ui.unit.dp
 fun DermaColumnScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues = PaddingValues(0.dp), // Gestisce lo spazio dello Scaffold
+    scrollState: ScrollState = rememberScrollState(),
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally, // Se non specifico nulla quando chiamo la funzione, usa come valore predefinito il centro (CenterHorizontally).
     verticalArrangement: Arrangement.Vertical = Arrangement.Center, // Uguale a horizzontalAlignmet
     content: @Composable ColumnScope.() -> Unit // contenuto della column
 ) {
     //Lo mettiamo in modo tale che se i campi sono troppi posso fare lo scrool per vederli tutti
     // e tenere in memoria gli stati
-    val scrollState = rememberScrollState()
 
     Column(
         modifier = modifier

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "pasi_severity_low">Lieve</string>
+    <string name = "pasi_severity_moderate">Moderata</string>
+    <string name = "pasi_severity_severe">Severa</string>
+    <string name = "pasi_description">Indice composito utilizzato in ambito dermatologico per valutare la severità e l\'estensione della psoriasi. Il sistema analizza i parametri clinici di eritema, indurimento e desquamazione, pesati in base all\'area corporea coinvolta. Il punteggio finale, espresso in un range da 0 a 72, permette di classificare la patologia come lieve, moderata o severa.</string>
+    <string name = "pasi_title">Calcolatore del PASI</string>
+    <string name = "distretto">Distretto</string>
+    <string name = "eritema">Eritema</string>
+    <string name = "desquamazione">Desquamazione</string>
+    <string name = "indurimento">Indurimento</string>"
+    <string name = "area">Area</string>
+    <string name = "desc_eritema">Seleziona il punteggio relativo all\'eritema</string>
+    <string name = "desc_indurimento">Seleziona il punteggio relativo all\'indurimento</string>
+    <string name = "desc_desquamazione">Seleziona il punteggio relativo alla desquamazione</string>
+    <string name = "desc_area">Seleziona il punteggio relativo all\'area</string>
+    <string name = "btn_calculate">Calcola PASI</string>"
+    <string name = "snak_success">Il calcolo è andato a buon fine</string>
+    <string name = "snak_error">Il calcolo non è andato a buon fine</string>
+    <string name = "complete_district">Completa il distretto:</string>
+    <string name = "complete_all_districts">Completa tutti i parametri.</string>
+    <string name = "ris_pasi">Risultato del Calcolo del PASI</string>
+    <string name = "range_severità">Range di severità</string>
+    <string name = "punteggio">Punteggio:</string>
+    <string name = "distretto_testa">Testa</string>
+    <string name = "distretto_braccia">Arti-Sup</string>
+    <string name = "distretto_tronco">Tronco</string>
+    <string name = "distretto_piede">Arti-Inf</string>
+
+</resources>

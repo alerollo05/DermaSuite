@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "pasi_severity_low">Mild</string>
+    <string name = "pasi_severity_moderate">Moderate</string>
+    <string name = "pasi_severity_severe">Severe</string>
+    <string name = "pasi_description">A composite index used in dermatology to assess the severity and extent of psoriasis. It evaluates clinical parameters including erythema, induration, and scaling, weighted by the affected body surface area. The final score, ranging from 0 to 72, classifies the condition as mild, moderate, or severe.</string>
+    <string name = "pasi_title">PASI Calculator</string>
+    <string name = "distretto">District</string>
+    <string name = "eritema">Erythema</string>
+    <string name = "desquamazione">Desquamation</string>
+    <string name = "indurimento">Hardening</string>"
+    <string name = "area">Area</string>
+    <string name = "desc_eritema">Select the score relative to erythema</string>
+    <string name = "desc_indurimento">Select the score relative to induration</string>"
+    <string name = "desc_desquamazione">Select the score relative to desquamation</string>
+    <string name = "desc_area">Select the score relative to area</string>
+    <string name = "btn_calculate">Calculate PASI</string>"
+    <string name = "snak_success">The calculation was successful</string>
+    <string name = "snak_error">The calculation failed</string>
+    <string name = "complete_district">Complete the district:</string>
+    <string name = "complete_all_districts">Complete all parameters.</string>
+    <string name = "ris_pasi">Result of PASI Calculation</string>"
+    <string name = "range_severità">Range of severity</string>
+    <string name = "punteggio">Score:</string>
+    <string name = "distretto_testa">Head</string>
+    <string name = "distretto_braccia">Upper limbs</string>
+    <string name = "distretto_tronco">Trunk</string>
+    <string name = "distretto_piede">Lowe Limbs</string>
+</resources>

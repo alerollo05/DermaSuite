@@ -26,7 +26,7 @@ class PasiPageViewModel(): ViewModel() {
     var districtValues by mutableStateOf(
         //mutableStateOf va a controllare costantemente i valori aggiornati della mappa in modo tale da farli
         //cambiare istantaneamente anche nell'interfaccia grafica se i valori cambiano nella mappa
-        DistrettoCorpo.values().associateWith { //associteWith trasforma l'elenco dei distretti in una
+        DistrettoCorpo.values().associateWith { //associateWith trasforma l'elenco dei distretti in una
             //mappa l chiaavi sono i distretti, mentre i valori sono nuove istanze di districtState cioè quindi
             //sono i valori dei parametri che dobbiamo andare a definire da 1 a 4
             DistrictState()
@@ -39,6 +39,9 @@ class PasiPageViewModel(): ViewModel() {
     //Creiamo la variabile per andare a salvare la severità del risultato
     var serverityClass by mutableStateOf("")
 
+    // Un semplice contatore che incrementiamo a ogni calcolo
+    //Ci serve per andare a far scorrere ad ogni pressione del bottone verso il basso la pagina in modo da visualizzare la card di result
+    var scrollTrigger by mutableStateOf(0)
 
     //Creiamo una funzione per andare ad aggiornare i parametri del distretto corrente
     fun updateDistrictParameters(
@@ -75,16 +78,16 @@ class PasiPageViewModel(): ViewModel() {
         totalPasiResult = Math.round(total * 10.0) /10.0
         //Calcoliamo il livello di severità in base al punteggio
         serverityClass = when {
-            totalPasiResult < 5 -> "Lieve"
-            totalPasiResult <= 10 -> "Moderato"
-            else -> "Severa"
+            totalPasiResult < 5 -> "LEVEL_LOW"
+            totalPasiResult <= 10 -> "LEVEL_MODERATE"
+            else -> "LEVEL_SEVERE"
         }
 
         salvaPasi(onSuccess = {
             showResult= true //Attiviamo la card quando il salvataggio è andato a buon fine
-            onSucces},
+            scrollTrigger++ //Incrementiamo il contatore per far scorrere la pagina verso il basso (vedi nel PASIPageScreen
+            onSucces()},
             onError = onError,serverityClass)
-
         }
     //Creiamo un metodo per andare a fare il salvataggio dei dati sul DB firestore
     private fun salvaPasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
@@ -102,7 +105,7 @@ class PasiPageViewModel(): ViewModel() {
                     //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
                     //Prepariamo i dati dei distretti mappandoli in stringhe
                     //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
-                    //cosi diventa salvabile in firesotre
+                    //cosi diventa salvabile in firestore
                     //Mentre mapValues converte le istanze di districtState in stringhe
                     val dettagliMappa = districtValues.mapKeys { it.key.name }.mapValues { entry ->
                         mapOf(
@@ -139,5 +142,10 @@ class PasiPageViewModel(): ViewModel() {
                    state.desquamazione != -1 && 
                    state.percentualeArea != -1
         }
+
+        fun abilitaCalcolo(): Boolean{
+            // Verifichiamo che per ogni distretto la funzione isDistrictComplete restituisca true
+             return DistrettoCorpo.values().all { isDistrictComplete(it) }
+            }
     }
 
