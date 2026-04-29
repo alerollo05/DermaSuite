@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
@@ -39,6 +40,7 @@ fun DermaGridItem(
     //Setup dei colori
     val backgroundColor = if (isSelected) Color.White else Color(0xFFF8F9FA)
     val indicatorColor = if (isSelected) MaterialTheme.colorScheme.primary else Color(0xFF40E0D0)  // Turchese per la percentuale
+
 
     Card(
         modifier = Modifier
@@ -63,14 +65,14 @@ fun DermaGridItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(12.dp),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
                     modifier = Modifier
                         .weight(1f)
                 ) {
                     Text(
-                        text = distretto.displayName.uppercase(),
+                        text = stringResource(id = distretto.nameResId).uppercase(),
                         style = MaterialTheme.typography.labelLarge,
                         color = indicatorColor,
                         maxLines = 1 //Evitiamo che il testo vada a capo e rompa il layout

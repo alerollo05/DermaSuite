@@ -25,6 +25,6 @@
     <string name = "distretto_testa">Testa</string>
     <string name = "distretto_braccia">Arti-Sup</string>
     <string name = "distretto_tronco">Tronco</string>
-    <string name = "distretto_piede">Arti-Inf</string>
+    <string name = "distretto_gambe">Arti-Inf</string>
 
 </resources>

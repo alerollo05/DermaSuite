@@ -107,7 +107,7 @@ class PasiPageViewModel(): ViewModel() {
                     //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
                     //cosi diventa salvabile in firestore
                     //Mentre mapValues converte le istanze di districtState in stringhe
-                    val dettagliMappa = districtValues.mapKeys { it.key.name }.mapValues { entry ->
+                    val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
                         mapOf(
                             "eritema" to entry.value.eritema,
                             "indurimento" to entry.value.indurimento,

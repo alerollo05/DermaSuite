@@ -25,5 +25,5 @@
     <string name = "distretto_testa">Head</string>
     <string name = "distretto_braccia">Upper limbs</string>
     <string name = "distretto_tronco">Trunk</string>
-    <string name = "distretto_piede">Lowe Limbs</string>
+    <string name = "distretto_gambe">Lowe Limbs</string>
 </resources>
