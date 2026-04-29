@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,7 +66,7 @@ fun DermaDashBoardPazienteScreen(
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = "Ciao, $nomeUtente!", fontSize = 24.sp)
+            Text(text = stringResource(R.string.Hello) + "$nomeUtente!" , style= MaterialTheme.typography.displayLarge)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -90,22 +91,19 @@ fun DermaDashBoardPazienteScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_pasi),
                         contentDescription = null,
-                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(32.dp)
                     )
                     Text(
-                        text = "PASI",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A)
+                        text = stringResource(R.string.title_pasi),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.Black
                     )
 
                     Text(
-                        text = "Psoriasis Area and Severity Index.\n" +
-                                "Quantitative assessment of plaque severity.",
-                        fontSize = 14.sp,
+                        text = stringResource(R.string.description_pasi),
+                        style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
-                        lineHeight = 20.sp
                     )
                 }
             }
@@ -130,22 +128,19 @@ fun DermaDashBoardPazienteScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_easi),
                         contentDescription = null,
-                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(32.dp)
                     )
                     Text(
-                        text = "EASI",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A)
+                        text = stringResource(R.string.title_easi),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.Black
                     )
 
                     Text(
-                        text = "Eczema Area and Severity Index.\n" +
-                                "Validated tool for atopic dermatitis extent.",
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        lineHeight = 20.sp
+                        text = stringResource(R.string.description_easi),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
                     )
                 }
             }
@@ -170,21 +165,19 @@ fun DermaDashBoardPazienteScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_bmi),
                         contentDescription = null,
-                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(32.dp)
                     )
                     Text(
-                        text = "BMI",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A)
+                        text = stringResource(R.string.title_bmi),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.Black
                     )
 
                     Text(
-                        text = "Body Mass Index calculation for metabolic profile and systemic therapy dosing.",
-                        fontSize = 14.sp,
+                        text = stringResource(R.string.description_bmi),
+                        style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
-                        lineHeight = 20.sp
                     )
                 }
             }
@@ -208,22 +201,19 @@ fun DermaDashBoardPazienteScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_bsa),
                         contentDescription = null,
-                        tint = Color(0xFF005691), // Colore blu come nell'immagine
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(32.dp)
                     )
                     Text(
-                        text = "BSA",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A)
+                        text = stringResource(R.string.title_bsa),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.Black
                     )
 
                     Text(
-                        text = "Body Surface Area.\n"+
-                                "Critical metric for calculating pharmacological coverage.",
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        lineHeight = 20.sp
+                        text = stringResource(R.string.description_bsa),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
                     )
                 }
             }

@@ -33,4 +33,13 @@
     <string name="txt_signin_register">Hai già un profilo?</string>
     <string name="txt_btn_signin_register">Accedi</string>
     <string name="loading_button">Caricamento...</string>
+    <string name="Hello">Ciao,</string>
+    <string name="title_pasi">PASI</string>
+    <string name="description_pasi">Indice di area e gravità della psoriasi. Valutazione quantitativa della gravità delle placche.</string>
+    <string name="title_easi">EASI</string>
+    <string name="description_easi">Indice di area e gravità dell\'eczema.\nStrumento validato per la valutazione dell\'estensione della dermatite atopica.</string>
+    <string name="title_bmi">BMI</string>
+    <string name="description_bmi">Calcolo dell\'indice di massa corporea per la valutazione del profilo metabolico e il dosaggio della terapia sistemica.</string>
+    <string name="title_bsa">BSA</string>
+    <string name="description_bsa">Superficie corporea.\nUn parametro fondamentale per il calcolo della copertura farmacologica.</string>
 </resources>
