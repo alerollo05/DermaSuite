@@ -20,6 +20,7 @@ import it.uninsubria.dermasuite.ui.components.DermaTopBar
 fun DermaPASIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
+    onNavigateToDashboard: () -> Unit,
     onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit
 ){
@@ -27,7 +28,7 @@ fun DermaPASIHistoryScreen(
         BottomBarAction(
             stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente",
-            {onBack()}),
+            {onNavigateToDashboard()}),
         BottomBarAction(
             stringResource(R.string.menu_chat), R.drawable.ic_chat,
             "chat_screen_paziente",

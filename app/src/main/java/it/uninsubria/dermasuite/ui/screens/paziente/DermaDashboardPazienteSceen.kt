@@ -78,7 +78,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
@@ -115,7 +115,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
@@ -152,7 +152,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
@@ -188,7 +188,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {

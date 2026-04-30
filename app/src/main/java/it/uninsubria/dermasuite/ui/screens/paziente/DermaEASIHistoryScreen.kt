@@ -19,6 +19,7 @@ import it.uninsubria.dermasuite.ui.components.DermaTopBar
 fun DermaEASIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
+    onnavigateToDashboard: () -> Unit,
     onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit
 ) {
@@ -26,7 +27,7 @@ fun DermaEASIHistoryScreen(
         BottomBarAction(
             "HOME", R.drawable.ic_home,
             "dashboard_screen_paziente",
-            { onBack() }),
+            { onnavigateToDashboard() }),
         BottomBarAction(
             "CHAT", R.drawable.ic_chat,
             "chat_screen_paziente",
