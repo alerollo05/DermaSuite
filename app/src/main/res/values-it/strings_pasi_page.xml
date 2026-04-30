@@ -19,7 +19,7 @@
     <string name = "snak_error">Il calcolo non è andato a buon fine</string>
     <string name = "complete_district">Completa il distretto:</string>
     <string name = "complete_all_districts">Completa tutti i parametri.</string>
-    <string name = "ris_pasi">Risultato del Calcolo del PASI</string>
+    <string name = "ris_pasi">Risultato calcolo del PASI</string>
     <string name = "range_severità">Range di severità</string>
     <string name = "punteggio">Punteggio:</string>
     <string name = "distretto_testa">Testa</string>

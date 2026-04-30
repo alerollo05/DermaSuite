@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -33,7 +32,6 @@ import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
 
 @Composable
 fun DermaPASIScreen(
@@ -57,25 +55,23 @@ fun DermaPASIScreen(
         }
     }
 
-    var pasiSuccess = false
-
     val listaIcone = listOf(
         BottomBarAction(
             "HOME", R.drawable.ic_home,
-            "dashboard_screen_paziente",
-            {onBack()}),
+            "dashboard_screen_paziente"
+        ) { onBack() },
         BottomBarAction(
             "CHAT", R.drawable.ic_chat,
-            "chat_screen_paziente",
-            {onNavigateToChatP()}),
+            "chat_screen_paziente"
+        ) { onNavigateToChatP() },
         BottomBarAction(
             "HISTORY", R.drawable.ic_history,
-            "pasi_history_screen",
-            {onNavigateToPasiHistory()}),
+            "pasi_history_screen"
+        ) { onNavigateToPasiHistory() },
         BottomBarAction(
             "PROFILE", R.drawable.ic_profile,
-            "profile_screen_paziente",
-            {onNavigateToProfileP()})
+            "profile_screen_paziente"
+        ) { onNavigateToProfileP() }
     )
     Scaffold(
         topBar = {
@@ -149,12 +145,15 @@ fun DermaPASIScreen(
                 onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
-            //Creiamo due variabili con all'interno la la stringa perchè la string Resource puoi usarla solo
+            //Creiamo quattro variabili con all'interno la stringa perchè la string Resource puoi usarla solo
             //in componenti @Composable
             val succMess = stringResource(R.string.snak_success)
             val errMess = stringResource(R.string.snak_error)
             val completaDistretto = stringResource(R.string.complete_district)
             val completaAllDistretti = stringResource(R.string.complete_all_districts)
+            // Pre-mappiamo i nomi dei distretti per evitare l'uso di context.getString nel click listener
+            val distrettiNomi = DistrettoCorpo.entries.associateWith { stringResource(it.nameResId) }
+
             DermaButton(
                 text = stringResource(R.string.btn_calculate),
                 onClick = {
@@ -179,9 +178,11 @@ fun DermaPASIScreen(
                             }
                         )
                     }else{
-                        val distrettoMancante = DistrettoCorpo.values().find { !viewModel.isDistrictComplete(it) }
+                        //Andiamo ad identificare il primo distretto mancante che viene trovato e messo in una variabile
+                        val distrettoMancante = DistrettoCorpo.entries.find { !viewModel.isDistrictComplete(it) }
                         val messaggio = if (distrettoMancante != null) {
-                            "$completaDistretto ${distrettoMancante.displayName}"
+                            val distrettoDaCompletare = distrettiNomi[distrettoMancante] ?: ""
+                            "$completaDistretto $distrettoDaCompletare"
                         } else {
                             completaAllDistretti
                         }

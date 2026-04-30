@@ -37,7 +37,7 @@ fun DermaColumnScreen(
             // Poi applichiamo lo scroll
             .verticalScroll(scrollState)
             // Infine il padding orizzontale interno
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = horizontalAlignment,
         verticalArrangement = verticalArrangement
     ) {

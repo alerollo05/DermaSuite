@@ -38,7 +38,9 @@ fun DermaDistrictSelector(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             userScrollEnabled = false,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.height(275.dp)
+            modifier = Modifier
+                .height(275.dp)
+                .fillMaxWidth()
             ) {
             items(DistrettoCorpo.values().size) { index ->
                 val distretto = DistrettoCorpo.values()[index]

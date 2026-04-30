@@ -109,18 +109,18 @@ class PasiPageViewModel(): ViewModel() {
                     //Mentre mapValues converte le istanze di districtState in stringhe
                     val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
                         mapOf(
-                            "eritema" to entry.value.eritema,
-                            "indurimento" to entry.value.indurimento,
-                            "desquamazione" to entry.value.desquamazione,
-                            "percentualeArea" to entry.value.percentualeArea
+                            "Erythema" to entry.value.eritema,
+                            "Hardening" to entry.value.indurimento,
+                            "Desquamation" to entry.value.desquamazione,
+                            "PercentageArea" to entry.value.percentualeArea
                         )
                     }
                     //Creiamo il pacchetto finito da spedire al DB
                     val payload = hashMapOf(
-                        "dataCalcolo" to FieldValue.serverTimestamp(),
-                        "pasiTotale" to totalPasiResult,
-                        "severita" to severityClass,
-                        "parametriDistretti" to dettagliMappa
+                        "CalculationDate" to FieldValue.serverTimestamp(),
+                        "PasiTot" to totalPasiResult,
+                        "Severity" to severityClass,
+                        "ParameterDistrict" to dettagliMappa
                     )
                     // Salvataggio nella sottocollezione PASI
                     db.collection("users").document(user.uid)
