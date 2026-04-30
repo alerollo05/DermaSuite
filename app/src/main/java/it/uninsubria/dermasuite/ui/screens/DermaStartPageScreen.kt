@@ -1,9 +1,9 @@
 package it.uninsubria.dermasuite.ui.screens
 
 import androidx.compose.foundation.Image
-import it.uninsubria.dermasuite.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import it.uninsubria.dermasuite.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.theme.Placeholder
@@ -44,20 +42,23 @@ fun StartPageScreen(
     onNavigateToRegister: () -> Unit,
     viewModel: StartPageViewModel = viewModel() // Iniezione automatica
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(scrollState)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Logo e Titolo
+        verticalArrangement = Arrangement.Center,
+    ){
+        // Logo e Titolo e sottotitolo
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = painterResource(id = R.mipmap.ic_launcher_foreground), // Questo è il logo
                 contentDescription = "Logo DermaSuite",
-                modifier = Modifier.size(110.dp)
+                modifier = Modifier.size(110.dp).clip(MaterialTheme.shapes.large)
             )
             Text(
                 text = stringResource(R.string.app_name),
@@ -85,13 +86,13 @@ fun StartPageScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(260.dp)
-                .clip(RoundedCornerShape(32.dp)),
-            contentScale = ContentScale.Crop
+                .clip(shape = MaterialTheme.shapes.medium),
+            contentScale = ContentScale.Crop,
         )
 
         // --- SPAZIO TRA IMMAGINE E BOTTONI ---
         // Riduci questo valore per avvicinare i bottoni all'immagine
-        //Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
 
         // Bottoni di azione
@@ -115,7 +116,7 @@ fun StartPageScreen(
 
                     // Se hai un tuo file vettoriale in drawable
                     Icon(
-                        painter = painterResource(id = R.drawable.freccetta),
+                        painter = painterResource(id = R.drawable.ic_arrow),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="titolo_register">Create Account</string>
+    <string name="subtitle_register">Insert your data to start using DermaSuite</string>
+    <string name="privacy_disclaimer">By continuing, you agree to our Terms of Service and Privacy Policy.</string>
+    <string name="btn_register_create_account">Create Account</string>
+    <string name="account_type">Account type</string>
+    <string name="patient">Patient</string>
+    <string name="doctor">Doctor</string>
+    <string name="textfield_name">Name</string>
+    <string name="placeholder_name">Insert Name</string>
+    <string name="textfield_surname">Surname</string>
+    <string name="placeholder_surname">Insert Surname</string>
+    <string name="textfield_user">Username</string>
+    <string name="placeholder_user">Insert Username</string>
+    <string name="placeholder_confirm_password_register">Confirm the password</string>
+    <string name="textfield_confirm_password_register">Confirm Password</string>
+    <string name="textfield_birth">Birth</string>
+    <string name="security_account">Account Security</string>
+    <string name="txt_signin_register">Do you already have a profile?</string>
+    <string name="txt_btn_signin_register">Sign In</string>
+    <string name="loading_button">Loading...</string>"
+
+</resources>

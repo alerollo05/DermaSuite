@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Hello">Hello, </string>
+    <string name="title_pasi">PASI</string>
+    <string name="description_pasi">Psoriasis Area and Severity Index.\n
+                                    Quantitative assessment of plaque severity.</string>
+    <string name="title_easi">EASI</string>
+    <string name="description_easi">Eczema Area and Severity Index.\n
+                                    Validated tool for atopic dermatitis extent.</string>
+    <string name="title_bmi">BMI</string>
+    <string name="description_bmi">Body Mass Index calculation for metabolic profile and systemic therapy dosing.</string>
+    <string name="title_bsa">BSA</string>
+    <string name="description_bsa">Body Surface Area.\n
+                                Critical metric for calculating pharmacological coverage.</string>
+</resources>
