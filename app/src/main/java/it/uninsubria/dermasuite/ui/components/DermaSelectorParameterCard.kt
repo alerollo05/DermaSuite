@@ -31,26 +31,26 @@ fun DermaSelectorParameterCard(
     IconRes: Int,
     selectedValue: Int,
     isCompleted: Boolean = selectedValue != -1, // Calcolato automaticamente se non passato
-    maxValue: Int ,
+    maxValue: Int,
     //Il valore che viene modificato dall'utente
     onValueChange: (Int) -> Unit
-) {
-
+){
+    
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding( vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(2.dp)
-    ) {
+    ){
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()){
                 Icon(
                     painter = painterResource(id = IconRes),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(25.dp)
                 )
                 Text(
                     text = title.uppercase(),
@@ -59,14 +59,14 @@ fun DermaSelectorParameterCard(
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                if (isCompleted) {
+                if(isCompleted){
                     Icon(
                         painter = painterResource(id = R.drawable.ic_checkbox_ok),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp)
                     )
-                } else {
+                }else{
                     Icon(
                         painter = painterResource(id = R.drawable.ic_checkbox_no),
                         contentDescription = null,
@@ -110,6 +110,5 @@ fun DermaSelectorParameterCard(
                 }
             }
         }
-
     }
 }

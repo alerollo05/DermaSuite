@@ -2,6 +2,7 @@ package it.uninsubria.dermasuite.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,7 +38,9 @@ fun DermaDistrictSelector(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             userScrollEnabled = false,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.height(275.dp)
+            modifier = Modifier
+                .height(275.dp)
+                .fillMaxWidth()
             ) {
             items(DistrettoCorpo.values().size) { index ->
                 val distretto = DistrettoCorpo.values()[index]
