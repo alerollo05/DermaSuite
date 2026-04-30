@@ -42,4 +42,8 @@
     <string name="description_bmi">Calcolo dell\'indice di massa corporea per la valutazione del profilo metabolico e il dosaggio della terapia sistemica.</string>
     <string name="title_bsa">BSA</string>
     <string name="description_bsa">Superficie corporea.\nUn parametro fondamentale per il calcolo della copertura farmacologica.</string>
+    <string name="menu_home">HOME</string>
+    <string name="menu_chat">CHAT</string>
+    <string name="menu_history">STORICO</string>
+    <string name="menu_profile">PROFILO</string>
 </resources>

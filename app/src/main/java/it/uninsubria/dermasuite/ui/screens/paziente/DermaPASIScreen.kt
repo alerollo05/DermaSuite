@@ -57,19 +57,19 @@ fun DermaPASIScreen(
 
     val listaIcone = listOf(
         BottomBarAction(
-            "HOME", R.drawable.ic_home,
+            stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente"
         ) { onBack() },
         BottomBarAction(
-            "CHAT", R.drawable.ic_chat,
+            stringResource(R.string.menu_chat), R.drawable.ic_chat,
             "chat_screen_paziente"
         ) { onNavigateToChatP() },
         BottomBarAction(
-            "HISTORY", R.drawable.ic_history,
+            stringResource(R.string.menu_history), R.drawable.ic_history,
             "pasi_history_screen"
         ) { onNavigateToPasiHistory() },
         BottomBarAction(
-            "PROFILE", R.drawable.ic_profile,
+            stringResource(R.string.menu_profile), R.drawable.ic_profile,
             "profile_screen_paziente"
         ) { onNavigateToProfileP() }
     )
@@ -114,7 +114,7 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_eritema),
                 IconRes = R.drawable.ic_eritema,
                 selectedValue = currentData.eritema,
-                isArea = false,
+                maxValue = 4,
                 onValueChange = { viewModel.updateDistrictParameters(eritema = it) },
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -122,7 +122,7 @@ fun DermaPASIScreen(
                 title = stringResource(R.string.indurimento),
                 subtitle = stringResource(R.string.desc_indurimento),
                 IconRes = R.drawable.ic_indurimento,
-                isArea = false,
+                maxValue = 4,
                 selectedValue = currentData.indurimento,
                 onValueChange = { viewModel.updateDistrictParameters(indurimento = it) }
             )
@@ -131,7 +131,7 @@ fun DermaPASIScreen(
                 title = stringResource(R.string.desquamazione),
                 subtitle = stringResource(R.string.desc_desquamazione),
                 IconRes = R.drawable.ic_desquamazione,
-                isArea = false,
+                maxValue = 4,
                 selectedValue = currentData.desquamazione,
                 onValueChange = { viewModel.updateDistrictParameters(desquamazione = it) }
             )
@@ -140,7 +140,7 @@ fun DermaPASIScreen(
                 title = stringResource(R.string.area),
                 subtitle = stringResource(R.string.desc_area),
                 IconRes = R.drawable.ic_area_parametri,
-                isArea = true,
+                maxValue = 6,
                 selectedValue = currentData.percentualeArea,
                 onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
             )

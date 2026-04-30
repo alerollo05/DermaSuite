@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
@@ -24,19 +25,19 @@ fun DermaPASIHistoryScreen(
 ){
     val listaIcone = listOf(
         BottomBarAction(
-            "HOME", R.drawable.ic_home,
+            stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente",
             {onBack()}),
         BottomBarAction(
-            "CHAT", R.drawable.ic_chat,
+            stringResource(R.string.menu_chat), R.drawable.ic_chat,
             "chat_screen_paziente",
             {onNavigateToChatP()}),
         BottomBarAction(
-            "HISTORY", R.drawable.ic_history,
+            stringResource(R.string.menu_history), R.drawable.ic_history,
             "pasi_history_screen",
             {}),
         BottomBarAction(
-            "PROFILE", R.drawable.ic_profile,
+            stringResource(R.string.menu_profile), R.drawable.ic_profile,
             "profile_screen_paziente",
             {onNavigateToProfileP()})
     )
@@ -44,7 +45,7 @@ fun DermaPASIHistoryScreen(
     Scaffold(
         topBar = {
             DermaTopBar(
-                title = "History PASI",
+                title = "DermaSuite",
                 showBackButton = true,
                 onBackClick = onBack
             )

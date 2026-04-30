@@ -3,4 +3,8 @@
     <string name="subtitle_home"> Your clinical suite for skin health analysis</string>
     <string name="btn_home_login">Login</string>
     <string name="btn_home_register">Create account</string>
+    <string name = "menu_home">HOME</string>
+    <string name = "menu_chat">CHAT</string>
+    <string name = "menu_history">HISTORY</string>
+    <string name = "menu_profile">PROFILE</string>
 </resources>
