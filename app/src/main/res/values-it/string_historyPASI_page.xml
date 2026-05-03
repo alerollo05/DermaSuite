@@ -2,7 +2,9 @@
 <resources>
     <string name = "time_filter_six_months">Ultimi 6 mesi</string>
     <string name = "time_filter_one_year">Ultimo anno</string>
+    <string name = "time_filter_two_years">Ultimi due anni</string>
     <string name = "time_filter_all_time">Tutto</string>
     <string name = "title_HistoryPASI">Storico del calcolo PASI</string>
     <string name = "description_Hist_PASI">Monitora l\'andamento del tuo indice PASI nel tempo. Visualizza i risultati dei calcoli precedenti per valutare l\'efficacia dei trattamenti e condividere i dati con il tuo specialista.</string>
+    <string name = "no_records_found">Nessun calcolo trovato.</string>
 </resources>

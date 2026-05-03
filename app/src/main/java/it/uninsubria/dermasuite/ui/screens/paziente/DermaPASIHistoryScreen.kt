@@ -1,20 +1,20 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,9 +24,11 @@ import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaHeading
+import it.uninsubria.dermasuite.ui.components.DermaIsLoading
 import it.uninsubria.dermasuite.ui.components.DermaPasiHistoryChart
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
+import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
 
 @Composable
 fun DermaPASIHistoryScreen(
@@ -39,6 +41,8 @@ fun DermaPASIHistoryScreen(
 ){
     //Andiamo a prendere l'istanza dell'utente corrente
     val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+
+    val currentFilter by viewModel.currentFilter.collectAsState() // Osserviamo il filtro del tempo attivo
 
     val isLoading by viewModel.isLoading.collectAsState() // Osserva il caricamento dei dati4
 
@@ -94,23 +98,36 @@ fun DermaPASIHistoryScreen(
                 sottotitolo = stringResource(R.string.description_Hist_PASI),
                 modifier = Modifier.padding(16.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ){
+                TimeFilter.entries.forEach { filter ->
+                    FilterChip(
+                        selected = currentFilter == filter,
+                        onClick = {viewModel.applyFilter(filter)}, //diciamo al viewModel di applicare il filtro selezionato
+                        label = { Text(stringResource(filter.displayName)) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    )
+                }
+            }
 
             if(isLoading){
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(250.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = Color(0xFF003366))
-                }
+                DermaIsLoading(modifier = Modifier.fillMaxWidth().height(250.dp))
             }else if(records.isEmpty()){
                 // Se ha finito ma non ci sono dati, mostriamo un messaggio
-                Text("Nessun calcolo PASI trovato.")
+                Text(text = stringResource(R.string.no_records_found),color = MaterialTheme.colorScheme.primary)
             }else{
                 // Solo se ci sono dati carichiamo il grafico (Evita il crash!)
                 DermaPasiHistoryChart(records = records)
             }
         }
     }
-
 }

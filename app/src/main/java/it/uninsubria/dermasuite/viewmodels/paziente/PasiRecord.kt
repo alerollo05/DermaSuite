@@ -20,6 +20,7 @@ data class PasiRecord(
 enum class TimeFilter(@StringRes val displayName : Int, technicalName: String) {
     SIX_MONTHS(R.string.time_filter_six_months,"six_months"),
     ONE_YEAR(R.string.time_filter_one_year,"one_year"),
+    TWO_YEARS(R.string.time_filter_two_years,"two_years"),
     ALL_TIME(R.string.time_filter_all_time,"all_time")
 }
 

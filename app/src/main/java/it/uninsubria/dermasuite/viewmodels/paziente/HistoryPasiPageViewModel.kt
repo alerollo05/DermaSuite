@@ -57,6 +57,7 @@ class HistoryPasiPageViewModel: ViewModel() {
         val limitDate = when (filter) {
             TimeFilter.SIX_MONTHS -> Calendar.getInstance().apply { add(Calendar.MONTH, -6) }.time
             TimeFilter.ONE_YEAR -> Calendar.getInstance().apply { add(Calendar.YEAR, -1) }.time
+            TimeFilter.TWO_YEARS -> Calendar.getInstance().apply { add(Calendar.YEAR, -2) }.time
             TimeFilter.ALL_TIME -> Date(0) // Prende tutto
         }
         //Per il grafico ordiniamo in ordine crescente
