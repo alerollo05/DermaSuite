@@ -16,6 +16,7 @@ material3 = "1.4.0"
 composeMaterial = "1.7.6"
 firebaseBom = "33.10.0"
 kotlinxCoroutinesPlayServices = "1.10.2"
+vico = "2.0.0-alpha.28" #Ultima versione di vico per disegnare i chart
 
 
 [libraries]
@@ -44,6 +45,13 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
+#Librerie per i chart di Vico
+vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
+# Integrazione specifica per Jetpack Compose
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
+# Integrazione per Material 3 (per i colori e lo stile)
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

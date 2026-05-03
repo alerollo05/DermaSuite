@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "time_filter_six_months">Last 6 months</string>
+    <string name = "time_filter_one_year">Last 1 year</string>
+    <string name = "time_filter_all_time">All time</string>
+    <string name = "title_HistoryPASI">History of PASI calculation</string>
+    <string name = "description_Hist_PASI">Track your PASI score progression over time. View your previous calculation results to evaluate treatment effectiveness and share the data with your specialist.</string>
+</resources>

@@ -139,7 +139,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onBack = {navController.navigate("pasi_page_screen")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
                     composable("easi_history_screen"){

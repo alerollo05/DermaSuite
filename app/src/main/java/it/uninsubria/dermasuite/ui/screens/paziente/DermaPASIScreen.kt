@@ -113,7 +113,7 @@ fun DermaPASIScreen(
                 title = stringResource(R.string.eritema),
                 subtitle = stringResource(R.string.desc_eritema),
                 IconRes = R.drawable.ic_eritema,
-                selectedValue = currentData.eritema,
+                selectedValue = currentData.erythema,
                 maxValue = 4,
                 onValueChange = { viewModel.updateDistrictParameters(eritema = it) },
             )
@@ -123,7 +123,7 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_indurimento),
                 IconRes = R.drawable.ic_indurimento,
                 maxValue = 4,
-                selectedValue = currentData.indurimento,
+                selectedValue = currentData.hardening,
                 onValueChange = { viewModel.updateDistrictParameters(indurimento = it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -132,7 +132,7 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_desquamazione),
                 IconRes = R.drawable.ic_desquamazione,
                 maxValue = 4,
-                selectedValue = currentData.desquamazione,
+                selectedValue = currentData.desquamation,
                 onValueChange = { viewModel.updateDistrictParameters(desquamazione = it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -141,7 +141,7 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_area),
                 IconRes = R.drawable.ic_area_parametri,
                 maxValue = 6,
-                selectedValue = currentData.percentualeArea,
+                selectedValue = currentData.percentageArea,
                 onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
             )
             Spacer(modifier = Modifier.height(20.dp))

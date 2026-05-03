@@ -55,10 +55,10 @@ class PasiPageViewModel(): ViewModel() {
 
         //Creiamo il nuovo stato aggiornato
         currentStateMap[currentDistrict] = currentData.copy(
-            eritema = eritema ?: currentData.eritema,
-            indurimento = indurimento ?: currentData.indurimento,
-            desquamazione = desquamazione ?: currentData.desquamazione,
-            percentualeArea = percentualeArea ?: currentData.percentualeArea
+            erythema = eritema ?: currentData.erythema,
+            hardening = indurimento ?: currentData.hardening,
+            desquamation = desquamazione ?: currentData.desquamation,
+            percentageArea = percentualeArea ?: currentData.percentageArea
         )
         districtValues = currentStateMap //Necessario per far aggiornare Compose
     }
@@ -69,9 +69,9 @@ class PasiPageViewModel(): ViewModel() {
         var total = 0.0
         districtValues.forEach { district, data ->
             //cacloliamo per la specifica area la somma dei parametri
-            val s = data.eritema + data.indurimento + data.desquamazione
+            val s = data.erythema + data.hardening + data.desquamation
             //Andiamo a prendere l'are interessata del distretto per poi fare il calcolo
-            val a = data.percentualeArea.toDouble()
+            val a = data.percentageArea.toDouble()
             //andiamo a prendere i pesi dei distretti dalla classe enum
             total += (s * a * district.weight)
         }
@@ -109,10 +109,10 @@ class PasiPageViewModel(): ViewModel() {
                     //Mentre mapValues converte le istanze di districtState in stringhe
                     val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
                         mapOf(
-                            "Erythema" to entry.value.eritema,
-                            "Hardening" to entry.value.indurimento,
-                            "Desquamation" to entry.value.desquamazione,
-                            "PercentageArea" to entry.value.percentualeArea
+                            "Erythema" to entry.value.erythema,
+                            "Hardening" to entry.value.hardening,
+                            "Desquamation" to entry.value.desquamation,
+                            "PercentageArea" to entry.value.percentageArea
                         )
                     }
                     //Creiamo il pacchetto finito da spedire al DB
@@ -137,10 +137,10 @@ class PasiPageViewModel(): ViewModel() {
         fun isDistrictComplete(distrettoCorpo: DistrettoCorpo) : Boolean {
             val state = districtValues[distrettoCorpo] ?: return false
             // Un distretto è completo solo se TUTTI i parametri sono stati toccati (diversi da -1)
-            return state.eritema != -1 && 
-                   state.indurimento != -1 && 
-                   state.desquamazione != -1 && 
-                   state.percentualeArea != -1
+            return state.erythema != -1 &&
+                   state.hardening != -1 &&
+                   state.desquamation != -1 &&
+                   state.percentageArea != -1
         }
 
         fun abilitaCalcolo(): Boolean{
