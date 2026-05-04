@@ -146,7 +146,7 @@ fun DermaEASIScreen(
             DermaSelectorParameterCard(
                 title = "Lichenificazione",
                 subtitle = "Seleziona il punteggio relativo alla lichenificazione",
-                IconRes = R.drawable.ic_desquamazione, // Adatta l'icona
+                IconRes = R.drawable.ic_lichenificazione, // Adatta l'icona
                 maxValue = 3,
                 selectedValue = currentData.lichenificazione,
                 onValueChange = { viewModel.updateDistrictParameters(lichenificazione = it) }

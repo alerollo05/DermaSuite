@@ -7,20 +7,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
+import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
+import it.uninsubria.dermasuite.viewmodels.paziente.ProfilePazPageViewModel
 
 @Composable
 fun DermaProfilePazienteScreen(
@@ -28,7 +38,8 @@ fun DermaProfilePazienteScreen(
     onBack: () -> Unit,
     navController: NavController,
     onNavigateToDashboardP: () -> Unit,
-    onNavigateToChatP: () -> Unit
+    onNavigateToChatP: () -> Unit,
+    viewModel: ProfilePazPageViewModel = viewModel()
 ){
     // Definiamo le azioni per questa specifica schermata
     val dashboardActions = listOf(
@@ -37,30 +48,92 @@ fun DermaProfilePazienteScreen(
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", { /* Sei già qui */ }),
     )
 
+    val username = viewModel.user // Recupera l'username dal ViewModel
+    val nomeUtente = viewModel.nomeUtente // Recupera il nome dal ViewModel
+    val cognomeUtente = viewModel.cognomeUtente // Recupera il cognome dal ViewModel
+    val email = viewModel.email // Recupera l'email dal ViewModel
+    val password = viewModel.password // Recupera la password dal ViewModel
+
+
     Scaffold(
-        topBar = {
-            DermaTopBar(
-                title = "Profile",
-                showBackButton = true,
-                onBackClick = onBack
-            )
+        topBar= {
+            DermaTopBar(title = "DermaSuite", showBackButton = false, onBackClick = {})
         },
         bottomBar = {
             DermaBottomBar(navController = navController, actions = dashboardActions)
         }
     ) { padding ->
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
-            Column(
-                modifier = Modifier.fillMaxWidth(), // 1. Prende tutta la larghezza
-                horizontalAlignment = Alignment.CenterHorizontally // 2. Centra i componenti Text
-            ) {
-                Text(text = "PROFILE PAGE", fontSize = 24.sp)
 
-                Spacer(modifier = Modifier.height(20.dp))
+            DermaHeading(
+                titolo = "Gestione Profilo",
+                sottotitolo = "Modifica le tue informazioni personali e gestisci la sicurezza del tuo account clinico.",
+                modifier = Modifier.padding(16.dp)
+            )
 
-                DermaButton("Logout",onClick = {onLogout()})
+            ElevatedCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = Color.White// Colore di sfondo della card
+                ),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+            ){
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+
+                    if (nomeUtente == null || cognomeUtente == null) {
+                        CircularProgressIndicator() // Mostra una rotellina di caricamento
+                    } else {
+                        Text(
+                            text = "Username: $username",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 20.sp
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Nome: $nomeUtente",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 20.sp
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Puoi aggiungere qui altri dettagli in futuro (es. l'email o il ruolo)
+                        Text(
+                            text = "Cognome: $cognomeUtente",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Email: $email",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Password: $password",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
 
             }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            DermaButton("Logout",onClick = {onLogout()})
+
 
         }
     }

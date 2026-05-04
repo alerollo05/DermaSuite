@@ -179,14 +179,4 @@ fun LoginPageScreen(
     }
 
 
-
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPagePreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        LoginPageScreen({},{}, onLoginSuccess ={})
-    }
 }

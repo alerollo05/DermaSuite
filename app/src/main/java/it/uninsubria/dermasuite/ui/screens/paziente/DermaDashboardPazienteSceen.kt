@@ -53,7 +53,7 @@ fun DermaDashBoardPazienteScreen(
         BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", onNavigateToProfileP)
     )
-    val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
+    val username = viewModel.username // Recupera l'username dal ViewModel
 
     Scaffold(
         topBar= {
@@ -66,7 +66,7 @@ fun DermaDashBoardPazienteScreen(
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = stringResource(R.string.Hello) + "$nomeUtente!" , style= MaterialTheme.typography.displayLarge)
+            Text(text = stringResource(R.string.Hello) + "$username!" , style= MaterialTheme.typography.displayLarge)
 
             Spacer(modifier = Modifier.height(20.dp))
 
