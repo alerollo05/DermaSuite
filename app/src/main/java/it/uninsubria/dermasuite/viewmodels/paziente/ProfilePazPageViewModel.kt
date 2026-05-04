@@ -9,7 +9,12 @@ import com.google.firebase.auth.FirebaseAuth
 import it.uninsubria.dermasuite.firebase.AuthRepository
 import kotlinx.coroutines.launch
 import java.lang.reflect.Array.set
+import java.text.SimpleDateFormat
+import java.util.Locale
 
+
+// Enum per distinguere cosa stiamo modificando nel Bottom Sheet
+enum class EditType { NONE, GENERAL, EMAIL, PASSWORD }
 class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel(){
 
 
@@ -42,7 +47,13 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                     user = dermaUser.username
                     nomeUtente = dermaUser.nome
                     cognomeUtente = dermaUser.cognome
-                    dataNascita = dermaUser.dataNascita.toString()
+                    val timestamp = dermaUser.dataNascita // Questo è l'oggetto Timestamp di Firebase
+                    // Converti Timestamp in Date
+                    val date = timestamp?.toDate()
+                    // Crea un formattatore con il pattern che preferisci
+                    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    // Assegna la stringa formattata alla variabile dello stato
+                    dataNascita = formatter.format(date)
                     email = dermaUser.email
                     password = "********"
                 }

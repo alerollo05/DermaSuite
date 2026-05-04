@@ -124,7 +124,7 @@ fun DermaEASIScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             DermaSelectorParameterCard(
-                title = "Edema Papulizzazione",
+                title = "Edema/Papulizzazione",
                 subtitle = "Seleziona il punteggio relativo all'edema papulizzazione",
                 IconRes = R.drawable.ic_indurimento, // Adatta l'icona
                 maxValue = 3,

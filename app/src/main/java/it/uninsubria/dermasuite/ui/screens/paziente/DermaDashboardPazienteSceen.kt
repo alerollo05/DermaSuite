@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -66,7 +67,12 @@ fun DermaDashBoardPazienteScreen(
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = stringResource(R.string.Hello) + "$username!" , style= MaterialTheme.typography.displayLarge)
+            if (username == null) {
+                CircularProgressIndicator() // Mostra una rotellina di caricamento
+            } else {
+                Text(text = stringResource(R.string.Hello) + "$username!" , style= MaterialTheme.typography.displayLarge)
+            }
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
