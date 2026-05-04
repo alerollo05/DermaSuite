@@ -7,4 +7,6 @@
     <string name = "title_HistoryPASI">Storico del calcolo PASI</string>
     <string name = "description_Hist_PASI">Monitora l\'andamento del tuo indice PASI nel tempo. Visualizza i risultati dei calcoli precedenti per valutare l\'efficacia dei trattamenti e condividere i dati con il tuo specialista.</string>
     <string name = "no_records_found">Nessun calcolo trovato.</string>
+    <string name = "title_Filter">Filtra</string>
+    <string name = "description_filter">Scegli un periodo di tempo per visualizzare i dati PASI</string>
 </resources>

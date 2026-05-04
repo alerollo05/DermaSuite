@@ -27,7 +27,7 @@ class PasiPageViewModel(): ViewModel() {
         //mutableStateOf va a controllare costantemente i valori aggiornati della mappa in modo tale da farli
         //cambiare istantaneamente anche nell'interfaccia grafica se i valori cambiano nella mappa
         DistrettoCorpo.values().associateWith { //associateWith trasforma l'elenco dei distretti in una
-            //mappa l chiaavi sono i distretti, mentre i valori sono nuove istanze di districtState cioè quindi
+            //mappa l chiavi sono i distretti, mentre i valori sono nuove istanze di districtState cioè quindi
             //sono i valori dei parametri che dobbiamo andare a definire da 1 a 4
             DistrictState()
         }

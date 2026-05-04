@@ -7,4 +7,6 @@
     <string name = "title_HistoryPASI">History of PASI calculation</string>
     <string name = "description_Hist_PASI">Track your PASI score progression over time. View your previous calculation results to evaluate treatment effectiveness and share the data with your specialist.</string>
     <string name = "no_records_found">No records were found.</string>"
+    <string name = "title_Filter">Filter</string>
+    <string name = "description_filter">Choose a time period to view PASI data</string>
 </resources>

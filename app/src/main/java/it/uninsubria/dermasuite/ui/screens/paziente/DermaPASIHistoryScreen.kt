@@ -1,12 +1,15 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -15,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +27,7 @@ import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.BottomBarAction
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
+import it.uninsubria.dermasuite.ui.components.DermaFilterCard
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaIsLoading
 import it.uninsubria.dermasuite.ui.components.DermaPasiHistoryChart
@@ -99,25 +104,13 @@ fun DermaPASIHistoryScreen(
                 modifier = Modifier.padding(16.dp)
             )
 
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                TimeFilter.entries.forEach { filter ->
-                    FilterChip(
-                        selected = currentFilter == filter,
-                        onClick = {viewModel.applyFilter(filter)}, //diciamo al viewModel di applicare il filtro selezionato
-                        label = { Text(stringResource(filter.displayName)) },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primary,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    )
-                }
-            }
+            DermaFilterCard(
+                title = stringResource(R.string.title_Filter),
+                subtitle = stringResource(R.string.description_filter),
+                modifier = Modifier.padding(16.dp),
+                currentFilter = currentFilter,
+                viewModel = viewModel //Passiamo il viewmodel della pagina History così posso usare
+            )
 
             if(isLoading){
                 DermaIsLoading(modifier = Modifier.fillMaxWidth().height(250.dp))

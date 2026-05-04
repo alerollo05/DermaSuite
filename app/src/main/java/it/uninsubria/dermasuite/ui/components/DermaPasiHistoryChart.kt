@@ -27,7 +27,8 @@ fun DermaPasiHistoryChart (
 
     DermaChartCard(
         title = "PASI",
-        subtitle = "Grafico PASI"
+        subtitle = "Grafico PASI",
+        indicatorColor = MaterialTheme.colorScheme.primary
     ) {
         DermaChartVico(
             yValues = scores,
