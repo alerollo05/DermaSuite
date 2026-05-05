@@ -181,11 +181,5 @@ fun DermaRegisterPageScreen(
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-private fun DermaRegisterPageScreenPreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-    DermaRegisterPageScreen(onNavigateToLogin = {}, onNavigateToStart = {})
-    }
-}
+
 
