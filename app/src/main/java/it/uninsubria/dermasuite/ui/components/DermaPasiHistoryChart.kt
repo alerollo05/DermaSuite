@@ -2,13 +2,17 @@ package it.uninsubria.dermasuite.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
+import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun DermaPasiHistoryChart (
-        records: List<PasiRecord>
+    records: List<PasiRecord>,
+    timeFilter: TimeFilter,
 ){
     //Recuperiamo la lingua corrente per poi andare a stampare i valori della data nel formato corretto
     val currentLocale = Locale.getDefault()
@@ -25,9 +29,10 @@ fun DermaPasiHistoryChart (
         SimpleDateFormat("d MMMM yyyy", currentLocale).format(it.CalculationDate).uppercase()
     }
 
+    var stringaSubGrafico = stringResource(R.string.string_sub_chart_card)
     DermaChartCard(
         title = "PASI",
-        subtitle = "Grafico PASI",
+        subtitle = "$stringaSubGrafico ${stringResource(timeFilter.displayName)}",
         indicatorColor = MaterialTheme.colorScheme.primary
     ) {
         DermaChartVico(

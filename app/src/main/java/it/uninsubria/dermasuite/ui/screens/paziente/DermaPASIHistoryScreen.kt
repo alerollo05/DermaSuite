@@ -130,7 +130,7 @@ fun DermaPASIHistoryScreen(
             } else if(records.isEmpty()){
                 Text(text = stringResource(R.string.no_records_found), color = MaterialTheme.colorScheme.primary)
             } else {
-                DermaPasiHistoryChart(records = records)
+                DermaPasiHistoryChart(records = records, timeFilter = currentFilter)
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DermaPasiHistoryList(

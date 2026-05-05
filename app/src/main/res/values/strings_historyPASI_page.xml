@@ -30,4 +30,5 @@
     <string name = "stringa_ris_pasi">Pasi Score: </string>
     <string name = "dialog_title">Calculation Details</string>
     <string name = "dialog_subtitle">District info</string>
+    <string name = "string_sub_chart_card">Chart for the latest: </string>
 </resources>
