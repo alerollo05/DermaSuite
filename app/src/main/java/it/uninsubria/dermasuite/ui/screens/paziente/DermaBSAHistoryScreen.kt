@@ -20,13 +20,14 @@ fun DermaBSAHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
     onNavigateToChatP: () -> Unit,
+    onNavigateToDashBoardPaziente: () -> Unit,
     onNavigateToProfileP: () -> Unit
 ){
     val listaIcone = listOf(
         BottomBarAction(
             "HOME", R.drawable.ic_home,
             "dashboard_screen_paziente",
-            {onBack()}),
+            {onNavigateToDashBoardPaziente()}),
         BottomBarAction(
             "CHAT", R.drawable.ic_chat,
             "chat_screen_paziente",

@@ -38,7 +38,6 @@ import kotlinx.coroutines.launch
 fun DermaPASIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
-    onNavigateToDashboard: () -> Unit,
     onNavigateToChatP: () -> Unit,
     onNavigateToDashBoardPaziente: () -> Unit,
     onNavigateToProfileP: () -> Unit,
@@ -67,7 +66,7 @@ fun DermaPASIHistoryScreen(
         BottomBarAction(
             stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente",
-            {onBack()}),
+            {onNavigateToDashBoardPaziente()}),
         BottomBarAction(
             stringResource(R.string.menu_chat), R.drawable.ic_chat,
             "chat_screen_paziente",

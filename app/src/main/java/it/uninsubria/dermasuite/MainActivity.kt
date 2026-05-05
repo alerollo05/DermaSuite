@@ -138,7 +138,6 @@ class MainActivity : ComponentActivity() {
                         DermaPASIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("pasi_page_screen")},
-                            onNavigateToDashboard = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
@@ -158,7 +157,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onBack = {navController.navigate("bmi_page_screen")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
                     composable("bsa_history_screen"){
@@ -166,7 +166,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onBack = {navController.navigate("bsa_page_screen")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
                     composable("chat_screen_paziente") {

@@ -25,7 +25,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
+import it.uninsubria.dermasuite.viewmodels.paziente.PasiDistrictState
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
 import it.uninsubria.dermasuite.viewmodels.paziente.mapSeverity
 import java.text.SimpleDateFormat
@@ -103,7 +103,7 @@ fun DetailRow(label: String, value: String){
 }
 
 @Composable
-fun DistrictDetailView(districtName: String, district: DistrictState){
+fun DistrictDetailView(districtName: String, district: PasiDistrictState){
     Column(modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)) {
         Text(
             text = "$districtName:",
