@@ -4,10 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class EasiPageViewModel : ViewModel() {
 
@@ -92,42 +95,51 @@ class EasiPageViewModel : ViewModel() {
 
     // Funzione privata per gestire l'interazione con il database Firestore
     private fun salvaEasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
-        val user = auth.currentUser ?: return onError("Utente non autenticato") // Controllo login
+        viewModelScope.launch {
+            try {
+                val user = auth.currentUser ?: return@launch onError("Utente non autenticato") // Controllo login
 
-        // Verifica il ruolo dell'utente prima di procedere
-        db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
-            if(document.exists() && document.getString("role") == "Paziente"){
+                // Verifica il ruolo dell'utente prima di procedere
+                val document = db.collection("users").document(user.uid).get().await()
+                    if(document.exists() && document.getString("role") == "Paziente"){
 
-                // Prepara i dettagli tecnici per ogni distretto da salvare
-                val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
-                    mapOf(
-                        "Erythema" to entry.value.eritema,
-                        "EdemaPapulation" to entry.value.edemaPapulizzazione,
-                        "Excoriation" to entry.value.escoriazione,
-                        "Lichenification" to entry.value.lichenificazione,
-                        "PercentageArea" to entry.value.percentualeArea
-                    )
+                        // Prepara i dettagli tecnici per ogni distretto da salvare
+                        val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
+                            mapOf(
+                                "Erythema" to entry.value.eritema,
+                                "EdemaPapulation" to entry.value.edemaPapulizzazione,
+                                "Excoriation" to entry.value.escoriazione,
+                                "Lichenification" to entry.value.lichenificazione,
+                                "PercentageArea" to entry.value.percentualeArea
+                            )
+                        }
+
+                        // Crea il documento finale (payload)
+                        val payload = hashMapOf(
+                            "CalculationDate" to FieldValue.serverTimestamp(),
+                            "EasiTot" to totalEasiResult,
+                            "Severity" to severityClass,
+                            "ParameterDistrict" to dettagliMappa
+                        )
+
+                        // Salva nella sottocollezione "EASI" del paziente
+                        db.collection("users").document(user.uid)
+                            .collection("EASI")
+                            .add(payload)
+                            .await()
+
+                    } else {
+                        onError("Solo i pazienti possono salvare i calcoli")
+                    }
+                }catch (e: Exception){
+                // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo
+                // Se il get().await() o l'add().await() falliscono (es. niente internet),
+                // l'esecuzione salta direttamente qui dentro. Nessun crash, nessun blocco.
+                onError(e.message ?: "Errore imprevisto")
                 }
-
-                // Crea il documento finale (payload)
-                val payload = hashMapOf(
-                    "CalculationDate" to FieldValue.serverTimestamp(),
-                    "EasiTot" to totalEasiResult,
-                    "Severity" to severityClass,
-                    "ParameterDistrict" to dettagliMappa
-                )
-
-                // Salva nella sottocollezione "EASI" del paziente
-                db.collection("users").document(user.uid)
-                    .collection("EASI")
-                    .add(payload)
-                    .addOnSuccessListener { onSuccess() }
-                    .addOnFailureListener { onError(it.message ?: "Errore salvataggio EASI") }
-            } else {
-                onError("Solo i pazienti possono salvare i calcoli")
-            }
-        }.addOnFailureListener { onError("Errore connessione database") }
+        }
     }
+
 
     // Verifica se tutti i parametri di un singolo distretto sono stati inseriti
     fun isDistrictComplete(distrettoCorpo: DistrettoCorpo) : Boolean {

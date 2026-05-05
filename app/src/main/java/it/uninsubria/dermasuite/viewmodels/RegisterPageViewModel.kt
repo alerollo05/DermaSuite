@@ -109,7 +109,7 @@ class RegisterPageViewModel : ViewModel() {
         }
 
         // Connessione a Firebase tramite Repository
-        viewModelScope.launch {
+        viewModelScope.launch {//Usiamo una coroutine per non far bloccare l'interfaccia in caso di errore
             uiState = uiState.copy(isLoading = true, errorMessage = null)
             val result = repository.registerUser(uiState)
 

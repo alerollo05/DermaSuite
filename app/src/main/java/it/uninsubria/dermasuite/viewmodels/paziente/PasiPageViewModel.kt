@@ -4,10 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class PasiPageViewModel(): ViewModel() {
 
@@ -65,7 +68,7 @@ class PasiPageViewModel(): ViewModel() {
 
     //Creiamo la funzione che calcola effettivamente il PASI una volta che abbiamo i dati aggiornati
     fun calculateTotalPasiAndSave(onSucces: () -> Unit, onError: (String) -> Unit){
-        // 1. Calcolo del PASI
+        // Calcolo del PASI
         var total = 0.0
         districtValues.forEach { district, data ->
             //cacloliamo per la specifica area la somma dei parametri
@@ -91,47 +94,58 @@ class PasiPageViewModel(): ViewModel() {
         }
     //Creiamo un metodo per andare a fare il salvataggio dei dati sul DB firestore
     private fun salvaPasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
-        val user = auth.currentUser
-        if(user == null){
-            onError("utente non autenticato")
-            return
-        }
+       viewModelScope.launch{
+           try {
+               val user = auth.currentUser
+               if (user == null) {
+                   onError("utente non autenticato")
+                   return@launch
+               }
 
-        //Andiamo a verificare che l'utente sia un paziente (per sicurezza)
-        db.collection("users").document(user.uid).get().addOnSuccessListener{
-            document ->
-                if(document.exists() && document.getString("role") == "Paziente"){
+               //Andiamo a verificare che l'utente sia un paziente (per sicurezza)
+               val document = db.collection("users").document(user.uid).get().await()//La coroutine si ferma qui finché Firebase non risponde
 
-                    //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
-                    //Prepariamo i dati dei distretti mappandoli in stringhe
-                    //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
-                    //cosi diventa salvabile in firestore
-                    //Mentre mapValues converte le istanze di districtState in stringhe
-                    val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
-                        mapOf(
-                            "Erythema" to entry.value.erythema,
-                            "Hardening" to entry.value.hardening,
-                            "Desquamation" to entry.value.desquamation,
-                            "PercentageArea" to entry.value.percentageArea
-                        )
-                    }
-                    //Creiamo il pacchetto finito da spedire al DB
-                    val payload = hashMapOf(
-                        "CalculationDate" to FieldValue.serverTimestamp(),
-                        "PasiTot" to totalPasiResult,
-                        "Severity" to severityClass,
-                        "ParameterDistrict" to dettagliMappa
-                    )
-                    // Salvataggio nella sottocollezione PASI
-                    db.collection("users").document(user.uid)
-                        .collection("PASI")
-                        .add(payload)
-                        .addOnSuccessListener { onSuccess() }
-                        .addOnFailureListener { onError(it.message ?: "Errore salvataggio") }
-                } else {
-                    onError("Solo i pazienti possono salvare i calcoli")
-                }
-            }
+                   if (document.exists() && document.getString("role") == "Paziente") {
+
+                       //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
+                       //Prepariamo i dati dei distretti mappandoli in stringhe
+                       //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
+                       //cosi diventa salvabile in firestore
+                       //Mentre mapValues converte le istanze di districtState in stringhe
+                       val dettagliMappa =
+                           districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
+                               mapOf(
+                                   "Erythema" to entry.value.erythema,
+                                   "Hardening" to entry.value.hardening,
+                                   "Desquamation" to entry.value.desquamation,
+                                   "PercentageArea" to entry.value.percentageArea
+                               )
+                           }
+                       //Creiamo il pacchetto finito da spedire al DB
+                       val payload = hashMapOf(
+                           "CalculationDate" to FieldValue.serverTimestamp(),
+                           "PasiTot" to totalPasiResult,
+                           "Severity" to severityClass,
+                           "ParameterDistrict" to dettagliMappa
+                       )
+                       // Salvataggio nella sottocollezione PASI
+                       db.collection("users").document(user.uid)
+                           .collection("PASI")
+                           .add(payload).await()// Aspettiamo che il salvataggio sia completato
+
+                       // Se arriviamo qui, NESSUN errore si è verificato nei due .await()
+                       onSuccess()
+                   } else {
+                       onError("Solo i pazienti possono salvare i calcoli")
+                   }
+           }catch (e: Exception){
+               // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo
+               // Se il get().await() o l'add().await() falliscono (es. niente internet),
+               // l'esecuzione salta direttamente qui dentro. Nessun crash, nessun blocco.
+               onError(e.message ?: "Errore imprevisto")
+           }
+       }
+
         }
 
         fun isDistrictComplete(distrettoCorpo: DistrettoCorpo) : Boolean {
