@@ -1,20 +1,15 @@
 package it.uninsubria.dermasuite.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,9 +30,20 @@ fun DermaPasiHistoryList (
     username : String? = null
 ) {
     val context = LocalContext.current
-    var selectedRecord by remember { mutableStateOf<PasiRecord?>(null) }
-    //Creiamo lo scope per lanciare la coroutine, lo usiamo per il thread in background
     val coroutineScope = rememberCoroutineScope()
+    var selectedRecord by remember { mutableStateOf<PasiRecord?>(null) }
+
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            coroutineScope.launch {
+                pdfGenerator(title, context, records, timeFilter, username)
+            }
+        } else {
+            Toast.makeText(context, R.string.stringa_errore_download, Toast.LENGTH_LONG).show()
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -55,12 +61,23 @@ fun DermaPasiHistoryList (
             )
 
             IconButton(
-                //Chiamiamo la funzione passando i record già filtrati per il periodo di tempo
                 onClick = {
-                    coroutineScope.launch {
-                        pdfGenerator(title,context, records,timeFilter, username)
+                    when {
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                            coroutineScope.launch {
+                                pdfGenerator(title, context, records, timeFilter, username)
+                            }
+                        }
+                        ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
+                            coroutineScope.launch {
+                                pdfGenerator(title, context, records, timeFilter, username)
+                            }
+                        }
+                        else -> {
+                            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         }
                     }
+                }
             ){
                 Icon(
                     painter = painterResource(R.drawable.ic_download),
@@ -70,8 +87,7 @@ fun DermaPasiHistoryList (
             }
         }
 
-        //stampiamo la lista di tutti i risultati dei calcoli
-        records.reversed().forEach{ record ->
+        records.reversed().forEach { record ->
             DermaPasiHistoryListItem(
                 record = record,
                 onItemClick = { selectedRecord = record},
@@ -79,7 +95,6 @@ fun DermaPasiHistoryList (
             )
         }
 
-        //andiamo a creare il pop up dei dettagli del record selezionato
         selectedRecord?.let{ record ->
             DermaPasiHistoryDialog(
                 record = record,
@@ -87,6 +102,5 @@ fun DermaPasiHistoryList (
                 context = context
             )
         }
-
     }
 }
