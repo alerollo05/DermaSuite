@@ -17,8 +17,8 @@
     <string name = "pasi_tot_pdf">Pasi Tot</string>
     <string name = "severity_pdf">Severity</string>
     <string name = "desquamazione_pdf">Desquamation</string>
-    <string name = "area_pdf">Area %</string>
-    <string name = "eritema_pdf">Eritema</string>
+    <string name = "area_pdf">Area </string>
+    <string name = "eritema_pdf">Erythema</string>
     <string name = "indurimento_pdf">Hardening</string>"
     <string name = "severity_severe">Severe</string>
     <string name = "severity_moderate">Moderate</string>
@@ -26,5 +26,8 @@
     <string name = "stringa_conferma_download">File downloaded successfully in Downloads</string>
     <string name = "stringa_errore_download">Error during download</string>
     <string name = "stringa_filtro">Time filter: </string>
-    <string name = "stringa_livello">Lev. </string>"
+    <string name = "stringa_livello">Lev. </string>
+    <string name = "stringa_ris_pasi">Pasi Score: </string>
+    <string name = "dialog_title">Calculation Details</string>
+    <string name = "dialog_subtitle">District info</string>
 </resources>

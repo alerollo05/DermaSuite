@@ -18,7 +18,7 @@
     <string name = "eritema_pdf">Eritema</string>
     <string name = "indurimento_pdf">Indurimento</string>
     <string name = "desquamazione_pdf">Desquamazione</string>
-    <string name = "area_pdf">Area %</string>
+    <string name = "area_pdf">Area </string>
     <string name = "severity_pdf">Severità</string>
     <string name="severity_severe">Grave</string>
     <string name="severity_moderate">Moderata</string>
@@ -27,4 +27,7 @@
     <string name="stringa_errore_download">Errore durante il download</string>
     <string name="stringa_filtro">Filtro temporale: </string>
     <string name="stringa_livello">Liv. </string>
+    <string name="stringa_ris_pasi">Risultato PASI: </string>
+    <string name="dialog_subtitle">Informazioni del distretto</string>
+    <string name="dialog_title">Dettagli del calcolo</string>
 </resources>

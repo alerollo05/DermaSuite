@@ -24,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
 import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
-import it.uninsubria.dermasuite.viewmodels.pdfGenerator
+import it.uninsubria.dermasuite.viewmodels.paziente.pdfGenerator
 import kotlinx.coroutines.launch
 
 @Composable
 fun DermaPasiHistoryList (
+    title: String,
     records: List<PasiRecord>,
     timeFilter: TimeFilter,
     username : String? = null
@@ -52,7 +53,6 @@ fun DermaPasiHistoryList (
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
-            var title = stringResource(R.string.title_PDF_PASI)
 
             IconButton(
                 //Chiamiamo la funzione passando i record già filtrati per il periodo di tempo
@@ -69,5 +69,24 @@ fun DermaPasiHistoryList (
                 )
             }
         }
+
+        //stampiamo la lista di tutti i risultati dei calcoli
+        records.reversed().forEach{ record ->
+            DermaPasiHistoryListItem(
+                record = record,
+                onItemClick = { selectedRecord = record},
+                context = context
+            )
+        }
+
+        //andiamo a creare il pop up dei dettagli del record selezionato
+        selectedRecord?.let{ record ->
+            DermaPasiHistoryDialog(
+                record = record,
+                onDismiss = { selectedRecord = null },
+                context = context
+            )
+        }
+
     }
 }
