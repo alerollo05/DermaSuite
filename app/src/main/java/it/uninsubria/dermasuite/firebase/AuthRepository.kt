@@ -125,7 +125,7 @@ class AuthRepository {
             // AGGIORNAMENTO LATO AUTENTICAZIONE:
             // 'verifyBeforeUpdateEmail' invia un link di verifica alla nuova email.
             // L'email cambierà effettivamente solo dopo che l'utente avrà cliccato sul link.
-            // '.await()' attende che la richiesta di invio venga completata.
+            // '.await()' attende che la richiesta di invio della mail con il link venga completata.
             user.verifyBeforeUpdateEmail(newEmail).await()
 
             // AGGIORNAMENTO LATO DATABASE (FIRESTORE):

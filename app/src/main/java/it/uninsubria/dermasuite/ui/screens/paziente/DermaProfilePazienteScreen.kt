@@ -19,7 +19,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -43,9 +42,11 @@ import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaHeading
+import it.uninsubria.dermasuite.ui.components.DermaOutlinedTextField // IMPORT AGGIUNTO
 import it.uninsubria.dermasuite.ui.components.DermaProfileField
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.paziente.ProfilePazPageViewModel
+
 @Composable
 fun DermaProfilePazienteScreen(
     onLogout: () -> Unit,
@@ -150,22 +151,29 @@ fun DermaProfilePazienteScreen(
                             label = "Username",
                             value = username ?: "",
                             modificaIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_modifica),
-                                        contentDescription = "Modifica Username",
-                                        modifier = Modifier
-                                                // Rendiamo l'icona cliccabile
-                                                .clickable { viewModel.openUsernameDialog() }
-                                    )
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_modifica),
+                                    contentDescription = "Modifica Username",
+                                    // Rendiamo l'icona cliccabile, dicendogli cosa fare una volta cliccata (apertura del popup)
+                                    modifier = Modifier.clickable { viewModel.openUsernameDialog()}
+                                )
                             }
                         )
 
                         DermaProfileField("Email", email, modificaIcon = {
-                            Icon(painter = painterResource(id = R.drawable.ic_modifica), contentDescription = null)
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_modifica),
+                                contentDescription = "Modifica Email",
+                                modifier = Modifier.clickable { viewModel.openEmailDialog() }
+                            )
                         })
 
                         DermaProfileField("Password", password, modificaIcon = {
-                            Icon(painter = painterResource(id = R.drawable.ic_modifica), contentDescription = null)
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_modifica),
+                                contentDescription = "Modifica Password",
+                                modifier = Modifier.clickable { viewModel.openPasswordDialog() }
+                            )
                         })
                     }
                     Spacer(modifier = Modifier.height(16.dp))
@@ -197,7 +205,7 @@ fun DermaProfilePazienteScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
-                        OutlinedTextField(
+                        DermaOutlinedTextField(
                             value = viewModel.editUsernameText,
                             // Ogni volta che l'utente preme un tasto, inviamo il nuovo carattere
                             // al ViewModel che aggiorna la variabile. Senza questa riga, non riusciresti a scrivere nulla.
@@ -208,9 +216,7 @@ fun DermaProfilePazienteScreen(
                                     viewModel.clearInputPopupError()
                                 }
                             },
-                            placeholder = { Text("Inserisci Username") },
-                            label = { Text("Nuovo Username") },
-                            singleLine = true,
+                            label = "Nuovo Username",
                             modifier = Modifier.fillMaxWidth()
                         )
                         // --- MESSAGGIO DI ERRORE INLINE ---
@@ -237,6 +243,108 @@ fun DermaProfilePazienteScreen(
                         Text("Annulla", color = Color.Gray)
                     }
                 }
+            )
+        }
+        // --- POPUP MODIFICA EMAIL ---
+        if (viewModel.showEmailDialog) {
+            AlertDialog(
+                onDismissRequest = { viewModel.closeEmailDialog() },
+                title = { Text("Modifica Email") },
+                text = {
+                    Column {
+                        Text(
+                            text = "Inserisci la tua nuova email e la tua password attuale (per confermare l'autenticazione).",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.editEmailText,
+                            onValueChange = {
+                                viewModel.updateEditEmailText(it)
+                                if (viewModel.inputPopupError != null) {
+                                    viewModel.clearInputPopupError()
+                                }
+                            },
+                            label = "Nuova Email",
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.currentPasswordForEmail,
+                            onValueChange = {
+                                viewModel.updateCurrentPasswordForEmail(it)
+                                if (viewModel.inputPopupError != null) {
+                                    viewModel.clearInputPopupError()
+                                }
+                            },
+                            label = "Password Attuale",
+                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        if (viewModel.inputPopupError != null) {
+                            Text(viewModel.inputPopupError!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+                },
+                confirmButton = { TextButton(onClick = { viewModel.confirmEmailChange() }) { Text("Conferma") } },
+                dismissButton = { TextButton(onClick = { viewModel.closeEmailDialog() }) { Text("Annulla", color = Color.Gray) } }
+            )
+        }
+
+        // --- POPUP MODIFICA PASSWORD ---
+        if (viewModel.showPasswordDialog) {
+            AlertDialog(
+                onDismissRequest = { viewModel.closePasswordDialog() },
+                title = { Text("Cambia Password") },
+                text = {
+                    Column {
+                        Text(
+                            text = "Inserisci la tua nuova password e confermala.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.currentPasswordText,
+                            onValueChange = {
+                                viewModel.updateCurrentPasswordText(it)
+                                if (viewModel.inputPopupError != null) {
+                                    viewModel.clearInputPopupError()
+                                }
+                            },
+                            label = "Password Attuale",
+                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.newPasswordText,
+                            onValueChange = {
+                                viewModel.updateNewPasswordText(it)
+                                if (viewModel.inputPopupError != null) {
+                                    viewModel.clearInputPopupError()
+                                }
+                            },
+                            label = "Nuova Password",
+                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.confirmNewPasswordText,
+                            onValueChange = {
+                                viewModel.updateConfirmNewPasswordText(it)
+                                if (viewModel.inputPopupError != null) {
+                                    viewModel.clearInputPopupError()
+                                }
+                            },
+                            label = "Conferma Password",
+                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        if (viewModel.inputPopupError != null) {
+                            Text(viewModel.inputPopupError!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+                },
+                confirmButton = { TextButton(onClick = { viewModel.confirmPasswordChange() }) { Text("Conferma") } },
+                dismissButton = { TextButton(onClick = { viewModel.closePasswordDialog() }) { Text("Annulla", color = Color.Gray) } }
             )
         }
     }

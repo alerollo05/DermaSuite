@@ -79,33 +79,25 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
         }
     }
 
-    // --- FUNZIONI PER GESTIRE IL POPUP ---
+    // --- FUNZIONI DI UTILITY ---
+    fun clearSnackbarMessage() { snackbarMessage = null }
+    fun clearInputPopupError() { inputPopupError = null } // Resetta l'errore quando chiudi il popup
 
+    // --- LOGICA USERNAME ---
     fun openUsernameDialog() {
-        // Quando apro il popup, il campo di testo si riempie con l'username attuale
-        editUsernameText = user ?: ""
+        editUsernameText = ""
+        clearInputPopupError()
         showUsernameDialog = true
     }
-
     fun closeUsernameDialog() {
         showUsernameDialog = false
-        inputPopupError = null // Resetta l'errore quando chiudi
+        clearInputPopupError()
     }
-
     fun updateEditUsernameText(newText: String) {
         editUsernameText = newText
+        clearInputPopupError()
     }
-
-    fun clearSnackbarMessage() {
-        snackbarMessage = null
-    }
-
-    fun clearInputPopupError(){
-        inputPopupError = null
-    }
-
-    // Funzione che aggiorna l'username dell'utente
-    fun confirmUsernameChange() {
+    fun confirmUsernameChange() { // Funzione che aggiorna l'username dell'utente
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         if (uid == null) return
 
@@ -115,7 +107,7 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
             return
         }
 
-        viewModelScope.launch {// La .launch serve per far partire una coroutine(thread) asincrona
+        viewModelScope.launch {// La .launch serve per far partire una coroutine(un thread secondario) asincrona, perchè se no bloccherebbe l'interfaccia e l'app crasherebbe
             // Chiamiamo il repository per aggiornare il dato nel database
             val success = repository.updateUsername(uid, editUsernameText)
             if (success) {
@@ -127,6 +119,118 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
             } else {
                 // Se Firebase fallisce (es. no connessione)
                 inputPopupError = "Errore di connessione."
+            }
+        }
+    }
+
+    // --- LOGICA EMAIL ---
+    // Prepara e mostra il popup per la modifica dell'email.
+    fun openEmailDialog() {
+        editEmailText = ""
+        currentPasswordForEmail = ""
+        clearInputPopupError()
+        showEmailDialog = true
+    }
+    fun closeEmailDialog() { // Chiude il popup della modifica email e resetta lo stato degli errori.
+        showEmailDialog = false
+        clearInputPopupError()
+    }
+
+    fun updateEditEmailText(text: String) { editEmailText = text; clearInputPopupError() } //Aggiorna il valore temporaneo della nuova email mentre l'utente scrive.
+    fun updateCurrentPasswordForEmail(text: String) { currentPasswordForEmail = text; clearInputPopupError() } // Aggiorna il valore della password attuale necessaria per la ri-autenticazione.
+
+    // Funzione per cambiare la mail
+    fun confirmEmailChange() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        // Validazione Locale: Controlla che i campi non siano vuoti o composti solo da spazi.
+        // Se mancano dati, imposta il messaggio di errore per il popup e si ferma.
+        if (editEmailText.isBlank() || currentPasswordForEmail.isBlank()) {
+            inputPopupError = "Compila tutti i campi."
+            return
+        }
+
+        viewModelScope.launch {
+            // FASE DI SICUREZZA (Ri-autenticazione):
+            // Chiama il repository per verificare che la password attuale inserita sia corretta.
+            // Questa riga "sospende" la funzione finché Firebase non risponde.
+            val passwordSuccess = repository.reauthenticate(currentPasswordForEmail)
+
+            // Se la password è sbagliata, mostra l'errore nel popup e interrompe la coroutine.
+            if (!passwordSuccess) {
+                inputPopupError = "La password inserita è errata."
+                return@launch // Interrompe il processo asincrono, ma lascia il popup aperto
+            }
+
+            // AGGIORNAMENTO DATI:
+            // Se la password che abbiamo inserito è corretta, tenta di aggiornare l'email in Auth e su Firestore.
+            val updateSuccess = repository.updateEmail(uid, editEmailText)
+            if (updateSuccess) {
+                email = editEmailText
+                snackbarMessage = "Link di conferma inviato! Controlla la nuova email."
+                closeEmailDialog()
+            } else {
+                inputPopupError = "Errore durante l'aggiornamento."
+            }
+        }
+    }
+
+    // --- LOGICA PASSWORD ---
+    // Prepara e mostra il popup per il cambio password.
+    // Resetta tutti i campi di input (attuale, nuova e conferma) e pulisce gli errori.
+    fun openPasswordDialog() {
+        currentPasswordText = ""
+        newPasswordText = ""
+        confirmNewPasswordText = ""
+        clearInputPopupError()
+        showPasswordDialog = true
+    }
+    fun closePasswordDialog() { // Chiude il popup del cambio password e resetta lo stato degli errori.
+        showPasswordDialog = false
+        clearInputPopupError()
+    }
+    // Funzioni di aggiornamento dello stato per i campi di input della password
+    fun updateCurrentPasswordText(text: String) { currentPasswordText = text; clearInputPopupError() }
+    fun updateNewPasswordText(text: String) { newPasswordText = text; clearInputPopupError() }
+    fun updateConfirmNewPasswordText(text: String) { confirmNewPasswordText = text; clearInputPopupError() }
+
+    // Funzione per cambiare la password
+    fun confirmPasswordChange() {
+        // Primo controllo (Campi vuoti):
+        // Verifica che l'utente abbia compilato tutti e tre i campi del popup.
+        // Se anche solo uno è vuoto o contiene solo spazi, mostra l'errore e si ferma.
+        if (currentPasswordText.isBlank() || newPasswordText.isBlank() || confirmNewPasswordText.isBlank()) {
+            inputPopupError = "Compila tutti i campi."
+            return
+        }
+        // Controllo se la nuova password coincide con la conferma
+        if (newPasswordText != confirmNewPasswordText) {
+            inputPopupError = "Le password non coincidono."
+            return
+        }
+        // Controllo sulla lunghezza della password
+        if (newPasswordText.length < 6) {
+            inputPopupError = "La password deve avere almeno 6 caratteri."
+            return
+        }
+
+        viewModelScope.launch {
+            // FASE DI SICUREZZA (Ri-autenticazione):
+            // Esattamente come per l'email, Firebase esige che l'utente dimostri
+            // di essere il proprietario dell'account inviando la sua password attuale.
+            val reauthSuccess = repository.reauthenticate(currentPasswordText)
+            // Se la vecchia password inserita è sbagliata
+            if (!reauthSuccess) {
+                inputPopupError = "Password attuale errata."
+                return@launch // Interrompe il processo asincrono, ma lascia il popup aperto
+            }
+
+            // Aggiorno password su Firestore
+            val updateSuccess = repository.updatePassword(newPasswordText)
+            if (updateSuccess) {
+                snackbarMessage = "Password aggiornata con successo!"
+                closePasswordDialog()
+            } else {
+                inputPopupError = "Errore durante l'aggiornamento."
             }
         }
     }
