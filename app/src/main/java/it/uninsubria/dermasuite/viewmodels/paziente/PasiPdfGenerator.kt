@@ -11,11 +11,11 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import it.uninsubria.dermasuite.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -195,37 +195,58 @@ suspend fun pdfGenerator(
 
         currentPage?.let { pdfDocument.finishPage(it) }
 
-        // SALVATAGGIO DEL FILE
+        // --- INIZIO NUOVA LOGICA DI SALVATAGGIO DEL FILE ---
         val filename = "REPORT_PASI_${context.getString(timeFilter.displayName).uppercase()}_${SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())}.pdf"
-
-        val resolver = context.contentResolver
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-            }
-        }
-
-        val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
-        } else {
-            resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
-        }
-
         val stringaConfermaDownload = context.getString(R.string.stringa_conferma_download)
         val stringaErroreDownload = context.getString(R.string.stringa_errore_download)
 
         try {
-            uri?.let {
-                resolver.openOutputStream(it)?.use { outputStream ->
-                    pdfDocument.writeTo(outputStream)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // LOGICA PER ANDROID 10+ (API 29+)
+                val resolver = context.contentResolver
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                    put(MediaStore.MediaColumns.IS_PENDING, 1) // Segnala al sistema che stiamo ancora scrivendo
+                }
+
+                val uri: Uri? = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                uri?.let {
+                    resolver.openOutputStream(it)?.use { outputStream ->
+                        pdfDocument.writeTo(outputStream)
+                    }
+
+                    // Finito di scrivere, togliamo lo stato PENDING
+                    contentValues.clear()
+                    contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                    resolver.update(uri, contentValues, null, null)
 
                     withContext(Dispatchers.Main) {
                         Toast.makeText(context, stringaConfermaDownload, Toast.LENGTH_LONG).show()
                     }
+                } ?: throw Exception("Impossibile creare l'indirizzo del file tramite MediaStore")
+
+            } else {
+                // LOGICA PER ANDROID 9 E PRECEDENTI (Es. Android 8)
+                // Salvataggio diretto tramite classe File nella cartella Download pubblica
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
+                // Assicuriamoci che la directory esista
+                if (!downloadsDir.exists()) {
+                    downloadsDir.mkdirs()
                 }
-            } ?: throw Exception("Impossibile creare l'indirizzo del file")
+
+                val file = File(downloadsDir, filename)
+
+                FileOutputStream(file).use { outputStream ->
+                    pdfDocument.writeTo(outputStream)
+                }
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "$stringaConfermaDownload in Download", Toast.LENGTH_LONG).show()
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
@@ -234,5 +255,6 @@ suspend fun pdfGenerator(
         } finally {
             pdfDocument.close()
         }
+        // --- FINE NUOVA LOGICA DI SALVATAGGIO ---
     }
 }
