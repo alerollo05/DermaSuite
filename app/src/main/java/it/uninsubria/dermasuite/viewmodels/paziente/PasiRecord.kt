@@ -1,5 +1,6 @@
 package it.uninsubria.dermasuite.viewmodels.paziente
 
+import android.content.Context
 import androidx.annotation.StringRes
 import com.google.firebase.firestore.PropertyName
 import it.uninsubria.dermasuite.R
@@ -7,10 +8,10 @@ import it.uninsubria.dermasuite.R
 //Vado a creare una classe per mappare in modo identico i dati salvati sul Database Firestore
 
 data class PasiRecord(
-    @get:PropertyName("CalculationDate") val CalculationDate: java.util.Date = java.util.Date(),
-    @get:PropertyName("ParameterDistrict") val ParameterDistrict: ParameterDistrictState = ParameterDistrictState(),
-    @get:PropertyName("PasiTot") val PasiTot: Int = 0,
-    @get:PropertyName("Severity") val Severity: String = ""
+    @get:PropertyName("CalculationDate") @set:PropertyName("CalculationDate") var CalculationDate: java.util.Date = java.util.Date(),
+    @get:PropertyName("ParameterDistrict") @set:PropertyName("ParameterDistrict") var ParameterDistrict: ParameterDistrictState = ParameterDistrictState(),
+    @get:PropertyName("PasiTot") @set:PropertyName("PasiTot") var PasiTot: Int = 0,
+    @get:PropertyName("Severity") @set:PropertyName("Severity") var Severity: String = ""
 )
 
 
@@ -24,3 +25,11 @@ enum class TimeFilter(@StringRes val displayName : Int, technicalName: String) {
     ALL_TIME(R.string.time_filter_all_time,"all_time")
 }
 
+//Mappatura della serverità dal database
+fun PasiRecord.mapSeverity(context: Context): String {
+    return when (this.Severity) {
+        "LEVEL_SEVERE" -> context.getString(R.string.severity_severe)
+        "LEVEL_MODERATE" -> context.getString(R.string.severity_moderate)
+        else -> context.getString(R.string.severity_low)
+    }
+}

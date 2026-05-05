@@ -3,10 +3,12 @@ package it.uninsubria.dermasuite.ui.screens.paziente
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -31,6 +33,7 @@ import it.uninsubria.dermasuite.ui.components.DermaFilterCard
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaIsLoading
 import it.uninsubria.dermasuite.ui.components.DermaPasiHistoryChart
+import it.uninsubria.dermasuite.ui.components.DermaPasiHistoryList
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
 import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
@@ -61,6 +64,7 @@ fun DermaPASIHistoryScreen(
     }
 
     val records by viewModel.uiState.collectAsState()
+    val userData by viewModel.userData.collectAsState()
 
     val listaIcone = listOf(
         BottomBarAction(
@@ -120,7 +124,21 @@ fun DermaPASIHistoryScreen(
             }else{
                 // Solo se ci sono dati carichiamo il grafico (Evita il crash!)
                 DermaPasiHistoryChart(records = records)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                var username = if (userData != null) "${userData?.nome} ${userData?.cognome}" else currentUser?.displayName
+                username?.uppercase()
+                //Mettiamo la cronologia sotto il grafico
+                DermaPasiHistoryList(
+                    records = records,
+                    timeFilter = currentFilter,
+                    username = username
+                )
+
             }
+
+
         }
     }
 }

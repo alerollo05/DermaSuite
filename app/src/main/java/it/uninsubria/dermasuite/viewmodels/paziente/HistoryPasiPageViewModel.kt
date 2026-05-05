@@ -3,6 +3,7 @@ package it.uninsubria.dermasuite.viewmodels.paziente
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.DermaUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,8 +33,19 @@ class HistoryPasiPageViewModel: ViewModel() {
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    // Stato per i dati dell'utente
+    private val _userData = MutableStateFlow<DermaUser?>(null)
+    val userData: StateFlow<DermaUser?> = _userData.asStateFlow()
+
     fun getHistoryDB( UserId : String){
         _isLoading.value = true //Inizia il caricamento
+
+        // Recuperiamo i dati dell'utente (Nome e Cognome)
+        db.collection("users").document(UserId).get()
+            .addOnSuccessListener { snapshot ->
+                _userData.value = snapshot.toObject(DermaUser::class.java)
+            }
+
         db.collection("users")
             .document(UserId)
             .collection("PASI")

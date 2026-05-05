@@ -30,6 +30,7 @@ import com.patrykandpatrick.vico.core.cartesian.marker.LineCartesianLayerMarkerT
 import com.patrykandpatrick.vico.core.common.Dimensions
 import com.patrykandpatrick.vico.core.common.shape.Shape
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 
 @Composable
 fun DermaChartVico(
@@ -87,6 +88,7 @@ fun DermaChartVico(
             ),
             padding = Dimensions.of(8.dp, 4.dp),
         ),
+        labelPosition = DefaultCartesianMarker.LabelPosition.AbovePoint,
         // Formattiamo il testo del popup: Data precisa + Punteggio
         valueFormatter = { _, targets ->
             val lineTarget = targets.filterIsInstance<LineCartesianLayerMarkerTarget>().firstOrNull()
@@ -97,7 +99,7 @@ fun DermaChartVico(
                 val entry = point.entry
                 val index = entry.x.toInt()
                 val fullDate = fullDates.getOrNull(index) ?: ""
-                "Data: $fullDate\nPASI: ${entry.y}"
+                "Data: $fullDate PASI: ${entry.y}"
             } else {
                 ""
             }

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
@@ -69,7 +70,7 @@ fun DermaFilterCard(
                             modifier = Modifier.weight(1f).height(60.dp),
                             selected = currentFilter == filter,
                             onClick = { viewModel.applyFilter(filter) }, //diciamo al viewModel di applicare il filtro selezionato
-                            label = { Text(stringResource(filter.displayName)) },
+                            label = { Text(stringResource(filter.displayName).uppercase(), fontSize = 13.sp) },
                             colors = FilterChipDefaults.filterChipColors(
                                 labelColor = MaterialTheme.colorScheme.primary,
                                 selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
