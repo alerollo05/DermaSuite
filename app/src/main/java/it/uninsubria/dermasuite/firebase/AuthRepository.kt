@@ -118,15 +118,14 @@ class AuthRepository {
         }
     }
 
-    // Aggiorna l'email (richiede che la ri-autenticazione sia appena avvenuta)
+    // Aggiorna l'email ISTANTANEAMENTE (richiede che la ri-autenticazione sia appena avvenuta)
     suspend fun updateEmail(uid: String, newEmail: String): Boolean {
         return try {
             val user = auth.currentUser ?: return false
-            // AGGIORNAMENTO LATO AUTENTICAZIONE:
-            // 'verifyBeforeUpdateEmail' invia un link di verifica alla nuova email.
-            // L'email cambierà effettivamente solo dopo che l'utente avrà cliccato sul link.
-            // '.await()' attende che la richiesta di invio della mail con il link venga completata.
-            user.verifyBeforeUpdateEmail(newEmail).await()
+            // AGGIORNAMENTO LATO AUTENTICAZIONE ISTANTANEO:
+            // 'updateEmail' cambia l'email all'istante senza inviare link di verifica.
+            // '.await()' attende che la richiesta venga completata.
+            user.updateEmail(newEmail).await()
 
             // AGGIORNAMENTO LATO DATABASE (FIRESTORE):
             // Accediamo alla collezione "users", cerchiamo il documento con l'UID dell'utente

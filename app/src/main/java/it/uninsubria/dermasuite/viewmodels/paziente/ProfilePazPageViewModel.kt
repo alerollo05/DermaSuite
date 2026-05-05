@@ -161,12 +161,12 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                 return@launch // Interrompe il processo asincrono, ma lascia il popup aperto
             }
 
-            // AGGIORNAMENTO DATI:
-            // Se la password che abbiamo inserito è corretta, tenta di aggiornare l'email in Auth e su Firestore.
+            // AGGIORNAMENTO DATI ISTANTANEO:
+            // Se la password che abbiamo inserito è corretta, tenta di aggiornare l'email in Auth e su Firestore all'istante.
             val updateSuccess = repository.updateEmail(uid, editEmailText)
             if (updateSuccess) {
-                email = editEmailText
-                snackbarMessage = "Link di conferma inviato! Controlla la nuova email."
+                email = editEmailText // Cambiamo la variabile locale per vederla aggiornata a schermo
+                snackbarMessage = "Email aggiornata con successo!"
                 closeEmailDialog()
             } else {
                 inputPopupError = "Errore durante l'aggiornamento."
