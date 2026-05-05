@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -53,7 +54,7 @@ fun DermaDashBoardPazienteScreen(
         BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", onNavigateToProfileP)
     )
-    val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
+    val username = viewModel.username // Recupera l'username dal ViewModel
 
     Scaffold(
         topBar= {
@@ -66,7 +67,12 @@ fun DermaDashBoardPazienteScreen(
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = stringResource(R.string.Hello) + "$nomeUtente!" , style= MaterialTheme.typography.displayLarge)
+            if (username == null) {
+                CircularProgressIndicator() // Mostra una rotellina di caricamento
+            } else {
+                Text(text = stringResource(R.string.Hello) + "$username!" , style= MaterialTheme.typography.displayLarge)
+            }
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -78,7 +84,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
@@ -115,7 +121,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
@@ -152,7 +158,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {
@@ -188,7 +194,7 @@ fun DermaDashBoardPazienteScreen(
                     .padding(top = 16.dp),
                 shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White // Colore di sfondo della card
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
             ) {

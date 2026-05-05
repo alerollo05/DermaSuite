@@ -29,7 +29,7 @@ class PasiPageViewModel(): ViewModel() {
         DistrettoCorpo.values().associateWith { //associateWith trasforma l'elenco dei distretti in una
             //mappa l chiavi sono i distretti, mentre i valori sono nuove istanze di districtState cioè quindi
             //sono i valori dei parametri che dobbiamo andare a definire da 1 a 4
-            DistrictState()
+            PasiDistrictState()
         }
     )
 
@@ -51,7 +51,7 @@ class PasiPageViewModel(): ViewModel() {
         percentualeArea: Int? = null
     ) {
         val currentStateMap = districtValues.toMutableMap()
-        val currentData = currentStateMap[currentDistrict] ?: DistrictState()
+        val currentData = currentStateMap[currentDistrict] ?: PasiDistrictState()
 
         //Creiamo il nuovo stato aggiornato
         currentStateMap[currentDistrict] = currentData.copy(

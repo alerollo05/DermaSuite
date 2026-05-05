@@ -14,7 +14,7 @@ class DashboardPagePazienteViewModel(private val repository: AuthRepository = Au
     // Stato per il nome dell'utente, se cambia il composable lo ridisegnerà e nel frattempo che carica scrive
     // la scritta caricamento, private set serve a dire che solo dentro la classe DashboardPageViewModel possiamo
     // modificare questo valore.
-    var username by mutableStateOf("Caricamento...")
+    var username by mutableStateOf<String?>(null)
         private set
 
     // Il blocco init viene eseguito non appena il ViewModel viene creato. In questo modo, il recupero dei dati
@@ -43,8 +43,4 @@ class DashboardPagePazienteViewModel(private val repository: AuthRepository = Au
         }
     }
 
-    fun logout(onSuccess: () -> Unit) {
-        repository.signOut()
-        onSuccess()
-    }
 }

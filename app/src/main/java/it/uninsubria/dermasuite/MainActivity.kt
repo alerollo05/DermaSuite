@@ -138,6 +138,7 @@ class MainActivity : ComponentActivity() {
                         DermaPASIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("pasi_page_screen")},
+                            onNavigateToDashboard = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
@@ -147,6 +148,7 @@ class MainActivity : ComponentActivity() {
                         DermaEASIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("easi_page_screen")},
+                            onnavigateToDashboard = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
                         )
@@ -169,7 +171,6 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("chat_screen_paziente") {
                         DermaChatPazienteScreen(
-                            onBack = {navController.navigate("dashboard_screen_paziente")},
                             navController = navController,
                             onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
@@ -183,7 +184,6 @@ class MainActivity : ComponentActivity() {
                                     popUpTo(0)
                                 }
                             },
-                            onBack = {navController.navigate("dashboard_screen_paziente")},
                             navController = navController,
                             onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")}

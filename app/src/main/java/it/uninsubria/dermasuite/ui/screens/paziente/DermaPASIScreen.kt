@@ -28,7 +28,7 @@ import it.uninsubria.dermasuite.ui.components.DermaResultCard
 import it.uninsubria.dermasuite.ui.components.DermaSelectorParameterCard
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
+import it.uninsubria.dermasuite.viewmodels.paziente.PasiDistrictState
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,7 +90,7 @@ fun DermaPASIScreen(
         snackbarHost = { SnackbarHost(hostState = snakBarHostState) }
     ) { padding ->
         //Andiamo a recuperare i dati relativi al distretto selezionato al momento
-        val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: DistrictState()
+        val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: PasiDistrictState()
 
         DermaColumnScreen(
             innerPadding = padding,
