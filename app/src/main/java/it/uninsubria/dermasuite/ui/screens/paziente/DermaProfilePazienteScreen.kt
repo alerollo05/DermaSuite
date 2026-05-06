@@ -204,7 +204,8 @@ fun DermaProfilePazienteScreen(
             DermaSpecialistCard(
                 doctorName = stringResource(R.string.mock_doctor_name),
                 doctorRole = stringResource(R.string.mock_doctor_role),
-                doctorDescription = stringResource(R.string.mock_doctor_description)
+                doctorDescription = stringResource(R.string.mock_doctor_description),
+                iconResId = R.drawable.ic_button_medico
             )
 
             Spacer(modifier = Modifier.height(8.dp))

@@ -73,7 +73,7 @@ fun DermaSpecialistCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_medico),
+                    painter = painterResource(iconResId),
                     contentDescription = "Icona Medico",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
