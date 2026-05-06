@@ -8,6 +8,6 @@ import it.uninsubria.dermasuite.R
 enum class DistrettoCorpo(@StringRes val nameResId: Int, val technicalName: String, val weight: Float, val iconRes: Int) {
         HEAD(R.string.distretto_testa,"HEAD", 0.1f, R.drawable.ic_testa_umana),
         ARMS(R.string.distretto_braccia,"ARMS", 0.2f, R.drawable.ic_braccio_umano),
-        TRUNK(R.string.distretto_tronco,"TRUNK", 0.3f,R.drawable.ic_torso_umano),
-        LEGS(R.string.distretto_gambe,"LEGS", 0.4f,R.drawable.ic_gamba_umana)
+        TRUNK(R.string.distretto_tronco,"TRUNK", 0.3f, R.drawable.ic_torso_umano),
+        LEGS(R.string.distretto_gambe,"LEGS", 0.4f, R.drawable.ic_gamba_umana)
 }

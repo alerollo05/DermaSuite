@@ -20,6 +20,7 @@ import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.model.PasiRecord
 import it.uninsubria.dermasuite.model.TimeFilter
 import it.uninsubria.dermasuite.model.pdfGenerator
+import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -27,8 +28,10 @@ fun DermaPasiHistoryList (
     title: String,
     records: List<PasiRecord>,
     timeFilter: TimeFilter,
-    username : String? = null
+    username : String? = null,
+    viewModel: HistoryPasiPageViewModel
 ) {
+    val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var selectedRecord by remember { mutableStateOf<PasiRecord?>(null) }
@@ -99,7 +102,8 @@ fun DermaPasiHistoryList (
             DermaPasiHistoryDialog(
                 record = record,
                 onDismiss = { selectedRecord = null },
-                context = context
+                context = context,
+                viewModel = viewModel
             )
         }
     }

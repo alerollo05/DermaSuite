@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +26,7 @@ import it.uninsubria.dermasuite.model.DistrettoCorpo
 import it.uninsubria.dermasuite.model.PasiDistrictState
 import it.uninsubria.dermasuite.model.PasiRecord
 import it.uninsubria.dermasuite.model.mapSeverity
+import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -31,8 +34,10 @@ import java.util.Locale
 fun DermaPasiHistoryDialog (
     record: PasiRecord,
     onDismiss: () -> Unit,
+    viewModel: HistoryPasiPageViewModel,
     context : Context
 ){
+    val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
 
     Dialog(
         onDismissRequest = onDismiss, //Chiude il dialogo alla chiusura del popup, quando clicco fuori dallo schermo
@@ -85,6 +90,20 @@ fun DermaPasiHistoryDialog (
                 DistrictDetailView(stringResource(id = DistrettoCorpo.TRUNK.nameResId), record.ParameterDistrict.trunk)
                 DistrictDetailView(stringResource(id = DistrettoCorpo.LEGS.nameResId), record.ParameterDistrict.legs)
 
+                Button(
+                    onClick = {
+                        viewModel.deleteRecord(record,currentUser?.uid.toString());
+                        onDismiss()//cosi chiudiamo il popup una volta eliminato
+                              },
+                    modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
+
+                ) {
+                    Text(
+                        text = stringResource(R.string.dialog_button),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
 
         }

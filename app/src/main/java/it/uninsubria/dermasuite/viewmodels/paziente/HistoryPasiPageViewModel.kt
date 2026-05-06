@@ -1,6 +1,7 @@
 package it.uninsubria.dermasuite.viewmodels.paziente
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import it.uninsubria.dermasuite.firebase.DermaUser
@@ -9,6 +10,8 @@ import it.uninsubria.dermasuite.model.TimeFilter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.Date
 
@@ -40,30 +43,27 @@ class HistoryPasiPageViewModel: ViewModel() {
     val userData: StateFlow<DermaUser?> = _userData.asStateFlow()
 
     fun getHistoryDB( UserId : String){
-        _isLoading.value = true //Inizia il caricamento
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true //Inizia il caricamento
 
-        // Recuperiamo i dati dell'utente (Nome e Cognome)
-        db.collection("users").document(UserId).get()
-            .addOnSuccessListener { snapshot ->
-                _userData.value = snapshot.toObject(DermaUser::class.java)
+                val result = db.collection("users")
+                    .document(UserId)
+                    .collection("PASI")
+                    .get().await()
+
+                        //Mappiamo il documento FireStore nella data class creata prima
+                        ListaCalcoli = result.toObjects(PasiRecord::class.java)
+                            .sortedByDescending{ it.CalculationDate} //Ordiniamo dal calcolo più recente in poi
+
+                        applyFilter(_currentFilter.value)
+
+                        _isLoading.value = false //Impostiamo lo stato di fine caricamento
+            }catch(e: Exception){
+                _isLoading.value = false
+
             }
-
-        db.collection("users")
-            .document(UserId)
-            .collection("PASI")
-            .get()
-            .addOnSuccessListener { result ->
-                //Mappiamo il documento FireStore nella data class creata prima
-                ListaCalcoli = result.toObjects(PasiRecord::class.java)
-                    .sortedByDescending{ it.CalculationDate} //Ordiniamo dal calcolo più recente in poi
-
-                applyFilter(_currentFilter.value)
-
-                _isLoading.value = false //Fine del caricamento
-            }
-            .addOnFailureListener {
-                _isLoading.value = false //In caso di errore fine caricamento comunque per sicurezza
-            }
+        }
     }
 
     fun applyFilter(filter: TimeFilter){
@@ -76,5 +76,31 @@ class HistoryPasiPageViewModel: ViewModel() {
         }
         //Per il grafico ordiniamo in ordine crescente
         _uiState.value = ListaCalcoli.filter { it.CalculationDate >= limitDate}.sortedBy{it.CalculationDate}
+    }
+
+    fun deleteRecord(record: PasiRecord,UserId:String){
+        // Evitiamo di procedere se l'ID è vuoto o l'utente non è valido
+        if (record.id.isEmpty() || UserId == "null") return
+
+        viewModelScope.launch {
+            try {
+
+                //Rimuoviamo il record dalla lista di calcoli
+                db.collection("users")
+                    .document(UserId)
+                    .collection("PASI")
+                    .document(record.id).delete().await()
+
+                //Andiamo a fare un aggiornamento sulla lista dei calcoli
+                //Mettiamo nella lista tutti i calcoli che c'erano prima tranne quello che abbiamo eliminato
+                ListaCalcoli = ListaCalcoli.filter { it.id != record.id }
+
+                //Riapplichiamo i filtri per aggiornare la lista in base al filtro attivo
+                // Questo farà sì che la UI veda il cambiamento e si aggiorni
+                applyFilter(_currentFilter.value)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 }

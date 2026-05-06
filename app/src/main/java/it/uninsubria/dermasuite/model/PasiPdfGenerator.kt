@@ -12,6 +12,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import it.uninsubria.dermasuite.R
+import it.uninsubria.dermasuite.model.DistrettoCorpo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
