@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.*
 import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
-import it.uninsubria.dermasuite.viewmodels.paziente.pdfGenerator
+import it.uninsubria.dermasuite.model.pdfGenerator
 import kotlinx.coroutines.launch
 
 @Composable

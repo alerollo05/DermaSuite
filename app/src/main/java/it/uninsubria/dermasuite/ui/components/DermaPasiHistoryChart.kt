@@ -4,8 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
-import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
+import it.uninsubria.dermasuite.model.PasiRecord
+import it.uninsubria.dermasuite.model.TimeFilter
 import java.text.SimpleDateFormat
 import java.util.Locale
 

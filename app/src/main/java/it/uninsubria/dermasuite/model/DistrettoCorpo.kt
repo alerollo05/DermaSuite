@@ -1,4 +1,4 @@
-package it.uninsubria.dermasuite.viewmodels.paziente
+package it.uninsubria.dermasuite.model
 
 import androidx.annotation.StringRes
 import it.uninsubria.dermasuite.R

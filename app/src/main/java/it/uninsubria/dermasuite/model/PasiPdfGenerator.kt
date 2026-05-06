@@ -1,4 +1,4 @@
-package it.uninsubria.dermasuite.viewmodels.paziente
+package it.uninsubria.dermasuite.model
 
 import android.content.ContentValues
 import android.content.Context

@@ -22,8 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
-import it.uninsubria.dermasuite.viewmodels.paziente.mapSeverity
+import it.uninsubria.dermasuite.model.PasiRecord
+import it.uninsubria.dermasuite.model.mapSeverity
 import java.text.SimpleDateFormat
 import java.util.Locale
 

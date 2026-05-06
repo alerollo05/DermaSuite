@@ -27,8 +27,8 @@ import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaResultCard
 import it.uninsubria.dermasuite.ui.components.DermaSelectorParameterCard
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiDistrictState
+import it.uninsubria.dermasuite.model.DistrettoCorpo
+import it.uninsubria.dermasuite.model.PasiDistrictState
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

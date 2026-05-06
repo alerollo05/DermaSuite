@@ -9,6 +9,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.model.DistrettoCorpo
+import it.uninsubria.dermasuite.model.PasiDistrictState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -104,40 +106,38 @@ class PasiPageViewModel(): ViewModel() {
 
                //Andiamo a verificare che l'utente sia un paziente (per sicurezza)
                val document = db.collection("users").document(user.uid).get().await()//La coroutine si ferma qui finché Firebase non risponde
+               if (document.exists() && document.getString("role") == "Paziente") {
 
-                   if (document.exists() && document.getString("role") == "Paziente") {
+                   //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
+                   //Prepariamo i dati dei distretti mappandoli in stringhe
+                   //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
+                   //cosi diventa salvabile in firestore
+                   //Mentre mapValues converte le istanze di districtState in stringhe
+                   val dettagliMappa =
+                       districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
+                           mapOf(
+                               "Erythema" to entry.value.erythema,
+                               "Hardening" to entry.value.hardening,
+                               "Desquamation" to entry.value.desquamation,
+                               "PercentageArea" to entry.value.percentageArea
+                           )
+                       }
+                   //Creiamo il pacchetto finito da spedire al DB
+                   val payload = hashMapOf(
+                       "CalculationDate" to FieldValue.serverTimestamp(),
+                       "PasiTot" to totalPasiResult,
+                       "Severity" to severityClass,
+                       "ParameterDistrict" to dettagliMappa
+                   )
+                   // Salvataggio nella sottocollezione PASI
+                   db.collection("users").document(user.uid).collection("PASI")
+                       .add(payload).await()// Aspettiamo che il salvataggio sia completato
 
-                       //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
-                       //Prepariamo i dati dei distretti mappandoli in stringhe
-                       //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
-                       //cosi diventa salvabile in firestore
-                       //Mentre mapValues converte le istanze di districtState in stringhe
-                       val dettagliMappa =
-                           districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
-                               mapOf(
-                                   "Erythema" to entry.value.erythema,
-                                   "Hardening" to entry.value.hardening,
-                                   "Desquamation" to entry.value.desquamation,
-                                   "PercentageArea" to entry.value.percentageArea
-                               )
-                           }
-                       //Creiamo il pacchetto finito da spedire al DB
-                       val payload = hashMapOf(
-                           "CalculationDate" to FieldValue.serverTimestamp(),
-                           "PasiTot" to totalPasiResult,
-                           "Severity" to severityClass,
-                           "ParameterDistrict" to dettagliMappa
-                       )
-                       // Salvataggio nella sottocollezione PASI
-                       db.collection("users").document(user.uid)
-                           .collection("PASI")
-                           .add(payload).await()// Aspettiamo che il salvataggio sia completato
-
-                       // Se arriviamo qui, NESSUN errore si è verificato nei due .await()
-                       onSuccess()
-                   } else {
-                       onError("Solo i pazienti possono salvare i calcoli")
-                   }
+                   // Se arriviamo qui, NESSUN errore si è verificato nei due .await()
+                   onSuccess()
+               } else {
+                   onError("Solo i pazienti possono salvare i calcoli")
+               }
            }catch (e: Exception){
                // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo
                // Se il get().await() o l'add().await() falliscono (es. niente internet),

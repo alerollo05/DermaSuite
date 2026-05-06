@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="gestione_profilo_title">Profile Management</string>
+    <string name="gestione_profilo_subtitle">Edit your personal information and manage the security of your clinical account.</string>
+
+    <string name="dati_anagrafici_title">Personal Details</string>
+    <string name="label_nome">First Name</string>
+    <string name="label_cognome">Last Name</string>
+    <string name="label_data_nascita">Date of Birth</string>
+    <string name="label_username">Username</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+
+    <string name="specialista_riferimento_title">Assigned Specialist</string>
+    <string name="mock_doctor_name">Dr. Elena Bianchi</string>
+    <string name="mock_doctor_role">Senior Dermatologist</string>
+    <string name="mock_doctor_description">Dr. Elena Bianchi specializes in clinical and oncological dermatology. She has over 15 years of experience in treating skin diseases and preventing melanoma.</string>
+    <string name="btn_cambia_medico">Change Doctor</string>
+
+    <string name="btn_logout">Logout</string>
+    <string name="btn_conferma">Confirm</string>
+    <string name="btn_annulla">Cancel</string>
+
+    <string name="modifica_username_title">Edit Username</string>
+    <string name="modifica_username_desc">Enter your new username below.</string>
+    <string name="label_nuovo_username">New Username</string>
+
+    <string name="modifica_email_title">Change Email</string>
+    <string name="modifica_email_desc">Enter your new email and your current password (to confirm authentication).</string>
+    <string name="label_nuova_email">New Email</string>
+    <string name="label_password_attuale">Current Password</string>
+
+    <string name="modifica_password_title">Change Password</string>
+    <string name="modifica_password_desc">Enter your new password and confirm it.</string>
+    <string name="label_nuova_password">New Password</string>
+    <string name="label_conferma_password">Confirm Password</string>
+
+</resources>
