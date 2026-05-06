@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
+import it.uninsubria.dermasuite.model.DistrettoCorpo
 
 @Composable
 fun DermaDistrictSelector(

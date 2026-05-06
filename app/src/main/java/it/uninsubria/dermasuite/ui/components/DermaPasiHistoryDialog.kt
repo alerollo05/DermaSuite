@@ -6,12 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -24,10 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiDistrictState
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
-import it.uninsubria.dermasuite.viewmodels.paziente.mapSeverity
+import it.uninsubria.dermasuite.model.DistrettoCorpo
+import it.uninsubria.dermasuite.model.PasiDistrictState
+import it.uninsubria.dermasuite.model.PasiRecord
+import it.uninsubria.dermasuite.model.mapSeverity
 import java.text.SimpleDateFormat
 import java.util.Locale
 

@@ -1,14 +1,15 @@
-package it.uninsubria.dermasuite.viewmodels.paziente
+package it.uninsubria.dermasuite.model
 
 import android.content.Context
 import androidx.annotation.StringRes
 import com.google.firebase.firestore.PropertyName
 import it.uninsubria.dermasuite.R
+import java.util.Date
 
 //Vado a creare una classe per mappare in modo identico i dati salvati sul Database Firestore
 
 data class PasiRecord(
-    @get:PropertyName("CalculationDate") @set:PropertyName("CalculationDate") var CalculationDate: java.util.Date = java.util.Date(),
+    @get:PropertyName("CalculationDate") @set:PropertyName("CalculationDate") var CalculationDate: Date = Date(),
     @get:PropertyName("ParameterDistrict") @set:PropertyName("ParameterDistrict") var ParameterDistrict: ParameterDistrictState = ParameterDistrictState(),
     @get:PropertyName("PasiTot") @set:PropertyName("PasiTot") var PasiTot: Int = 0,
     @get:PropertyName("Severity") @set:PropertyName("Severity") var Severity: String = ""

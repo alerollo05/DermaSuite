@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
+import it.uninsubria.dermasuite.model.DistrettoCorpo
 
 @Composable
 fun DermaGridItem(

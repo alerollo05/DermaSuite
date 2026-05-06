@@ -1,4 +1,4 @@
-package it.uninsubria.dermasuite.viewmodels.paziente
+package it.uninsubria.dermasuite.model
 
 data class EasiDistrictState (
     val eritema: Int = -1,           // Rossore

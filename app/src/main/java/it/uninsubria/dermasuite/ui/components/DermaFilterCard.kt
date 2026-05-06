@@ -20,10 +20,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.HistoryPasiPageViewModel
-import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
+import it.uninsubria.dermasuite.model.TimeFilter
 import kotlin.collections.chunked
 import kotlin.collections.forEach
 

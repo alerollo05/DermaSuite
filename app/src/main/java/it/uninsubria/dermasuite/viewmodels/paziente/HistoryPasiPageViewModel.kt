@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import it.uninsubria.dermasuite.firebase.DermaUser
+import it.uninsubria.dermasuite.model.PasiRecord
+import it.uninsubria.dermasuite.model.TimeFilter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

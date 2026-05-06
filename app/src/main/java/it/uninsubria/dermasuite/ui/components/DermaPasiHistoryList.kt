@@ -17,9 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.viewmodels.paziente.PasiRecord
-import it.uninsubria.dermasuite.viewmodels.paziente.TimeFilter
-import it.uninsubria.dermasuite.viewmodels.paziente.pdfGenerator
+import it.uninsubria.dermasuite.model.PasiRecord
+import it.uninsubria.dermasuite.model.TimeFilter
+import it.uninsubria.dermasuite.model.pdfGenerator
 import kotlinx.coroutines.launch
 
 @Composable

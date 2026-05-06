@@ -9,6 +9,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.model.DistrettoCorpo
+import it.uninsubria.dermasuite.model.PasiDistrictState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 

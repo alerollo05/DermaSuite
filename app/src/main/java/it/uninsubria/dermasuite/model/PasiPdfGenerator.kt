@@ -1,4 +1,4 @@
-package it.uninsubria.dermasuite.viewmodels.paziente
+package it.uninsubria.dermasuite.model
 
 import android.content.ContentValues
 import android.content.Context
@@ -12,6 +12,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import it.uninsubria.dermasuite.R
+import it.uninsubria.dermasuite.model.DistrettoCorpo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
