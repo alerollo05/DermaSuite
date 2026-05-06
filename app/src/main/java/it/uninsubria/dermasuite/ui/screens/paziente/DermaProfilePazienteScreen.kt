@@ -137,9 +137,8 @@ fun DermaProfilePazienteScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.dati_anagrafici_title),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
+                            style = MaterialTheme.typography.headlineMedium, // Usato il nuovo stile da Type.kt
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
 
@@ -187,14 +186,14 @@ fun DermaProfilePazienteScreen(
 
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
 
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(R.string.specialista_riferimento_title),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineMedium, // Usato il nuovo stile da Type.kt
                 color = MaterialTheme.colorScheme.primary, // O usa un blu scuro specifico se lo hai nei theme
-                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center, // Forza il testo al centro
                 modifier = Modifier
                     .fillMaxWidth() // Occupa tutta la larghezza per permettere il centraggio
@@ -213,26 +212,43 @@ fun DermaProfilePazienteScreen(
             // Bottone "Cambia Medico"
             Button(
                 onClick = { /* TODO: Logica per cambiare medico */ },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(56.dp), // Altezza uguale al DermaButton
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f), // Sfondo azzurrino chiaro
-                    contentColor = MaterialTheme.colorScheme.primary // Testo blu
+                    containerColor = MaterialTheme.colorScheme.primary, // Sfondo pieno (stesso del DermaButton)
+                    contentColor = Color.White // Testo e icona bianchi
                 ),
-                shape = RoundedCornerShape(12.dp),
-                elevation = ButtonDefaults.buttonElevation(0.dp)
+                shape = MaterialTheme.shapes.medium, // Usiamo lo stesso arrotondamento del tema
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp) // Piatto come da design
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_profile), // Sostituisci con icona omino/ricerca
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.btn_cambia_medico), fontWeight = FontWeight.Bold)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_profile), // Icona omino
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = stringResource(R.string.btn_cambia_medico),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-            DermaButton(stringResource(R.string.btn_logout),onClick = {onLogout()})
+            DermaButton(stringResource(R.string.btn_logout),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(56.dp),
+                onClick = {onLogout()}
+            )
         }
         // --- POPUP (ALERT DIALOG) PER MODIFICARE USERNAME ---
         // Il popup viene "disegnato" solo se showUsernameDialog è vera.
@@ -244,14 +260,17 @@ fun DermaProfilePazienteScreen(
                 // o preme il tasto "Indietro" del telefono. Chiamiamo la funzione che resetta lo stato a false.
                 onDismissRequest = { viewModel.closeUsernameDialog() },
                 title = {
-                    Text(text = stringResource(R.string.modifica_username_title))
+                    Text(
+                        text = stringResource(R.string.modifica_username_title),
+                        style = MaterialTheme.typography.headlineMedium // Stile per il titolo del popup
+                    )
                 },
                 // Qui inseriamo la logica di input.
                 text = {
                     Column {
                         Text(
                             text = stringResource(R.string.modifica_username_desc),
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyMedium, // Stile corretto dal tuo Type.kt
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                         DermaOutlinedTextField(
@@ -273,7 +292,7 @@ fun DermaProfilePazienteScreen(
                             Text(
                                 text = viewModel.inputPopupError!!,
                                 color = MaterialTheme.colorScheme.error, // Rosso standard
-                                style = MaterialTheme.typography.bodySmall,
+                                style = MaterialTheme.typography.labelSmall, // Usato labelSmall (12sp) per l'errore
                                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
                             )
                         }
@@ -283,13 +302,20 @@ fun DermaProfilePazienteScreen(
                 // Quando cliccato, esegue la logica di salvataggio (confirmUsernameChange).
                 confirmButton = {
                     TextButton(onClick = { viewModel.confirmUsernameChange() }) {
-                        Text(stringResource(R.string.btn_conferma))
+                        Text(
+                            text = stringResource(R.string.btn_conferma),
+                            style = MaterialTheme.typography.labelLarge // Stile del bottone
+                        )
                     }
                 },
                 // Pulsante di Annullamento: Chiude semplicemente il popup senza salvare nulla.
                 dismissButton = {
                     TextButton(onClick = { viewModel.closeUsernameDialog() }) {
-                        Text(stringResource(R.string.btn_annulla), color = Color.Gray)
+                        Text(
+                            text = stringResource(R.string.btn_annulla),
+                            color = Color.Gray,
+                            style = MaterialTheme.typography.labelLarge // Stile del bottone
+                        )
                     }
                 }
             )
@@ -298,7 +324,12 @@ fun DermaProfilePazienteScreen(
         if (viewModel.showEmailDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeEmailDialog() },
-                title = { Text(stringResource(R.string.modifica_email_title)) },
+                title = {
+                    Text(
+                        text = stringResource(R.string.modifica_email_title),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                },
                 text = {
                     Column {
                         Text(
@@ -330,12 +361,24 @@ fun DermaProfilePazienteScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                         if (viewModel.inputPopupError != null) {
-                            Text(viewModel.inputPopupError!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                            Text(
+                                text = viewModel.inputPopupError!!,
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     }
                 },
-                confirmButton = { TextButton(onClick = { viewModel.confirmEmailChange() }) { Text(stringResource(R.string.btn_conferma)) } },
-                dismissButton = { TextButton(onClick = { viewModel.closeEmailDialog() }) { Text(stringResource(R.string.btn_annulla), color = Color.Gray) } }
+                confirmButton = {
+                    TextButton(onClick = { viewModel.confirmEmailChange() }) {
+                        Text(stringResource(R.string.btn_conferma), style = MaterialTheme.typography.labelLarge)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { viewModel.closeEmailDialog() }) {
+                        Text(stringResource(R.string.btn_annulla), color = Color.Gray, style = MaterialTheme.typography.labelLarge)
+                    }
+                }
             )
         }
 
@@ -343,7 +386,12 @@ fun DermaProfilePazienteScreen(
         if (viewModel.showPasswordDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closePasswordDialog() },
-                title = { Text(stringResource(R.string.modifica_password_title)) },
+                title = {
+                    Text(
+                        text = stringResource(R.string.modifica_password_title),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                },
                 text = {
                     Column {
                         Text(
@@ -388,12 +436,24 @@ fun DermaProfilePazienteScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                         if (viewModel.inputPopupError != null) {
-                            Text(viewModel.inputPopupError!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                            Text(
+                                text = viewModel.inputPopupError!!,
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     }
                 },
-                confirmButton = { TextButton(onClick = { viewModel.confirmPasswordChange() }) { Text(stringResource(R.string.btn_conferma)) } },
-                dismissButton = { TextButton(onClick = { viewModel.closePasswordDialog() }) { Text(stringResource(R.string.btn_annulla), color = Color.Gray) } }
+                confirmButton = {
+                    TextButton(onClick = { viewModel.confirmPasswordChange() }) {
+                        Text(stringResource(R.string.btn_conferma), style = MaterialTheme.typography.labelLarge)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { viewModel.closePasswordDialog() }) {
+                        Text(stringResource(R.string.btn_annulla), color = Color.Gray, style = MaterialTheme.typography.labelLarge)
+                    }
+                }
             )
         }
     }

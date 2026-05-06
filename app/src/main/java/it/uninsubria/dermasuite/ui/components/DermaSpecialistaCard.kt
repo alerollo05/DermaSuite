@@ -29,7 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
 
@@ -42,6 +44,7 @@ fun DermaSpecialistCard(
     // Opzionale: passa l'ID della tua icona se ne hai una specifica per il medico
     iconResId: Int = R.drawable.ic_profile
 ) {
+
     // Variabile di stato interna al componente per gestire l'apertura/chiusura del popup
     var showDialog by remember { mutableStateOf(false) }
 
@@ -49,10 +52,11 @@ fun DermaSpecialistCard(
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .padding(horizontal = 16.dp)
             .clickable { showDialog = true }, // Al click apriamo il popup
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
     ) {
         Row(
             modifier = Modifier
