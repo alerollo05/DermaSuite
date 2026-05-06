@@ -103,11 +103,10 @@ class PasiPageViewModel(): ViewModel() {
                    onError("utente non autenticato")
                    return@launch
                }
-
                //Andiamo a verificare che l'utente sia un paziente (per sicurezza)
                val document = db.collection("users").document(user.uid).get().await()//La coroutine si ferma qui finché Firebase non risponde
 
-                   if (document.exists() && document.getString("role") == "Paziente") {
+               if (document.exists() && document.getString("role") == "Paziente") {
 
                        //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
                        //Prepariamo i dati dei distretti mappandoli in stringhe

@@ -2,6 +2,7 @@ package it.uninsubria.dermasuite.model
 
 import android.content.Context
 import androidx.annotation.StringRes
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 import it.uninsubria.dermasuite.R
 import java.util.Date
@@ -9,6 +10,7 @@ import java.util.Date
 //Vado a creare una classe per mappare in modo identico i dati salvati sul Database Firestore
 
 data class PasiRecord(
+    @DocumentId val id: String = "",
     @get:PropertyName("CalculationDate") @set:PropertyName("CalculationDate") var CalculationDate: Date = Date(),
     @get:PropertyName("ParameterDistrict") @set:PropertyName("ParameterDistrict") var ParameterDistrict: ParameterDistrictState = ParameterDistrictState(),
     @get:PropertyName("PasiTot") @set:PropertyName("PasiTot") var PasiTot: Int = 0,

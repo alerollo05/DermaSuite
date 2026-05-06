@@ -31,4 +31,5 @@
     <string name = "dialog_title">Calculation Details</string>
     <string name = "dialog_subtitle">District info</string>
     <string name = "string_sub_chart_card">Chart for the latest: </string>
+    <string name = "dialog_button">Delete calculation</string>"
 </resources>

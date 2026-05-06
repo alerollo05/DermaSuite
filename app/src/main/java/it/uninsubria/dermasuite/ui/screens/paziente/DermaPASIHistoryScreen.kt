@@ -137,7 +137,8 @@ fun DermaPASIHistoryScreen(
                     title = title,
                     records = records,
                     timeFilter = currentFilter,
-                    username = username
+                    username = username,
+                    viewModel = viewModel
                 )
             }
         }
