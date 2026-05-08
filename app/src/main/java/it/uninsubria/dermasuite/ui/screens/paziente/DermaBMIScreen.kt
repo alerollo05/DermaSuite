@@ -40,6 +40,7 @@ fun DermaBMIScreen(
     //Creiamo la variaibile per lo stato della snakbar
     val snakBarHostState = remember { SnackbarHostState() }
 
+    
 
     //Andiamo a definire una variabile che tiene a memoria in che pos si trova lo scroll della pagina
     val scrollState = rememberScrollState()
