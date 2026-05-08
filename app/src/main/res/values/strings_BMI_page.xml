@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name = "title_bmi_page">BMI Calculator</string>
+    <string name = "description_bmi_page">BMI (Body Mass Index) is a numerical indicator that compares weight and height to assess whether a person is underweight, normal weight, overweight, or obese. It is calculated by dividing body weight (in kg) by the square of height (in meter).</string>
+    <string name = "title_bmi_card">Insert your data</string>
+    <string name = "label_altezza">Height (cm)</string>
+    <string name = "label_peso">Weight (kg)</string>
+    <string name = "placeholder_altezza">175</string>
+    <string name = "placeholder_peso">70</string>
+    <string name = "button_bmi_calculate">Calculate BMI</string>
+    <string name = "snak_bmi_errore">Please insert your height and weight</string>
+    <string name = "snak_bmi_successo">BMI calculated successfully</string>
+    <string name = "bmi_severity_low">Underweight</string>
+    <string name = "bmi_severity_moderate">Normal weight</string>
+    <string name = "bmi_severity_severe">Overweight</string>
+    <string name = "bmi_severity_obese">Obesity</string>
+    <string name = "title_bmi_result">BMI Calculated Result </string>
+    <string name = "unità_misura_altezza">cm</string>
+    <string name = "unità_misura_peso">kg</string>
 
 </resources>

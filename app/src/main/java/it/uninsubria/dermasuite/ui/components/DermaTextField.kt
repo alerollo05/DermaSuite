@@ -34,9 +34,9 @@ fun DermaTextField(
     placeholder: String, //prende la stringa da mettere come placheholder
     leadingIconRes: Int? = null, // prende (se c'è l'id del icona drawable che dobbiamo mettere
     isPassword: Boolean = false,
-    // AGGIUNTA: permettiamo di decidere se è a riga singola (default true)
+    //permettiamo di decidere se è a riga singola (default true)
     singleLine: Boolean = true,
-    // AGGIUNTA: per gestire il tasto della tastiera (es. Next o Done)
+    //per gestire il tasto della tastiera (es. Next o Done)
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     modifier: Modifier = Modifier
 ){

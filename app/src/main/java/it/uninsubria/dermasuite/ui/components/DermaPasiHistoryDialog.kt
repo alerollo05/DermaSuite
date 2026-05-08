@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -38,6 +40,7 @@ fun DermaPasiHistoryDialog (
     context : Context
 ){
     val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+    val scrollState = rememberScrollState()
 
     Dialog(
         onDismissRequest = onDismiss, //Chiude il dialogo alla chiusura del popup, quando clicco fuori dallo schermo
@@ -57,7 +60,8 @@ fun DermaPasiHistoryDialog (
             Column(
                 modifier = Modifier
                     .padding(24.dp) // Padding interno spazioso
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // Titolo del popup

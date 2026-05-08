@@ -36,7 +36,7 @@ fun DermaChartCard(
         shape = MaterialTheme.shapes.medium
     ){
         Row(
-            //Gli diamo questa altezza atuoregolat in base all'altezza della card
+            //Gli diamo questa altezza autoregolata in base all'altezza della card
             modifier = Modifier.height(IntrinsicSize.Min)
         ){
             Box(

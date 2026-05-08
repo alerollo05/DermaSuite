@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="title_bmi_page">Calcolatore del BMI</string>
+    <string name="description_bmi_page">Il BMI (Body Mass Index o Indice di Massa Corporea) è un indicatore numerico che mette in relazione peso e altezza per valutare se una persona è in sottopeso, normopeso, sovrappeso o obesa. Si calcola dividendo il peso corporeo (in kg) per il quadrato dell\'altezza (in metri)</string>
+    <string name="title_bmi_card">Inserisci i tuoi dati</string>
+    <string name="label_altezza">Altezza (cm)</string>
+    <string name="label_peso">Peso (kg)</string>
+    <string name="placeholder_altezza">175</string>
+    <string name="placeholder_peso">70</string>
+    <string name="button_bmi_calculate">Calcola BMI</string>
+    <string name="snak_bmi_errore">Inserisci la tua altezza e il tuo peso</string>
+    <string name="snak_bmi_successo">BMI calcolato con successo</string>
+    <string name="bmi_severity_low">Sottopeso</string>
+    <string name="bmi_severity_moderate">Normopeso</string>
+    <string name="bmi_severity_severe">Sovrappeso</string>
+    <string name="bmi_severity_obese">Obeso</string>
+    <string name="title_bmi_result">Risultato del BMI calcolato</string>
+    <string name="unità_misura_altezza">cm</string>
+    <string name="unità_misura_peso">kg</string>
 
 </resources>
