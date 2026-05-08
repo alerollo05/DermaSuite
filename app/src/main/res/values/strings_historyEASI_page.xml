@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_HistoryEASI">History of EASI calculation</string>
+    <string name="description_Hist_EASI">Track your EASI score progression over time. View your previous calculation results to evaluate treatment effectiveness and share the data with your specialist.</string>
+    <string name="title_PDF_EASI">Report for EASI calculation</string>
+    <string name="heading_list_history_easi">Recent EASI calculations</string>
+    <string name="description_filter_easi">Choose a time period to view PASI data</string>
+
+    <string name="easi_tot_pdf">EASI Tot</string>
+    <string name="edema_pdf">Edema</string>
+    <string name="escoriazione_pdf">Excoriation</string>
+    <string name="lichenificazione_pdf">Lichenif.</string>
+    <string name="stringa_ris_easi">EASI Score: </string>
+</resources>
