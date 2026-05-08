@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                         DermaEASIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("easi_page_screen")},
-                            onnavigateToDashboard = {navController.navigate("dashboard_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
                         )

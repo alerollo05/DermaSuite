@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_HistoryEASI">Storico del calcolo EASI</string>
+    <string name="description_Hist_EASI">Monitora l\'andamento del tuo indice EASI nel tempo. Visualizza i risultati dei calcoli precedenti per valutare l\'efficacia dei trattamenti e condividere i dati con il tuo specialista.</string>
+    <string name="title_PDF_EASI">Report del calcolo EASI</string>
+    <string name="heading_list_history_easi">Calcoli EASI recenti</string>
+    <string name="description_filter_easi">Scegli un periodo di tempo per visualizzare i dati EASI</string>
+
+
+    <string name="easi_tot_pdf">Totale E</string>
+    <string name="edema_pdf">Edema</string>
+    <string name="escoriazione_pdf">Escoriazione</string>
+    <string name="lichenificazione_pdf">Lichenif.</string>
+    <string name="stringa_ris_easi">Risultato EASI: </string>
+</resources>

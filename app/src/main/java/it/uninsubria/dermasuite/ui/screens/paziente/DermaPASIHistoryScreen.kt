@@ -53,7 +53,7 @@ fun DermaPASIHistoryScreen(
                 pdfGenerator(title, context, records, currentFilter, username)
             }
         } else {
-            Toast.makeText(context, context.getString(R.string.stringa_errore_download), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.stringa_errore_download, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -122,7 +122,9 @@ fun DermaPASIHistoryScreen(
                 subtitle = stringResource(R.string.description_filter),
                 modifier = Modifier.padding(16.dp),
                 currentFilter = currentFilter,
-                viewModel = viewModel
+                onFilterSelected = { nuovoFiltro ->
+                    viewModel.applyFilter(nuovoFiltro) // Riceve il filtro dalla card e ordina al ViewModel di aggiornare i dati
+                }
             )
 
             if(isLoading){

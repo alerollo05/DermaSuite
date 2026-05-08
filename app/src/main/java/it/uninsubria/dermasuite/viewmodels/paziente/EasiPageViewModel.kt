@@ -26,21 +26,21 @@ class EasiPageViewModel : ViewModel() {
     // Contatore utilizzato per triggerare lo scroll automatico verso il basso nella UI
     var scrollTrigger by mutableStateOf(0)
 
-    // Tiene traccia di quale parte del corpo (Testa, Tronco, ecc.) l'utente sta valutando[cite: 11]
+    // Tiene traccia di quale parte del corpo (Testa, Tronco, ecc.) l'utente sta valutando
     var currentDistrict by mutableStateOf(DistrettoCorpo.HEAD)
 
-    // Mappa che associa ogni distretto del corpo al suo stato dei parametri (eritema, area, ecc.)[cite: 11]
+    // Mappa che associa ogni distretto del corpo al suo stato dei parametri (eritema, area, ecc.)
     var districtValues by mutableStateOf(
         DistrettoCorpo.values().associateWith {
-            EasiDistrictState() // Inizializza ogni distretto con valori predefiniti (-1)[cite: 11]
+            EasiDistrictState() // Inizializza ogni distretto con valori predefiniti (-1)
         }
     )
 
-    // Variabili per memorizzare il valore numerico finale e la stringa della severità[cite: 11]
+    // Variabili per memorizzare il valore numerico finale e la stringa della severità
     var totalEasiResult by mutableStateOf(0.0)
     var serverityClass by mutableStateOf("")
 
-    // Funzione per aggiornare i singoli parametri del distretto attualmente selezionato[cite: 11]
+    // Funzione per aggiornare i singoli parametri del distretto attualmente selezionato
     fun updateDistrictParameters(
         eritema: Int? = null,
         edemaPapulizzazione: Int? = null,
@@ -51,7 +51,7 @@ class EasiPageViewModel : ViewModel() {
         val currentStateMap = districtValues.toMutableMap() // Crea una copia modificabile della mappa
         val currentData = currentStateMap[currentDistrict] ?: EasiDistrictState()
 
-        // Crea un nuovo stato copiando quello vecchio ma aggiornando solo i valori non nulli[cite: 11]
+        // Crea un nuovo stato copiando quello vecchio ma aggiornando solo i valori non nulli
         currentStateMap[currentDistrict] = currentData.copy(
             eritema = eritema ?: currentData.eritema,
             edemaPapulizzazione = edemaPapulizzazione ?: currentData.edemaPapulizzazione,
@@ -59,24 +59,24 @@ class EasiPageViewModel : ViewModel() {
             lichenificazione = lichenificazione ?: currentData.lichenificazione,
             percentualeArea = percentualeArea ?: currentData.percentualeArea
         )
-        districtValues = currentStateMap // Assegna la nuova mappa per scatenare la ricomposizione della UI[cite: 11]
+        districtValues = currentStateMap // Assegna la nuova mappa per scatenare la ricomposizione della UI
     }
 
-    // Funzione principale per il calcolo dell'indice EASI[cite: 11]
+    // Funzione principale per il calcolo dell'indice EASI
     fun calculateTotalEasiAndSave(onSucces: () -> Unit, onError: (String) -> Unit){
         var total = 0.0
 
-        // Itera su ogni distretto e applica la formula: (Somma Segni) * Area * Peso Distretto[cite: 11]
+        // Itera su ogni distretto e applica la formula: (Somma Segni) * Area * Peso Distretto
         districtValues.forEach { (district, data) ->
             val sommaSegni = data.eritema + data.edemaPapulizzazione + data.escoriazione + data.lichenificazione
             val area = data.percentualeArea.toDouble()
-            total += (sommaSegni * area * district.weight) // Aggiunge il parziale al totale[cite: 11]
+            total += (sommaSegni * area * district.weight) // Aggiunge il parziale al totale
         }
 
-        // Arrotonda il risultato a un decimale[cite: 11]
+        // Arrotonda il risultato a un decimale
         totalEasiResult = Math.round(total * 10.0) / 10.0
 
-        // Assegna la classe di severità in base ai range standard dell'EASI[cite: 11]
+        // Assegna la classe di severità in base ai range standard dell'EASI
         serverityClass = when {
             totalEasiResult < 6.0 -> "LEVEL_LOW"
             totalEasiResult <= 22.9 -> "LEVEL_MODERATE"
@@ -96,6 +96,7 @@ class EasiPageViewModel : ViewModel() {
     }
 
     // Funzione privata per gestire l'interazione con il database Firestore
+    // Funzione privata per gestire l'interazione con il database Firestore
     private fun salvaEasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
         viewModelScope.launch {
             try {
@@ -103,42 +104,43 @@ class EasiPageViewModel : ViewModel() {
 
                 // Verifica il ruolo dell'utente prima di procedere
                 val document = db.collection("users").document(user.uid).get().await()
-                    if(document.exists() && document.getString("role") == "Paziente"){
+                if(document.exists() && document.getString("role") == "Paziente"){
 
-                        // Prepara i dettagli tecnici per ogni distretto da salvare
-                        val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
-                            mapOf(
-                                "Erythema" to entry.value.eritema,
-                                "EdemaPapulation" to entry.value.edemaPapulizzazione,
-                                "Excoriation" to entry.value.escoriazione,
-                                "Lichenification" to entry.value.lichenificazione,
-                                "PercentageArea" to entry.value.percentualeArea
-                            )
-                        }
-
-                        // Crea il documento finale (payload)
-                        val payload = hashMapOf(
-                            "CalculationDate" to FieldValue.serverTimestamp(),
-                            "EasiTot" to totalEasiResult,
-                            "Severity" to severityClass,
-                            "ParameterDistrict" to dettagliMappa
+                    // Prepara i dettagli tecnici per ogni distretto da salvare
+                    val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
+                        mapOf(
+                            "Erythema" to entry.value.eritema,
+                            "EdemaPapulation" to entry.value.edemaPapulizzazione,
+                            "Excoriation" to entry.value.escoriazione,
+                            "Lichenification" to entry.value.lichenificazione,
+                            "PercentageArea" to entry.value.percentualeArea
                         )
-
-                        // Salva nella sottocollezione "EASI" del paziente
-                        db.collection("users").document(user.uid)
-                            .collection("EASI")
-                            .add(payload)
-                            .await()
-
-                    } else {
-                        onError("Solo i pazienti possono salvare i calcoli")
                     }
-                }catch (e: Exception){
-                // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo
-                // Se il get().await() o l'add().await() falliscono (es. niente internet),
-                // l'esecuzione salta direttamente qui dentro. Nessun crash, nessun blocco.
-                onError(e.message ?: "Errore imprevisto")
+
+                    // Crea il documento finale (payload)
+                    val payload = hashMapOf(
+                        "CalculationDate" to FieldValue.serverTimestamp(),
+                        "EasiTot" to totalEasiResult,
+                        "Severity" to severityClass,
+                        "ParameterDistrict" to dettagliMappa
+                    )
+
+                    // Salva nella sottocollezione "EASI" del paziente
+                    db.collection("users").document(user.uid)
+                        .collection("EASI")
+                        .add(payload)
+                        .await()
+
+                    // ---> AGGIUNGI QUESTA RIGA QUI SOTTO <---
+                    onSuccess() // Comunica che il salvataggio è andato a buon fine!
+
+                } else {
+                    onError("Solo i pazienti possono salvare i calcoli")
                 }
+            }catch (e: Exception){
+                // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo
+                onError(e.message ?: "Errore imprevisto")
+            }
         }
     }
 

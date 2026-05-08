@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="gestione_profilo_title">Gestione Profilo</string>
+    <string name="gestione_profilo_subtitle">Modifica le tue informazioni personali e gestisci la sicurezza del tuo account clinico.</string>
+
+    <string name="dati_anagrafici_title">Dati Anagrafici</string>
+    <string name="label_nome">Nome</string>
+    <string name="label_cognome">Cognome</string>
+    <string name="label_data_nascita">Data di Nascita</string>
+    <string name="label_username">Username</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+
+    <string name="specialista_riferimento_title">Specialista di Riferimento</string>
+    <string name="mock_doctor_name">Dott.ssa Elena Bianchi</string>
+    <string name="mock_doctor_role">Dermatologa Senior</string>
+    <string name="mock_doctor_description">La Dott.ssa Elena Bianchi è specializzata in dermatologia clinica e oncologica. Ha maturato oltre 15 anni di esperienza nel trattamento delle patologie della pelle e nella prevenzione dei melanomi.</string>
+    <string name="btn_cambia_medico">Cambia Medico</string>
+
+    <string name="btn_logout">Logout</string>
+    <string name="btn_conferma">Conferma</string>
+    <string name="btn_annulla">Annulla</string>
+
+    <string name="modifica_username_title">Modifica Username</string>
+    <string name="modifica_username_desc">Inserisci il tuo nuovo username qui sotto.</string>
+    <string name="label_nuovo_username">Nuovo Username</string>
+
+    <string name="modifica_email_title">Modifica Email</string>
+    <string name="modifica_email_desc">Inserisci la tua nuova email e la tua password attuale (per confermare l\'autenticazione).</string>
+    <string name="label_nuova_email">Nuova Email</string>
+    <string name="label_password_attuale">Password Attuale</string>
+
+    <string name="modifica_password_title">Cambia Password</string>
+    <string name="modifica_password_desc">Inserisci la tua nuova password e confermala.</string>
+    <string name="label_nuova_password">Nuova Password</string>
+    <string name="label_conferma_password">Conferma Password</string>
+</resources>

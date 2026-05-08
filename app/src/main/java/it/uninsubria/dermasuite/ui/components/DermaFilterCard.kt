@@ -32,7 +32,7 @@ fun DermaFilterCard(
     subtitle: String,
     modifier: Modifier = Modifier,
     currentFilter : TimeFilter,
-    viewModel: HistoryPasiPageViewModel
+    onFilterSelected: (TimeFilter) -> Unit // Invece di passare un viewmodel specifico, passiamo l'azione da eseguire
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -68,7 +68,7 @@ fun DermaFilterCard(
                         FilterChip(
                             modifier = Modifier.weight(1f).height(60.dp),
                             selected = currentFilter == filter,
-                            onClick = { viewModel.applyFilter(filter) }, //diciamo al viewModel di applicare il filtro selezionato
+                            onClick = { onFilterSelected(filter) }, // Comunica all'esterno (alla schermata) quale filtro è stato appena cliccato
                             label = { Text(stringResource(filter.displayName).uppercase(), fontSize = 13.sp) },
                             colors = FilterChipDefaults.filterChipColors(
                                 labelColor = MaterialTheme.colorScheme.primary,
