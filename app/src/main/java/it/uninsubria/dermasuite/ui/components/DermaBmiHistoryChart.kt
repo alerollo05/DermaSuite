@@ -4,14 +4,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import it.uninsubria.dermasuite.R
+import it.uninsubria.dermasuite.model.BmiRecord
 import it.uninsubria.dermasuite.model.PasiRecord
 import it.uninsubria.dermasuite.model.TimeFilter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun DermaPasiHistoryChart (
-    records: List<PasiRecord>,
+fun DermaBmiHistoryChart (
+    records: List<BmiRecord>,
     timeFilter: TimeFilter,
 ){
     //Recuperiamo la lingua corrente per poi andare a stampare i valori della data nel formato corretto
@@ -20,7 +21,7 @@ fun DermaPasiHistoryChart (
     // Se la lista è vuota, esci subito cosi l'app non crasha in caso di errore
     if (records.isEmpty()) return
     //estraiamo i dati in formati semplici da far comparire nel grafico
-    val scores = records.map{it.PasiTot.toFloat()}
+    val scores = records.map{it.BmiTot.toFloat()}
     val months = records.map{
         SimpleDateFormat("MMM",currentLocale).format(it.CalculationDate).uppercase()
     }
@@ -31,7 +32,7 @@ fun DermaPasiHistoryChart (
 
     var stringaSubGrafico = stringResource(R.string.string_sub_chart_card)
     DermaChartCard(
-        title = "PASI",
+        title = "BMI",
         subtitle = "$stringaSubGrafico ${stringResource(timeFilter.displayName)}",
         indicatorColor = MaterialTheme.colorScheme.primary
     ) {
@@ -40,7 +41,7 @@ fun DermaPasiHistoryChart (
             xLabels = months,
             lineColor = MaterialTheme.colorScheme.primary,
             fullDates = fullDates, //Passiamo le date complete
-            valore = "PASI"
+            valore = "BMI"
         )
     }
 }

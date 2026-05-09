@@ -10,12 +10,12 @@ import it.uninsubria.dermasuite.R
 import java.util.Date
 
 data class BmiRecord(
-    @DocumentId val id: String,
+    @DocumentId val id: String = "",
     @get:PropertyName("CalculationDate") @set:PropertyName("CalculationDate") var CalculationDate: Date = Date(),
     @get:PropertyName("Category") @set:PropertyName("Category") var Category: String = "",
-    @get:PropertyName("BmiTot") @set:PropertyName("BmiTot") var BmiTot: Double,
-    @get:PropertyName("Height") @set:PropertyName("Height") var Height: Double,
-    @get:PropertyName("Weight") @set:PropertyName("Weight") var Weight: Double,
+    @get:PropertyName("BmiTot") @set:PropertyName("BmiTot") var BmiTot: Double = 0.0,
+    @get:PropertyName("Height") @set:PropertyName("Height") var Height: Double = 0.0,
+    @get:PropertyName("Weight") @set:PropertyName("Weight") var Weight: Double = 0.0,
     ) {
 
     //Equivale a una classe static in Java mettere il companion object qui dentro

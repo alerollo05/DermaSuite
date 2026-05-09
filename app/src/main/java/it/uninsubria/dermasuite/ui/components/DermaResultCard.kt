@@ -117,7 +117,8 @@ fun DermaResultCard(
     result: Double,
     max: Int,
     severity: String,
-    isBMI: Boolean = false //Per modificare la barra del risultato in base alla pagina
+    isBMI: Boolean = false, //Per modificare la barra del risultato in base alla pagina
+    modifier: Modifier = Modifier
 ){
     ElevatedCard(
         modifier = Modifier
