@@ -35,4 +35,37 @@
     <string name="modifica_password_desc">Inserisci la tua nuova password e confermala.</string>
     <string name="label_nuova_password">Nuova Password</string>
     <string name="label_conferma_password">Conferma Password</string>
+
+    <string name="dialog_successo_ricerca_medico">Medico selezionato con successo!</string>
+    <string name="dialog_errore_ricerca_medico">Errore durante la selezione del medico!</string>
+    <string name="dialog_doctor_title">Seleziona un Medico</string>
+    <string name="dialog_doctor_not_found">Nessun medico trovato</string>
+
+    <string name="error_empty_username">L\'username non può essere vuoto!</string>
+    <string name="msg_username_updated">Username aggiornato!</string>
+    <string name="error_connection">Errore di connessione.</string>
+    <string name="error_fill_all_fields">Compila tutti i campi.</string>
+    <string name="error_wrong_password">La password inserita è errata.</string>
+    <string name="msg_email_updated">Email aggiornata con successo!</string>
+    <string name="error_update_failed">Errore durante l\'aggiornamento.</string>
+    <string name="error_passwords_not_match">Le password non coincidono.</string>
+    <string name="error_password_too_short">La password deve avere almeno 6 caratteri.</string>
+    <string name="error_current_password_wrong">Password attuale errata.</string>
+    <string name="msg_password_updated">Password aggiornata con successo!</string>
+    <string name="label_doctor_prefix">Dott.</string>
+    <string name="label_no_birthdate">Data di nascita non inserita</string>
+
+    <string name="label_no_doctor_assigned">Nessun medico assegnato</string>
+    <string name="label_dermatology">Dermatologia</string>
+    <string name="desc_no_doctor_assigned">Attualmente non sei seguito da nessuno specialista. Clicca sul pulsante qui sotto per sceglierne uno dalla lista.</string>
+    <string name="label_default_specialization">Specialista in Dermatologia</string>
+    <string name="desc_no_doctor_description">Nessuna descrizione fornita dal medico.</string>
+    <string name="dialog_close">Chiudi</string>
+
+    <string name="dialog_description">Descrizione: </string>
+    <string name="dialog_mail">Email: </string>
+    <string name="dialog_lingua">Lingua: </string>
+    <string name="dialog_data_nascita">Data di Nascita: </string>
+
+
 </resources>

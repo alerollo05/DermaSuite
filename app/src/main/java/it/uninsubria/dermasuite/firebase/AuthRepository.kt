@@ -28,6 +28,8 @@ class AuthRepository {
             //Convertiamo la data di nascita in formato TimeStamp
             val timestampNascita = state.dataNascitaMillis?.let {
                 com.google.firebase.Timestamp(java.util.Date(it))}
+            //Andiamo a prendere la lingua corrente con cui si sta registrando l'utente, in modo da poi avere la scelta dei medici della stessa lingua tra medico e paziente
+            val deviceLanguage = java.util.Locale.getDefault().language
 
            //I nomi delle proprietà diventeranno direttamente le chiavi su fireStore
             val newUser = DermaUser(
@@ -37,7 +39,8 @@ class AuthRepository {
                 state.email,
                 state.username,
                 timestampNascita,
-                state.accountType
+                state.accountType,
+                deviceLanguage //salvo anche la lingua dell'utente in automatico senza che l'utente lo sappia
             )
 
             //Salva i dati nella collezione "users" usando l'UID come ID documento
@@ -139,7 +142,7 @@ class AuthRepository {
         }
     }
 
-    // 3. Aggiorna la password (richiede che la ri-autenticazione sia appena avvenuta)
+    //Aggiorna la password (richiede che la ri-autenticazione sia appena avvenuta)
     suspend fun updatePassword(newPassword: String): Boolean {
         return try {
             val user = auth.currentUser ?: return false
@@ -155,4 +158,32 @@ class AuthRepository {
             false
         }
     }
+
+    suspend fun getAvailableDoctors(): List<DermaUser> {
+        return try{
+            //andiamo a prendere la lista di medici disponibili nel db
+            val snapshot = db.collection("users")
+                    .whereEqualTo("role", "Medico")
+                    .whereEqualTo("language", java.util.Locale.getDefault().language)
+                    .get().await()
+
+            snapshot.toObjects(DermaUser::class.java)
+        }catch(e: Exception){
+            e.printStackTrace()
+            emptyList() // In caso di errore, restituisce una lista vuota
+        }
+    }
+
+    suspend fun linkDoctorToPatient(patientUid: String, doctorUid: String) : Boolean{
+        return try{
+            //Andiamo ad aggiornare il campo medico del paziente interessato
+            db.collection("users").document(patientUid)
+                .update("doctorId", doctorUid).await()
+            true
+        }catch(e: Exception){
+            e.printStackTrace()
+            false
+        }
+    }
+
 }

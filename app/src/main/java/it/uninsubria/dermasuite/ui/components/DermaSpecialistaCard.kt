@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -31,9 +33,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
+import it.uninsubria.dermasuite.viewmodels.paziente.ProfilePazPageViewModel
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @Composable
@@ -41,12 +50,18 @@ fun DermaSpecialistCard(
     doctorName: String,
     doctorRole: String,
     doctorDescription: String,
+    doctorDataNascita: Timestamp? = null,
+    doctorMail: String,
+    doctorLanguage: String,
     // Opzionale: passa l'ID della tua icona se ne hai una specifica per il medico
-    iconResId: Int = R.drawable.ic_profile
+    iconResId: Int = R.drawable.ic_profile,
+    viewModel: ProfilePazPageViewModel = viewModel()
 ) {
 
     // Variabile di stato interna al componente per gestire l'apertura/chiusura del popup
     var showDialog by remember { mutableStateOf(false) }
+
+
 
     // La Card del Medico
     ElevatedCard(
@@ -108,28 +123,127 @@ fun DermaSpecialistCard(
         }
     }
 
-    // Il Popup (AlertDialog) che appare quando showDialog è true
+    // Il Popup (Dialog) che appare quando showDialog è true
     if (showDialog) {
-        AlertDialog(
+        //Formattiamo la data da stampare
+        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dataNascitaFormattata = formatter.format(doctorDataNascita?.toDate() ?: Date())
+
+        Dialog(
             onDismissRequest = { showDialog = false },
-            title = {
-                Text(
-                    text = doctorName,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            },
-            text = {
-                Text(
-                    text = doctorDescription,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text("Chiudi")
+            properties = DialogProperties(
+                dismissOnBackPress = true, // Si chiude col tasto indietro del telefono
+                dismissOnClickOutside = true, // Si chiude cliccando nello spazio vuoto
+                usePlatformDefaultWidth = false // Disabilita la larghezza forzata di sistema
+            )
+        ){
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(0.90f)// Occupa solo l'85% della larghezza, lasciando i bordi liberi
+                    .padding(20.dp)
+            ) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                ) {
+                        Text(
+                            doctorName,
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.dialog_description),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = doctorDescription,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                                maxLines = 3,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                        ){
+                            Text(
+                                text = stringResource(R.string.dialog_mail),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = doctorMail,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                        ){
+                            Text(
+                                text = stringResource(R.string.dialog_lingua),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = doctorLanguage.uppercase(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                        ){
+                            Text(
+                                text = stringResource(R.string.dialog_data_nascita),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = dataNascitaFormattata,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Button(
+                            onClick = {
+                                showDialog = false
+                            },
+                            modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
+
+                        ) {
+                            androidx.compose.material.Text(
+                                text = stringResource(R.string.dialog_close),
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
                 }
             }
-        )
+        }
     }
-}

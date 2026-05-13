@@ -4,6 +4,10 @@
     <string name="gestione_profilo_title">Profile Management</string>
     <string name="gestione_profilo_subtitle">Edit your personal information and manage the security of your clinical account.</string>
 
+    <string name="label_bottom_home">HOME</string>
+    <string name="label_bottom_chat">CHAT</string>
+    <string name="label_bottom_profile">PROFILE</string>
+
     <string name="dati_anagrafici_title">Personal Details</string>
     <string name="label_nome">First Name</string>
     <string name="label_cognome">Last Name</string>
@@ -35,5 +39,37 @@
     <string name="modifica_password_desc">Enter your new password and confirm it.</string>
     <string name="label_nuova_password">New Password</string>
     <string name="label_conferma_password">Confirm Password</string>
+
+    <string name="dialog_successo_ricerca_medico">Doctor selected successfully!</string>
+    <string name="dialog_errore_ricerca_medico">Error while selecting doctor!</string>
+    <string name="dialog_doctor_title">Select a Doctor</string>
+    <string name="dialog_doctor_not_found">No doctor found</string>
+
+
+    <string name="error_empty_username">Username cannot be empty!</string>
+    <string name="msg_username_updated">Username updated!</string>
+    <string name="error_connection">Connection error.</string>
+    <string name="error_fill_all_fields">Please fill all fields.</string>
+    <string name="error_wrong_password">The password entered is incorrect.</string>
+    <string name="msg_email_updated">Email updated successfully!</string>
+    <string name="error_update_failed">Error during update.</string>
+    <string name="error_passwords_not_match">Passwords do not match.</string>
+    <string name="error_password_too_short">Password must be at least 6 characters long.</string>
+    <string name="error_current_password_wrong">Current password incorrect.</string>
+    <string name="msg_password_updated">Password updated successfully!</string>
+    <string name="label_doctor_prefix">Dr.</string>
+    <string name="label_no_birthdate">Date of birth not entered</string>
+
+    <string name="label_no_doctor_assigned">No doctor assigned</string>
+    <string name="label_dermatology">Dermatology</string>
+    <string name="desc_no_doctor_assigned">You are currently not followed by any specialist. Click the button below to choose one from the list.</string>
+    <string name="label_default_specialization">Specialist in Dermatology</string>
+    <string name="desc_no_doctor_description">No description provided by the doctor.</string>
+    <string name="dialog_close">Close</string>
+
+    <string name="dialog_description">Description: </string>
+    <string name="dialog_mail">Email: </string>
+    <string name="dialog_lingua">Language: </string>
+    <string name="dialog_data_nascita">Date of Birth: </string>
 
 </resources>

@@ -14,12 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.ui.components.DermaButton
+import it.uninsubria.dermasuite.viewmodels.medico.DashboardPageMedicoViewModel
 import it.uninsubria.dermasuite.viewmodels.paziente.DashboardPagePazienteViewModel
 
 @Composable
 fun DermaDashBoardMedicoScreen(
     onLogout: () -> Unit, //Questo è il logout che possiamo andare a richiamare dentro un bottone nella UI
-    viewmodel: DashboardPagePazienteViewModel = viewModel()
+    viewmodel: DashboardPageMedicoViewModel = viewModel()
 ){
     val nomeUtente = viewmodel.username //Andiamo a prendere il nome dell'utente dal viewModel
 
