@@ -23,6 +23,7 @@ import  it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaIsLoading
+import it.uninsubria.dermasuite.ui.components.DermaListaPazienti
 
 @Composable
 fun DermaDashBoardMedicoScreen(
@@ -73,7 +74,7 @@ fun DermaDashBoardMedicoScreen(
                        color = MaterialTheme.colorScheme.primary
                    )
             }else{
-                //Stampiamo la lista dei pazienti
+                DermaListaPazienti(viewModel)
             }
         }
     }
