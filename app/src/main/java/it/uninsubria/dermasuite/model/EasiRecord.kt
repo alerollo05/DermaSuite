@@ -22,8 +22,6 @@ data class EasiRecord(
 )
 
 // Mappatura della severità dal database.
-// Se la scala di severità dell'EASI è diversa dal PASI, dovrai aggiornare la logica qui.
-// Per ora, uso la stessa logica del PASI.
 fun EasiRecord.mapSeverity(context: Context): String {
     return when (this.Severity) {
         "LEVEL_SEVERE" -> context.getString(R.string.severity_severe)
