@@ -8,4 +8,6 @@
     <string name="description_dashboard_medico">Here you can see all your patients and their results</string>
     <string name="no_patients_found">No patients found</string>
     <string name="search_placeholder">Search patient…</string>
+    <string name="label_stato_paziente">Under treatment</string>
+    <string name="label_ultima_valutazione">Last evaluation</string>
 </resources>

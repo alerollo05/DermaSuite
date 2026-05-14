@@ -164,7 +164,6 @@ class AuthRepository {
             //andiamo a prendere la lista di medici disponibili nel db
             val snapshot = db.collection("users")
                     .whereEqualTo("role", "Medico")
-                    .whereEqualTo("language", java.util.Locale.getDefault().language)
                     .get().await()
 
             snapshot.toObjects(DermaUser::class.java)
@@ -197,6 +196,21 @@ class AuthRepository {
         }catch(e: Exception){
             e.printStackTrace()
             emptyList()
+        }
+    }
+
+    //Funzione che ad ogni calcolo fatto aggiorna la data della ultima valutazione, che poi leggerà il medico
+    suspend fun updateLastEvaluationDate(patientUid: String): Boolean {
+        return try {
+            db.collection("users")
+                .document(patientUid)
+                // FieldValue.serverTimestamp() usa l'orario preciso del server Firebase
+                .update("ultimaValutazione", com.google.firebase.firestore.FieldValue.serverTimestamp())
+                .await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 

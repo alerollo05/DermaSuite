@@ -48,7 +48,7 @@ fun DermaDashBoardMedicoScreen(
         }
     ){
         padding ->
-        DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
+        DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top, scrollState = null) {
             Spacer(modifier = Modifier.height(24.dp))
 
             DermaHeading(
@@ -74,7 +74,7 @@ fun DermaDashBoardMedicoScreen(
                        color = MaterialTheme.colorScheme.primary
                    )
             }else{
-                DermaListaPazienti(viewModel)
+                DermaListaPazienti(viewModel, modifier = Modifier.weight(1f))
             }
         }
     }

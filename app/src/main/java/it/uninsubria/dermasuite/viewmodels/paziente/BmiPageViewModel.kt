@@ -128,6 +128,12 @@ class BmiPageViewModel : ViewModel() {
                         )
 
                         db.collection("users").document(user.uid).collection("BMI").add(payload).await()
+
+                        //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
+                        db.collection("users").document(user.uid).update(
+                            "ultimaValutazione", FieldValue.serverTimestamp()
+                        ).await()
+
                         onSuccess()
                         uiState = uiState.copy(isSaving = false)
                     }else{

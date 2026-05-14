@@ -136,6 +136,12 @@ class PasiPageViewModel(): ViewModel() {
                            .collection("PASI")
                            .add(payload).await()// Aspettiamo che il salvataggio sia completato
 
+
+                       //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
+                       db.collection("users").document(user.uid).update(
+                           "ultimaValutazione", FieldValue.serverTimestamp()
+                       ).await()
+
                        // Se arriviamo qui, NESSUN errore si è verificato nei due .await()
                        onSuccess()
                    } else {

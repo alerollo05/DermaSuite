@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun DermaColumnScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues = PaddingValues(0.dp), // Gestisce lo spazio dello Scaffold
-    scrollState: ScrollState = rememberScrollState(),
+    scrollState: ScrollState? = rememberScrollState(),
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally, // Se non specifico nulla quando chiamo la funzione, usa come valore predefinito il centro (CenterHorizontally).
     verticalArrangement: Arrangement.Vertical = Arrangement.Center, // Uguale a horizzontalAlignmet
     content: @Composable ColumnScope.() -> Unit // contenuto della column
@@ -28,14 +28,20 @@ fun DermaColumnScreen(
     //Lo mettiamo in modo tale che se i campi sono troppi posso fare lo scrool per vederli tutti
     // e tenere in memoria gli stati
 
+    val columnModifier = modifier
+        .fillMaxSize()
+        // Il padding dello Scaffold va applicato per primo
+        .padding(innerPadding)
+        .background(MaterialTheme.colorScheme.background)
+
+    val finalModifier = if (scrollState != null) {
+        columnModifier.verticalScroll(scrollState)
+    } else {
+        columnModifier
+    }
+
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            // Il padding dello Scaffold va applicato per primo
-            .padding(innerPadding)
-            .background(MaterialTheme.colorScheme.background)
-            // Poi applichiamo lo scroll
-            .verticalScroll(scrollState)
+        modifier = finalModifier
             // Infine il padding orizzontale interno
             .padding(horizontal = 16.dp),
         horizontalAlignment = horizontalAlignment,

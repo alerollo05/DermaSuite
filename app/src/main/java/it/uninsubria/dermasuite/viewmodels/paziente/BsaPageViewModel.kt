@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uninsubria.dermasuite.model.BsaRecord
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -128,6 +129,11 @@ class BsaPageViewModel : ViewModel() {
                     .collection("BSA") // Salviamo nella sotto-collezione "BSA" del paziente
                     .add(record)
                     .await() // Attendiamo la conferma da parte di Firebase
+
+                //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
+                db.collection("users").document(userId).update(
+                    "ultimaValutazione", FieldValue.serverTimestamp()
+                ).await()
 
                 _isLoading.value = false // Sblocchiamo il pulsante
                 _saveSuccess.emit(true)  // Diciamo alla View di mostrare la Snackbar di successo
