@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_errore_caricamento_dati">Dottore</string>
+    <string name="bottom_bar_paziente">Pazienti</string>
+    <string name="bottom_bar_chat">Chat</string>
+    <string name="bottom_bar_profilo">Profilo</string>
+    <string name="title_dashboard_medico">I miei pazienti</string>
+    <string name="description_dashboard_medico">Qui potrai vedere i tuoi pazienti e i loro risultati</string>
+    <string name="no_patients_found">Nessun paziente trovato</string>
+    <string name="search_placeholder">Cerca paziente…</string>
+</resources>

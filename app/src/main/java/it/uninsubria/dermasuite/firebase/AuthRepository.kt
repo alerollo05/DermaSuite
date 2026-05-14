@@ -186,4 +186,18 @@ class AuthRepository {
         }
     }
 
+//Funzione per andare a prendere i pazienti associati al medico loggato in quel momento
+    suspend fun getMyPatients(doctorUid: String) : List<DermaUser>{
+        return try{
+            val snapshot = db.collection("users")
+                .whereEqualTo("role", "Paziente")
+                .whereEqualTo("doctorId", doctorUid).get().await()
+            //Andiamo a traformare il risultato della query in una lista di DermaUser
+            snapshot.toObjects(DermaUser::class.java)
+        }catch(e: Exception){
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
 }

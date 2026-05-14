@@ -16,6 +16,8 @@ import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
+import it.uninsubria.dermasuite.ui.screens.medico.DermaChatMedicoScreen
+import it.uninsubria.dermasuite.ui.screens.medico.DermaProfileMedicoScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBSAHistoryScreen
@@ -192,12 +194,29 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = "dashboard_screen_medico"){
                         DermaDashBoardMedicoScreen(
+                            navController = navController,
+                            onNavigateToChatM = {navController.navigate("chat_screen_medico")},
+                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")}
+                        )
+                    }
+                    composable("chat_screen_medico") {
+                        DermaChatMedicoScreen(
+                            navController = navController,
+                            onNavigateToDashboardM = {navController.navigate("dashboard_screen_medico")},
+                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")}
+                        )
+                    }
+                    composable("profile_screen_medico") {
+                        DermaProfileMedicoScreen(
                             onLogout = {
                                 Firebase.auth.signOut()
                                 navController.navigate("start_screen") {
                                     popUpTo(0)
                                 }
-                            }
+                            },
+                            navController = navController,
+                            onNavigateToDashboardM = {navController.navigate("dashboard_screen_medico")},
+                            onNavigateToChatM = {navController.navigate("chat_screen_medico")}
                         )
                     }
                     // Pagina intermedia per decidere dove andare se l'utente era già loggato
