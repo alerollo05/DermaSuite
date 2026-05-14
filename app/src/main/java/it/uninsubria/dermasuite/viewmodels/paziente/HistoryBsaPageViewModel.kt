@@ -95,10 +95,12 @@ class HistoryBsaPageViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 // 1. Cancelliamo il documento da Firebase usando il suo ID univoco
-                db.collection("users")
-                    .document(UserId)
-                    .collection("BSA")
-                    .document(record.id).delete().await()
+                if (UserId != null) {
+                    db.collection("users")
+                        .document(UserId)
+                        .collection("BSA")
+                        .document(record.id).delete().await()
+                }
 
                 // 2. Rimuoviamo il record dalla nostra lista locale per aggiornare la UI istantaneamente
                 // senza dover scaricare di nuovo tutto il database
