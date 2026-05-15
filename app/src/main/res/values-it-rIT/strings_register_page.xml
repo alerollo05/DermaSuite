@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_sex">Seleziona sesso</string>
+    <string name="male">Maschio</string>
+    <string name="female">Femmina</string>
+</resources>

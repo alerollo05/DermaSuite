@@ -12,6 +12,7 @@
     <string name="label_nome">First Name</string>
     <string name="label_cognome">Last Name</string>
     <string name="label_data_nascita">Date of Birth</string>
+    <string name="label_sesso">Gender</string>
     <string name="label_username">Username</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>

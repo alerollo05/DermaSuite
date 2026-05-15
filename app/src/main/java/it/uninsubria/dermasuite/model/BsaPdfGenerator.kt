@@ -113,8 +113,10 @@ suspend fun bsaPdfGenerator(
 
         currentPage?.let { pdfDocument.finishPage(it) } // Chiude l'ultima pagina creata
 
-        // Nome del file basato sul filtro temporale e la data attuale
-        val filename = "REPORT_BSA_${context.getString(timeFilter.displayName).uppercase()}_${SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())}.pdf"
+        // Aggiungiamo "_HHmmss" per rendere ogni file PDF unico e non sovrascrivere i vecchi
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val filterName = context.getString(timeFilter.displayName).uppercase()
+        val filename = "REPORT_BSA_${filterName}_${timestamp}.pdf"
 
         try {
             // Gestione salvataggio per Android 10 (API 29) e superiori usando MediaStore (Scoped Storage)

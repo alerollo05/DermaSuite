@@ -37,13 +37,14 @@ class AuthRepository {
 
            //I nomi delle proprietà diventeranno direttamente le chiavi su fireStore
             val newUser = DermaUser(
-                uid,
-                state.nome,
-                state.cognome,
-                state.email,
-                state.username,
-                timestampNascita,
-                state.accountType,
+                uid = uid,
+                nome = state.nome,
+                cognome = state.cognome,
+                email = state.email,
+                username = state.username,
+                dataNascita = timestampNascita,
+                sesso = state.sesso,             // Adesso va al posto giusto!
+                role = state.accountType,  // Adesso va al posto giusto!
                 deviceLanguage //salvo anche la lingua dell'utente in automatico senza che l'utente lo sappia
             )
 

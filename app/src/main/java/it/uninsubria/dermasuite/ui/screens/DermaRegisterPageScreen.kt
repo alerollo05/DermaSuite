@@ -31,6 +31,7 @@ import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaDatePicker
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaPrivacyDisclaimerBox
+import it.uninsubria.dermasuite.ui.components.DermaSelectorSesso
 import it.uninsubria.dermasuite.ui.components.DermaTextField
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.RegisterPageViewModel
@@ -120,6 +121,11 @@ fun DermaRegisterPageScreen(
                 label = stringResource(R.string.textfield_birth),
                 value = uiState.dataNascita,
                 onDataSelected = { viewModel.onDataNascitaChanged(it) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DermaSelectorSesso(
+                selectedSesso = uiState.sesso,
+                onSessoSelected = { viewModel.onSessoChanged(it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(

@@ -118,6 +118,7 @@ fun DermaProfilePazienteScreen(
     val email = viewModel.email
     val password = viewModel.password
     val dataNascita = viewModel.dataNascita
+    val sesso = viewModel.sesso
 
     Scaffold(
         topBar= {
@@ -200,6 +201,8 @@ fun DermaProfilePazienteScreen(
                         DermaProfileField(stringResource(R.string.label_cognome), cognomeUtente)
 
                         DermaProfileField(stringResource(R.string.label_data_nascita), dataNascita ?: stringResource(R.string.label_no_birthdate))
+
+                        DermaProfileField(stringResource(R.string.label_sesso), sesso ?: "Non specificato")
 
                         DermaProfileField(
                             label = stringResource(R.string.label_username),

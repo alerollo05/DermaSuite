@@ -9,6 +9,7 @@ data class DermaUser(
     val email: String = "",
     val username: String = "",
     val dataNascita: Timestamp? = null, //Utilizziamo timeStamp per gestire le date più comodamente su firestore
+    val sesso: String = "",
     val role: String = "",
     val language: String = "", // Impostiamo "" di default
     // Per il PAZIENTE: conterrà l'UID del medico scelto (null se non l'ha ancora scelto)

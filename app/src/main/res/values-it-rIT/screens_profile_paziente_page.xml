@@ -8,6 +8,7 @@
     <string name="label_nome">Nome</string>
     <string name="label_cognome">Cognome</string>
     <string name="label_data_nascita">Data di Nascita</string>
+    <string name="label_sesso">Sesso</string>
     <string name="label_username">Username</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>

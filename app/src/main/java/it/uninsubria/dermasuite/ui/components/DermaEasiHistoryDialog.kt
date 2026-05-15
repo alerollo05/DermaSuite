@@ -65,7 +65,7 @@ fun DermaEasiHistoryDialog (
                 Button(
                     onClick = {
                         viewModel.deleteRecord(record, currentUser?.uid.toString())
-                        onDismiss()
+                        onDismiss() // Chiude il popup una volta eliminato
                     },
                     modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
                 ) {

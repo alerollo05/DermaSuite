@@ -1,6 +1,9 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,6 +19,7 @@ import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.*
 import it.uninsubria.dermasuite.viewmodels.paziente.BsaPageViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DermaBSAScreen(
     onBack: () -> Unit,
@@ -25,6 +29,9 @@ fun DermaBSAScreen(
     navController: NavController,
     viewModel: BsaPageViewModel = viewModel()
 ) {
+    val scrollState = rememberScrollState() // Stato dello scroll
+
+
     // Osserviamo gli stati dal ViewModel
     val peso by viewModel.peso.collectAsState()
     val altezza by viewModel.altezza.collectAsState()
@@ -45,6 +52,26 @@ fun DermaBSAScreen(
                     duration = SnackbarDuration.Short
                 )
             }
+        }
+    }
+
+    // Ascoltiamo i messaggi di errore dal ViewModel
+    LaunchedEffect(Unit) {
+        viewModel.errorMessage.collect { message ->
+            snackbarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short // O SnackbarDuration.Long se vuoi che duri di più
+            )
+        }
+    }
+
+    // Effetto per lo scroll automatico quando compare il risultato
+    LaunchedEffect(risultatoBsa) {
+        if (risultatoBsa != null) {
+            // Un piccolo delay permette a Compose di renderizzare la card
+            // prima di calcolare il nuovo punto massimo di scroll
+            kotlinx.coroutines.delay(150)
+            scrollState.animateScrollTo(scrollState.maxValue)
         }
     }
 
@@ -71,7 +98,7 @@ fun DermaBSAScreen(
             )
         }
     ) { padding ->
-        DermaColumnScreen(innerPadding = padding) {
+        DermaColumnScreen(innerPadding = padding, scrollState = scrollState) {
 
             DermaHeading(
                 titolo = "Calcola la tua Body Surface Area",
@@ -91,7 +118,7 @@ fun DermaBSAScreen(
                     placeholder = "Inserisci la tua altezza",
                     value = altezza,
                     onValueChange = { viewModel.onAltezzaChange(it) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -103,39 +130,9 @@ fun DermaBSAScreen(
                     placeholder = "Inserisci il tuo peso",
                     value = peso,
                     onValueChange = { viewModel.onPesoChange(it) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth()
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Selezione Sesso
-                Text(
-                    text = "Seleziona il Sesso",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(bottom = 8.dp)
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    RadioButton(
-                        selected = sesso == "Maschio",
-                        onClick = { viewModel.onSessoChange("Maschio") }
-                    )
-                    Text("Maschio")
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    RadioButton(
-                        selected = sesso == "Femmina",
-                        onClick = { viewModel.onSessoChange("Femmina") }
-                    )
-                    Text("Femmina")
-                }
 
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -147,42 +144,20 @@ fun DermaBSAScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 // Visualizzazione Risultato (compare solo dopo il calcolo)
+                // Visualizzazione Risultato (compare solo dopo il calcolo)
                 if (risultatoBsa != null) {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
-                        ),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "La tua BSA:",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "$risultatoBsa m²",
-                                fontSize = 36.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(
-                                text = "Valutazione: $valutazione",
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                        }
-                    }
+                    // Convertiamo il risultato in Double invece che in Float
+                    val risultatoNumerico = risultatoBsa.toString().toDoubleOrNull() ?: 0.0
+
+                    DermaResultCard(
+                        title = "La tua BSA",
+                        result = risultatoNumerico,
+                        severity = valutazione,
+                        max = 3 // Una BSA raramente supera i 3 m².
+                    )
                 }
             }
         }

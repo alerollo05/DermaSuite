@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.model.BsaRecord
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,7 @@ import kotlin.math.sqrt
 // ViewModel responsabile per la pagina di calcolo del BSA.
 // Gestisce gli input dell'utente, esegue il calcolo matematico
 // e salva il risultato su Firestore.
-class BsaPageViewModel : ViewModel() {
+class BsaPageViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
@@ -36,7 +37,7 @@ class BsaPageViewModel : ViewModel() {
     private val _altezza = MutableStateFlow("")
     val altezza: StateFlow<String> = _altezza.asStateFlow()
 
-    private val _sesso = MutableStateFlow("Maschio") // Impostiamo un valore di default
+    private val _sesso = MutableStateFlow("")
     val sesso: StateFlow<String> = _sesso.asStateFlow()
 
     // --- EVENTI E STATI DI OUTPUT ---
@@ -44,6 +45,10 @@ class BsaPageViewModel : ViewModel() {
     // "one-shot" (deve scattare una volta sola e non ripresentarsi se l'utente ruota lo schermo).
     private val _saveSuccess = MutableSharedFlow<Boolean>()
     val saveSuccess: SharedFlow<Boolean> = _saveSuccess.asSharedFlow()
+
+    // SharedFlow per inviare messaggi di errore alla UI
+    private val _errorMessage = MutableSharedFlow<String>()
+    val errorMessage: SharedFlow<String> = _errorMessage.asSharedFlow()
 
     // Stati per mostrare il risultato e il caricamento
     private val _risultatoBsa = MutableStateFlow<Double?>(null)
@@ -54,6 +59,24 @@ class BsaPageViewModel : ViewModel() {
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    // Blocco init per recuperare automaticamente il sesso del paziente all'avvio
+    init {
+        recuperaSessoPaziente()
+    }
+
+    private fun recuperaSessoPaziente() {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            viewModelScope.launch {
+                // Chiamiamo la funzione che hai già creato nel tuo AuthRepository!
+                val dermaUser = repository.getUserData(userId)
+
+                // Se l'utente esiste e ha un sesso salvato lo usiamo, altrimenti fallback a "Maschio"
+                _sesso.value = dermaUser?.sesso ?: "Maschio"
+            }
+        }
+    }
 
     // Funzioni per aggiornare gli stati quando l'utente digita nei TextField
     fun onPesoChange(newPeso: String) { _peso.value = newPeso }
@@ -68,22 +91,36 @@ class BsaPageViewModel : ViewModel() {
         val altezzaVal = _altezza.value.toDoubleOrNull()
         val sessoVal = _sesso.value
 
-        // Controlliamo che i valori inseriti siano validi (numeri maggiori di zero)
-        if (pesoVal != null && altezzaVal != null && pesoVal > 0 && altezzaVal > 0) {
-            _isLoading.value = true // Blocchiamo il pulsante per evitare doppi click
+        // Usiamo una coroutine perché _errorMessage.emit() ha bisogno di essere sospeso
+        viewModelScope.launch {
+            // Controllo che i campi non siano vuoti o formattati male
+            if (pesoVal == null || altezzaVal == null) {
+                _errorMessage.emit("Inserisci tutti i dati richiesti.")
+                return@launch // Interrompe l'esecuzione della funzione
+            }
 
-            // Calcolo matematico con la formula di Mosteller: sqrt((peso * altezza) / 3600)
+            // Controllo Altezza
+            if (altezzaVal < 50.0 || altezzaVal > 280.0) {
+                _errorMessage.emit("L'altezza deve essere compresa tra 50 e 280 cm.")
+                return@launch
+            }
+
+            // Controllo Peso
+            if (pesoVal < 30.0 || pesoVal > 500.0) {
+                _errorMessage.emit("Il peso deve essere compreso tra 30 e 500 kg.")
+                return@launch
+            }
+
+            // Se arriviamo qui, i dati sono perfetti!
+            _isLoading.value = true
+
             val bsaCalcolato = sqrt((pesoVal * altezzaVal) / 3600.0)
+            val bsaArrotondato = String.format(java.util.Locale.US, "%.2f", bsaCalcolato).toDouble()
 
-            // Arrotondiamo a 2 decimali e gestiamo il problema della virgola locale
-            val bsaArrotondato = String.format("%.2f", bsaCalcolato).replace(",", ".").toDouble()
-
-            // Aggiorniamo la UI con i risultati
             _risultatoBsa.value = bsaArrotondato
             val valutazioneTesto = valutaBsa(bsaArrotondato, sessoVal)
             _valutazione.value = valutazioneTesto
 
-            // Procediamo al salvataggio nel database
             salvaSuFirestore(pesoVal, altezzaVal, sessoVal, bsaArrotondato, valutazioneTesto)
         }
     }

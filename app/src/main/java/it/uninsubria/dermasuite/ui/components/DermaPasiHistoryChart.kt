@@ -36,6 +36,8 @@ fun DermaPasiHistoryChart (
         indicatorColor = MaterialTheme.colorScheme.primary
     ) {
         DermaChartVico(
+            tipoCalcolo = "PASI",
+            maxScala = 72,
             yValues = scores,
             xLabels = months,
             lineColor = MaterialTheme.colorScheme.primary,

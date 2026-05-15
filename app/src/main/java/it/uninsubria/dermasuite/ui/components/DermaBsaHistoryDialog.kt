@@ -62,10 +62,12 @@ fun DermaBsaHistoryDialog(
                         viewModel.deleteRecord(record, userId)
                         onDismiss()
                     },
-                    modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                    modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
                 ) {
-                    Text(text = "Elimina Record", color = MaterialTheme.colorScheme.onError)
+                    Text(text = "Elimina Calcolo",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
             }
         }
