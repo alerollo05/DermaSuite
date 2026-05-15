@@ -11,4 +11,5 @@
     <string name="label_stato_paziente">In trattamento</string>
     <string name="label_ultima_valutazione">Ultima valutazione</string>
     <string name="no_data_found">Non ci sono abbastanza dati per mostrare</string>
+    <string name="one_data_found">Solo un dato trovato</string>
 </resources>

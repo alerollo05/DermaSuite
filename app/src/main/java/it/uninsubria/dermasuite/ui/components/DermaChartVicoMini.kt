@@ -44,7 +44,6 @@ fun DermaChartVicoMini(
                     lineProvider = LineCartesianLayer.LineProvider.series(
                         rememberLine(
                             fill = LineCartesianLayer.LineFill.single(fill(lineColor)),
-                            // Rimuoviamo il pointProvider: vogliamo solo la linea pulita
                         )
                     )
                 )

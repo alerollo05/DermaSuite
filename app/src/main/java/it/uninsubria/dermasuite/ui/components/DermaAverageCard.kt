@@ -60,11 +60,11 @@ fun DermaAverageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-            ){
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ){
+                ) {
                     Text(
                         text = title.uppercase(),
                         color = Color.Gray,
@@ -82,7 +82,7 @@ fun DermaAverageCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.Bottom
-                ){
+                ) {
                     Text(
                         text = averageValue,
                         style = MaterialTheme.typography.headlineMedium,
@@ -100,7 +100,8 @@ fun DermaAverageCard(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 //Stampiamo i grafici
-                if (historicalData.isNotEmpty()) {
+                //Controlliamo se ci sono abbastanza dati per il grafico (almeno 2)
+                if (historicalData.size > 1) {
                     Box(modifier = Modifier.fillMaxWidth().height(48.dp)) {
                         DermaChartVicoMini(
                             yValues = historicalData,
@@ -108,7 +109,14 @@ fun DermaAverageCard(
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
-                } else {
+                    //Caso specifico: c'è solo un dato
+                }else if (historicalData.size == 1) {
+                    Text(
+                        text = stringResource(id = R.string.one_data_found),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.Gray
+                    )
+                }else {
                     // Fallback se non ci sono ancora dati
                     Text(stringResource(R.string.no_data_found), style = MaterialTheme.typography.labelSmall, color = Color.Gray)
                 }
