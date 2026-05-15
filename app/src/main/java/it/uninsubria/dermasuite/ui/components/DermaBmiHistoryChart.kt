@@ -41,7 +41,8 @@ fun DermaBmiHistoryChart (
             xLabels = months,
             lineColor = MaterialTheme.colorScheme.primary,
             fullDates = fullDates, //Passiamo le date complete
-            valore = "BMI"
+            tipoCalcolo = "BMI",
+            maxScala = 60
         )
     }
 }
