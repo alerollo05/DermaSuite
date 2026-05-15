@@ -25,6 +25,7 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
     var nomeUtente by mutableStateOf<String?>(null); private set
     var cognomeUtente by mutableStateOf<String?>(null); private set
     var dataNascita by mutableStateOf<String?>(null); private set
+    var sesso by mutableStateOf<String?>(null); private set
     var email by mutableStateOf<String?>(null); private set
     var password by mutableStateOf<String?>("********"); private set
 
@@ -61,6 +62,7 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                     user = dermaUser.username
                     nomeUtente = dermaUser.nome
                     cognomeUtente = dermaUser.cognome
+                    sesso = dermaUser.sesso
                     val timestamp = dermaUser.dataNascita // Questo è l'oggetto Timestamp di Firebase
                     // Converti Timestamp in Date
                     val date = timestamp?.toDate()

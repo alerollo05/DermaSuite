@@ -29,6 +29,8 @@ fun DermaEasiHistoryChart (
         indicatorColor = MaterialTheme.colorScheme.primary
     ) {
         DermaChartVico(
+            tipoCalcolo = "EASI",
+            maxScala = 72,
             yValues = scores,
             xLabels = months,
             lineColor = MaterialTheme.colorScheme.primary,

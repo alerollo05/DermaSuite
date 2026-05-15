@@ -34,6 +34,8 @@ import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 
 @Composable
 fun DermaChartVico(
+    tipoCalcolo : String,
+    maxScala : Int,
     yValues: List<Float>,
     xLabels: List<String>,
     fullDates: List<String>, // Lista per le date complete nel popup
@@ -99,7 +101,7 @@ fun DermaChartVico(
                 val entry = point.entry
                 val index = entry.x.toInt()
                 val fullDate = fullDates.getOrNull(index) ?: ""
-                "Data: $fullDate PASI: ${entry.y}"
+                "Data: $fullDate ${tipoCalcolo}: ${"%.2f".format(entry.y)}" // "%.2f".format(entry.y) formatta il punteggio a 2 decimali
             } else {
                 ""
             }
@@ -126,7 +128,7 @@ fun DermaChartVico(
                             )
                         )
                     ),
-                    axisValueOverrider = AxisValueOverrider.fixed(minY = 0.0, maxY = 72.0)
+                    axisValueOverrider = AxisValueOverrider.fixed(minY = 0.0, maxY = maxScala.toDouble())
                 )
             ),
             // Configurazione dell'asse verticale (Y) a sinistra (Start).

@@ -23,6 +23,7 @@ data class RegisterUiState(
     val dataNascita: String = "",
     //andiamo a creare un tipo long per andare a memorizzarlo su firestore
     val dataNascitaMillis: Long? = null,
+    val sesso: String = "",
     val accountType: String = "Paziente", // Valore di default
     val password: String = "",
     val confirmPassword: String = "",
@@ -75,6 +76,10 @@ class RegisterPageViewModel : ViewModel() {
         )
     }
 
+    fun onSessoChanged(nuovoSesso: String) {
+        uiState = uiState.copy(sesso = nuovoSesso)
+    }
+
     fun onAccountTypeSelected(nuovoTipo: String) {
         uiState = uiState.copy(accountType = nuovoTipo)
     }
@@ -103,7 +108,7 @@ class RegisterPageViewModel : ViewModel() {
             return
         }
         //Altre validazioni da fare
-        if (uiState.nome.isBlank() || uiState.username.isBlank() || uiState.email.isBlank()|| uiState.dataNascitaMillis == null) {
+        if (uiState.nome.isBlank() || uiState.username.isBlank() || uiState.email.isBlank()|| uiState.dataNascitaMillis == null ||uiState.sesso.isBlank()) {
             uiState = uiState.copy(errorMessage = "Compila tutti i campi obbligatori")
             return
         }

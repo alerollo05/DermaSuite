@@ -45,6 +45,8 @@ fun DermaBsaHistoryChart(
     ) {
         // Componente core che disegna effettivamente le linee (basato sulla libreria Vico)
         DermaChartVico(
+            maxScala = 3,
+            tipoCalcolo = "BSA",
             yValues = scores,
             xLabels = months,
             lineColor = MaterialTheme.colorScheme.primary,

@@ -113,7 +113,7 @@ fun DermaBSAHistoryScreen(
             } else {
                 DermaBsaHistoryChart(records = records, timeFilter = currentFilter)
                 Spacer(modifier = Modifier.height(16.dp))
-                DermaBsaHistoryList(title = title, timeFilter = currentFilter,records = records, viewModel = viewModel, userId = currentUser?.uid)
+                DermaBsaHistoryList(title = title, timeFilter = currentFilter,records = records, username = username, viewModel = viewModel, userId = currentUser?.uid)
             }
         }
     }

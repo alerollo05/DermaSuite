@@ -48,6 +48,11 @@ class HistoryBsaPageViewModel: ViewModel() {
             try {
                 _isLoading.value = true
 
+                // --- SCARICHIAMO I DATI DELL'UTENTE ---
+                // Recuperiamo il documento dell'utente dalla collection "users"
+                val userSnapshot = db.collection("users").document(UserId).get().await()
+                _userData.value = userSnapshot.toObject(DermaUser::class.java)
+
                 // Scarichiamo tutta la collection BSA per l'utente loggato
                 val result = db.collection("users")
                     .document(UserId)

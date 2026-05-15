@@ -63,7 +63,7 @@ fun DermaBsaHistoryList(
         }
 
         // Mostra ogni record nella lista (dal più recente)
-        records.reversed().forEach { record ->
+        records.forEach { record ->
             DermaBsaHistoryListItem(record = record, onItemClick = { selectedRecord = record })
         }
 
