@@ -17,5 +17,8 @@ data class DermaUser(
     // Per il MEDICO: informazioni da mostrare nella lista al paziente (opzionali in fase di registrazione)
     val specialization: String? = null,
     val description: String? = null,
-    val ultimaValutazione: Timestamp? = null
+    val ultimaValutazione: Timestamp? = null,
+
+    //avatar
+    val avatarUrl: String? = null
 )

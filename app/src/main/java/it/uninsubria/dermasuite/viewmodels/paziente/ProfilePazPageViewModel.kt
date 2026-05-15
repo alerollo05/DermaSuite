@@ -1,5 +1,7 @@
 package it.uninsubria.dermasuite.viewmodels.paziente
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,7 +13,6 @@ import it.uninsubria.dermasuite.firebase.AuthRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.lang.reflect.Array.set
 import java.text.SimpleDateFormat
 import java.util.Locale
 import it.uninsubria.dermasuite.firebase.DermaUser
@@ -55,6 +56,10 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
     var doctorList by mutableStateOf<List<DermaUser>>(emptyList()); private set
     var isLoadingDoctors by mutableStateOf(false); private set
 
+    //Variabili di stato per la gestione dell'avatar
+    var avatarUrl by mutableStateOf<String?>(null); private set
+    var isUploading by mutableStateOf(false); private set
+
 
     init {
         loadProfileData()
@@ -69,6 +74,7 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                     user = dermaUser.username
                     nomeUtente = dermaUser.nome
                     cognomeUtente = dermaUser.cognome
+                    avatarUrl = dermaUser.avatarUrl // Carica l'URL dell'avatar esistente
                     val timestamp = dermaUser.dataNascita // Questo è l'oggetto Timestamp di Firebase
                     // Converti Timestamp in Date
                     val date = timestamp?.toDate()
@@ -272,6 +278,31 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
             } else {
                 inputPopupError = context.getString(R.string.error_update_failed)
             }
+        }
+    }
+
+    fun updateAvatar(uri: Uri, contentResolver: ContentResolver) {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewModelScope.launch {
+            isUploading = true
+            val inputStream = try {
+                contentResolver.openInputStream(uri)
+            } catch (e: Exception) {
+                null
+            }
+
+            if (inputStream != null) {
+                val url = repository.uploadAvatar(uid, inputStream)
+                if (url != null) {
+                    avatarUrl = url
+                    snackbarMessage = "Immagine caricata con successo."
+                } else {
+                    snackbarMessage = "Errore durante il caricamento."
+                }
+            } else {
+                snackbarMessage = "Immagine non trovata."
+            }
+            isUploading = false
         }
     }
 

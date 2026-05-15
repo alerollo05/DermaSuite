@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.firebase.DermaUser
+import it.uninsubria.dermasuite.ui.screens.getFlagEmoji
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -80,15 +81,12 @@ fun DermaCardPaziente(
                     .padding(24.dp)
             ){
                 Row(verticalAlignment = Alignment.CenterVertically){
-                    Box(
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFE0E0E0)),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(painter = painterResource(R.drawable.ic_profile), contentDescription = null, tint = Color.Gray)
-                    }
+                    DermaAvatar(
+                        avatarURL = paziente.avatarUrl,
+                        size = 48,
+                        iconResId = R.drawable.ic_profile,
+                        isComplex = getFlagEmoji(paziente.language)
+                    )
                     Spacer(modifier = Modifier.width(16.dp))
 
                     // Dati Paziente

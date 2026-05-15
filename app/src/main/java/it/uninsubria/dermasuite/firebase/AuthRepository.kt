@@ -1,8 +1,10 @@
 package it.uninsubria.dermasuite.firebase
 
+import android.net.Uri
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.viewmodels.RegisterUiState
 import kotlinx.coroutines.tasks.await
@@ -15,6 +17,8 @@ class AuthRepository {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
+    //Per caricare file pesanti come le immagini di avatar, serve utilizzare firebase storage e non firestore che serve solo per i file di testo
+    private val storage = FirebaseStorage.getInstance()
 
     //Registra un nuovo utente in Firebase Auth e salva i suoi dati aggiuntivi su Firestore.
     // Le funzioni suspend, vengono eseguite in modalità asincrona (al main thread), perchè sono operazioni
@@ -199,19 +203,26 @@ class AuthRepository {
         }
     }
 
-    //Funzione che ad ogni calcolo fatto aggiorna la data della ultima valutazione, che poi leggerà il medico
-    suspend fun updateLastEvaluationDate(patientUid: String): Boolean {
+    suspend fun uploadAvatar(uid: String, inputStream: java.io.InputStream): String? {
         return try {
-            db.collection("users")
-                .document(patientUid)
-                // FieldValue.serverTimestamp() usa l'orario preciso del server Firebase
-                .update("ultimaValutazione", com.google.firebase.firestore.FieldValue.serverTimestamp())
-                .await()
-            true
+            // Crea un riferimento al file: "avatars/UID.jpg"
+            val ref = storage.reference.child("avatars/$uid.jpg")
+
+            // Carica lo stream di dati
+            ref.putStream(inputStream).await()
+
+            // Recupera l'URL pubblico
+            val downloadUrl = ref.downloadUrl.await().toString()
+
+            // Salva l'URL nel documento dell'utente su Firestore
+            db.collection("users").document(uid).update("avatarUrl", downloadUrl).await()
+
+            downloadUrl
         } catch (e: Exception) {
             e.printStackTrace()
-            false
+            null
+        } finally {
+            try { inputStream.close() } catch (_: Exception) {}
         }
     }
-
 }

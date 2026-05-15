@@ -68,4 +68,9 @@ dependencies {
     implementation(libs.vico.compose)
     implementation(libs.vico.compose.m3)
 
+    // Per Firebase Storage
+    implementation("com.google.firebase:firebase-storage-ktx")
+    // Per caricare le immagini da URL (Coil)
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
 }

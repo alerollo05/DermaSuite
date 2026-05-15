@@ -76,10 +76,18 @@ class DashboardPageMedicoViewModel (private val repository: AuthRepository = Aut
             allPatients
         }else{
             allPatients.filter { paziente ->
-                //Se quello scretto nella query è presente nel nome, cognome o username del paziente lo metto nella lista filtrata
-                        paziente.nome.contains(newQuery, ignoreCase = true) ||
-                        paziente.cognome.contains(newQuery, ignoreCase = true) ||
-                        paziente.username.contains(newQuery, ignoreCase = true)
+                //Se quello scritto nella query (nella barra di ricerca) è presente nel nome, cognome o username del paziente lo metto nella lista filtrata
+                //Creiamo delle stringhe complete per facilitare la ricerca
+                val nomeCompleto = "${paziente.nome} ${paziente.cognome}"
+                val cognomeNome = "${paziente.cognome} ${paziente.nome}"
+
+                //Togliamo gli spazi se ci sono
+                val queryPulita = newQuery.trim()
+
+                //Facciamo il controllo sulle stringhe unite
+                nomeCompleto.contains(queryPulita, ignoreCase = true) ||
+                        cognomeNome.contains(queryPulita, ignoreCase = true) ||
+                        paziente.username.contains(queryPulita, ignoreCase = true)
             }
         }
     }

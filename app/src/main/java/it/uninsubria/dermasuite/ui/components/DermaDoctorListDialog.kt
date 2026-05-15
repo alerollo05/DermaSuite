@@ -1,11 +1,18 @@
 package it.uninsubria.dermasuite.ui.components
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,13 +33,18 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import it.uninsubria.dermasuite.R
+import it.uninsubria.dermasuite.ui.screens.getFlagEmoji
 import it.uninsubria.dermasuite.viewmodels.paziente.ProfilePazPageViewModel
 
 @Composable
-fun DermaDoctorListDialog(viewModel: ProfilePazPageViewModel = viewModel(), context: Context){
+fun DermaDoctorListDialog(
+    viewModel: ProfilePazPageViewModel = viewModel(),
+    context: Context
+){
     // Filtriamo la lista escludendo il medico già assegnato (confrontando gli UID)
     val filteredDoctorList = viewModel.doctorList.filter { it.uid != viewModel.currentDoctor?.uid }
     val isLoadingDoctors = viewModel.isLoadingDoctors
+
 
     Dialog(
         onDismissRequest = { viewModel.closeDoctorDialog() },
@@ -91,6 +103,9 @@ fun DermaDoctorListDialog(viewModel: ProfilePazPageViewModel = viewModel(), cont
                             }
 
                             items(filteredDoctorList) { doctor ->
+
+                                val stringaNome = doctor.nome.lowercase().replaceFirstChar { it.uppercase() }
+                                val stringaCognome = doctor.cognome.lowercase().replaceFirstChar { it.uppercase() }
                                 ElevatedCard(
                                     onClick = {
                                         viewModel.selectDoctor(
@@ -98,19 +113,42 @@ fun DermaDoctorListDialog(viewModel: ProfilePazPageViewModel = viewModel(), cont
                                             context = context
                                         )
                                     },
-                                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                                    colors = CardDefaults.elevatedCardColors(
+                                        containerColor = Color.White,
+                                    )
                                 ) {
                                     Row(
-                                        modifier = Modifier.fillMaxWidth()
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(IntrinsicSize.Min)
                                     ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxHeight()
+                                                .width(6.dp)
+                                                .background(MaterialTheme.colorScheme.primary)
+                                        )
+                                        Spacer(modifier = Modifier.width(16.dp))
+                                        DermaAvatar(
+                                            avatarURL = doctor.avatarUrl,
+                                            isComplex = getFlagEmoji(doctor.language),
+                                            size = 48,
+                                            modifier = Modifier.padding(top = 12.dp),
+                                            iconResId = R.drawable.ic_button_medico
+                                        )
                                         Column(modifier = Modifier.padding(16.dp)) {
+
                                             Text(
-                                                text = "${stringResource(R.string.label_doctor_prefix)} ${doctor.nome} ${doctor.cognome}",
+                                                text = "${stringResource(R.string.label_doctor_prefix)} $stringaNome$stringaCognome",
+                                                style = MaterialTheme.typography.headlineMedium,
                                                 fontWeight = FontWeight.Bold
                                             )
+                                            Spacer(modifier = Modifier.height(4.dp))
                                             Text(
-                                                text = doctor.description ?: "",
-                                                style = MaterialTheme.typography.bodySmall
+                                                text = doctor.description ?: stringResource(R.string.desc_no_doctor_description),
+                                                style = MaterialTheme.typography.bodySmall,
+                                                maxLines = 3
                                             )
                                         }
 

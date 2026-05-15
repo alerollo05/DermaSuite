@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,10 +18,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,12 +35,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.viewmodels.paziente.ProfilePazPageViewModel
 import com.google.firebase.Timestamp
+import it.uninsubria.dermasuite.ui.screens.getFlagEmoji
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,8 +56,9 @@ fun DermaSpecialistCard(
     doctorDataNascita: Timestamp? = null,
     doctorMail: String,
     doctorLanguage: String,
+    avatarURL: String? = null,
     // Opzionale: passa l'ID della tua icona se ne hai una specifica per il medico
-    iconResId: Int = R.drawable.ic_profile,
+    iconResId: Int = R.drawable.ic_button_medico,
     viewModel: ProfilePazPageViewModel = viewModel()
 ) {
 
@@ -79,21 +83,12 @@ fun DermaSpecialistCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icona tonda a sinistra (stile simile alla tua immagine)
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(iconResId),
-                    contentDescription = "Icona Medico",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            DermaAvatar(
+                avatarURL = avatarURL,
+                size = 48,
+                iconResId = iconResId,
+                isComplex = getFlagEmoji(doctorLanguage)
+            )
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -144,15 +139,22 @@ fun DermaSpecialistCard(
             ) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp)
+                    .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    DermaAvatar(
+                        avatarURL = avatarURL,
+                        size = 80,
+                        iconResId = iconResId,
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             doctorName,
                             style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.height(10.dp))
 
+                    Spacer(modifier = Modifier.height(20.dp))
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                         ) {
