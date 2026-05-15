@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -40,8 +41,9 @@ fun DermaBSAHistoryScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    val title = "Report Storico BSA" // O stringResource(R.string.title_PDF_BSA)
-    val username = if (userData != null) "${userData?.nome} ${userData?.cognome}" else currentUser?.displayName
+    val title = stringResource(R.string.bsa_history_report_title)
+    val fallbackUser = stringResource(R.string.bsa_history_fallback_username)
+    val username = if (userData != null) "${userData?.nome} ${userData?.cognome}" else currentUser?.displayName ?: fallbackUser
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -58,16 +60,16 @@ fun DermaBSAHistoryScreen(
     }
 
     val listaIcone = listOf(
-        BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", {onNavigateToDashBoardPaziente()}),
-        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", {onNavigateToChatP()}),
-        BottomBarAction("HISTORY", R.drawable.ic_history, "bsa_history_screen", {}),
-        BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", {onNavigateToProfileP()})
+        BottomBarAction(stringResource(R.string.menu_home), R.drawable.ic_home, "dashboard_screen_paziente", {onNavigateToDashBoardPaziente()}),
+        BottomBarAction(stringResource(R.string.menu_chat), R.drawable.ic_chat, "chat_screen_paziente", {onNavigateToChatP()}),
+        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "bsa_history_screen", {}),
+        BottomBarAction(stringResource(R.string.menu_profile), R.drawable.ic_profile, "profile_screen_paziente", {onNavigateToProfileP()})
     )
 
     Scaffold(
         topBar = {
             DermaTopBar(
-                title = "Storico BSA",
+                title = stringResource(R.string.bsa_history_topbar_title),
                 showBackButton = true,
                 onBackClick = onBack,
                 actions = {
@@ -93,14 +95,14 @@ fun DermaBSAHistoryScreen(
     ){ padding ->
         DermaColumnScreen(innerPadding = padding){
             DermaHeading(
-                titolo = "Storico Calcoli BSA",
-                sottotitolo = "Monitora l'andamento della tua superficie corporea.",
+                titolo = stringResource(R.string.bsa_history_heading_title),
+                sottotitolo = stringResource(R.string.bsa_history_heading_subtitle),
                 modifier = Modifier.padding(16.dp)
             )
 
             DermaFilterCard(
-                title = "Filtro Temporale",
-                subtitle = "Seleziona il periodo da visualizzare",
+                title = stringResource(R.string.bsa_history_filter_title),
+                subtitle = stringResource(R.string.bsa_history_filter_subtitle),
                 modifier = Modifier.padding(16.dp),
                 currentFilter = currentFilter,
                 onFilterSelected = { nuovoFiltro -> viewModel.applyFilter(nuovoFiltro) }
@@ -109,7 +111,7 @@ fun DermaBSAHistoryScreen(
             if(isLoading){
                 DermaIsLoading(modifier = Modifier.fillMaxWidth().height(250.dp))
             } else if(records.isEmpty()){
-                Text(text = "Nessun calcolo trovato in questo periodo.", color = MaterialTheme.colorScheme.primary)
+                Text(text = stringResource(R.string.bsa_history_no_records), color = MaterialTheme.colorScheme.primary)
             } else {
                 DermaBsaHistoryChart(records = records, timeFilter = currentFilter)
                 Spacer(modifier = Modifier.height(16.dp))

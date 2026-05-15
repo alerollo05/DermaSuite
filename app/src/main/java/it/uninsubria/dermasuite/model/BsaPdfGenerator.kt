@@ -46,17 +46,25 @@ suspend fun bsaPdfGenerator(
         var yPosition = 160f   // Posizione verticale iniziale per i dati (dopo l'intestazione)
         var currentPageNumber = 1
 
+        // Recupera le stringhe tradotte tramite il context
+        val strDateTime = context.getString(R.string.bsa_pdf_date_time)
+        val strWeight = context.getString(R.string.bsa_pdf_weight)
+        val strHeight = context.getString(R.string.bsa_pdf_height)
+        val strGender = context.getString(R.string.bsa_pdf_gender)
+        val strBsa = context.getString(R.string.bsa_pdf_bsa)
+        val strEval = context.getString(R.string.bsa_pdf_eval)
+
         // Funzione interna per disegnare l'intestazione della tabella (nomi colonne)
         fun drawTableHeader(canvas: Canvas, x: Float, y: Float, paint: Paint, linePaint: Paint, pageWidth: Float) {
             val endX = pageWidth - x
             canvas.drawLine(x, y - 15f, endX, y - 15f, linePaint) // Linea superiore
 
-            canvas.drawText("Data e Ora", x + 0f, y, paint)
-            canvas.drawText("Peso", x + 120f, y, paint)
-            canvas.drawText("Altezza", x + 200f, y, paint)
-            canvas.drawText("Sesso", x + 280f, y, paint)
-            canvas.drawText("BSA (m²)", x + 360f, y, paint)
-            canvas.drawText("Valutazione", x + 440f, y, paint)
+            canvas.drawText(strDateTime, x + 0f, y, paint)
+            canvas.drawText(strWeight, x + 120f, y, paint)
+            canvas.drawText(strHeight, x + 200f, y, paint)
+            canvas.drawText(strGender, x + 280f, y, paint)
+            canvas.drawText(strBsa, x + 360f, y, paint)
+            canvas.drawText(strEval, x + 440f, y, paint)
 
             canvas.drawLine(x, y + 10f, endX, y + 10f, linePaint) // Linea inferiore
         }

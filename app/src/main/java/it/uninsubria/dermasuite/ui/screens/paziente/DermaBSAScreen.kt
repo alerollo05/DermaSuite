@@ -9,6 +9,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,7 @@ fun DermaBSAScreen(
     viewModel: BsaPageViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState() // Stato dello scroll
-
+    val context = LocalContext.current // Prende il contesto per passarlo al ViewModel
 
     // Osserviamo gli stati dal ViewModel
     val peso by viewModel.peso.collectAsState()
@@ -42,13 +44,14 @@ fun DermaBSAScreen(
 
     // --- LOGICA SNACKBAR ---
     val snackbarHostState = remember { SnackbarHostState() }
+    val msgSuccess = stringResource(id = R.string.bsa_calc_saved_success)
 
     // Ascoltiamo l'evento di successo dal ViewModel
     LaunchedEffect(Unit) {
         viewModel.saveSuccess.collect { success ->
             if (success) {
                 snackbarHostState.showSnackbar(
-                    message = "Calcolo salvato correttamente!",
+                    message = msgSuccess,
                     duration = SnackbarDuration.Short
                 )
             }
@@ -76,17 +79,17 @@ fun DermaBSAScreen(
     }
 
     val listaIcone = listOf(
-        BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", { onBack() }),
-        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", { onNavigateToChatP() }),
-        BottomBarAction("HISTORY", R.drawable.ic_history, "bmi_history_screen", { onNavigateToBsaHistory() }),
-        BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", { onNavigateToProfileP() })
+        BottomBarAction(stringResource(R.string.menu_home), R.drawable.ic_home, "dashboard_screen_paziente", { onBack() }),
+        BottomBarAction(stringResource(R.string.menu_chat), R.drawable.ic_chat, "chat_screen_paziente", { onNavigateToChatP() }),
+        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "bmi_history_screen", { onNavigateToBsaHistory() }),
+        BottomBarAction(stringResource(R.string.menu_profile), R.drawable.ic_profile, "profile_screen_paziente", { onNavigateToProfileP() })
     )
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             DermaTopBar(
-                title = "Calcolo BSA",
+                title = stringResource(R.string.bsa_title),
                 showBackButton = true,
                 onBackClick = onBack
             )
@@ -101,8 +104,8 @@ fun DermaBSAScreen(
         DermaColumnScreen(innerPadding = padding, scrollState = scrollState) {
 
             DermaHeading(
-                titolo = "Calcola la tua Body Surface Area",
-                sottotitolo = "Inserisci peso e altezza per calcolare la tua superficie corporea.",
+                titolo = stringResource(R.string.bsa_heading_title),
+                sottotitolo = stringResource(R.string.bsa_heading_subtitle),
                 modifier = Modifier.padding(16.dp)
             )
 
@@ -114,8 +117,8 @@ fun DermaBSAScreen(
             ) {
                 // Input Altezza tramite componente personalizzato
                 DermaTextField(
-                    label = "Altezza (cm)",
-                    placeholder = "Inserisci la tua altezza",
+                    label = stringResource(R.string.bsa_label_height),
+                    placeholder = stringResource(R.string.bsa_placeholder_height),
                     value = altezza,
                     onValueChange = { viewModel.onAltezzaChange(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -126,8 +129,8 @@ fun DermaBSAScreen(
 
                 // Input Peso tramite componente personalizzato
                 DermaTextField(
-                    label = "Peso (kg)",
-                    placeholder = "Inserisci il tuo peso",
+                    label = stringResource(R.string.bsa_label_weight),
+                    placeholder = stringResource(R.string.bsa_placeholder_weight),
                     value = peso,
                     onValueChange = { viewModel.onPesoChange(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -138,8 +141,8 @@ fun DermaBSAScreen(
 
                 // Bottone personalizzato
                 DermaButton(
-                    text = if (isLoading) "SALVATAGGIO..." else "CALCOLA",
-                    onClick = { viewModel.calcolaBsa() },
+                    text = if (isLoading) stringResource(R.string.bsa_btn_saving) else stringResource(R.string.bsa_btn_calculate),
+                    onClick = { viewModel.calcolaBsa(context) },
                     enabled = peso.isNotBlank() && altezza.isNotBlank() && !isLoading,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -147,13 +150,12 @@ fun DermaBSAScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 // Visualizzazione Risultato (compare solo dopo il calcolo)
-                // Visualizzazione Risultato (compare solo dopo il calcolo)
                 if (risultatoBsa != null) {
                     // Convertiamo il risultato in Double invece che in Float
                     val risultatoNumerico = risultatoBsa.toString().toDoubleOrNull() ?: 0.0
 
                     DermaResultCard(
-                        title = "La tua BSA",
+                        title = stringResource(R.string.bsa_result_title),
                         result = risultatoNumerico,
                         severity = valutazione,
                         max = 3 // Una BSA raramente supera i 3 m².

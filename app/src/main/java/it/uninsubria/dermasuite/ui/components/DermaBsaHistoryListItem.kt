@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,12 +58,12 @@ fun DermaBsaHistoryListItem(
                 // Colonna centrale con il valore BSA e la valutazione sintetica
                 Column(modifier = Modifier.padding(start = 12.dp).weight(1f)) {
                     Text(
-                        text = "BSA: ${record.bsa} m²",
+                        text = stringResource(R.string.bsa_list_item_bsa, record.bsa),
                         style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.SemiBold),
                         color = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = "Valutazione: ${record.valutazione}",
+                        text = stringResource(R.string.bsa_list_item_evaluation, record.valutazione),
                         style = MaterialTheme.typography.titleSmall,
                         color = Color.Gray
                     )
