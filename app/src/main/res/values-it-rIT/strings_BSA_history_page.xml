@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bsa_history_report_title">Report Storico BSA</string>
+    <string name="bsa_history_topbar_title">Storico BSA</string>
+    <string name="bsa_history_heading_title">Storico Calcoli BSA</string>
+    <string name="bsa_history_heading_subtitle">Monitora l\'andamento della tua superficie corporea.</string>
+    <string name="bsa_history_filter_title">Filtro Temporale</string>
+    <string name="bsa_history_filter_subtitle">Seleziona il periodo da visualizzare</string>
+    <string name="bsa_history_no_records">Nessun calcolo trovato in questo periodo.</string>
+    <string name="bsa_history_fallback_username">Paziente DermaSuite</string>
+
+    <string name="bsa_chart_title">BSA (m²)</string>
+    <string name="bsa_permission_denied">Permesso negato</string>
+    <string name="bsa_history_list_title">Cronologia Calcoli</string>
+    <string name="bsa_list_item_bsa">BSA: %1$s m²</string>
+    <string name="bsa_list_item_evaluation">Valutazione: %1$s</string>
+    <string name="bsa_dialog_title">Dettaglio Calcolo</string>
+    <string name="bsa_dialog_date_time">Data e Ora</string>
+    <string name="bsa_dialog_result_bsa">Risultato BSA</string>
+    <string name="bsa_dialog_result_m2">%1$s m²</string>
+    <string name="bsa_dialog_evaluation">Valutazione</string>
+    <string name="bsa_dialog_input_data">Dati inseriti:</string>
+    <string name="bsa_dialog_weight">Peso</string>
+    <string name="bsa_dialog_weight_kg">%1$s kg</string>
+    <string name="bsa_dialog_height">Altezza</string>
+    <string name="bsa_dialog_height_cm">%1$s cm</string>
+    <string name="bsa_dialog_gender">Sesso</string>
+    <string name="bsa_dialog_delete_btn">Elimina Calcolo</string>
+
+    <string name="bsa_pdf_date_time">Data e Ora</string>
+    <string name="bsa_pdf_weight">Peso</string>
+    <string name="bsa_pdf_height">Altezza</string>
+    <string name="bsa_pdf_gender">Sesso</string>
+    <string name="bsa_pdf_bsa">BSA (m²)</string>
+    <string name="bsa_pdf_eval">Valutazione</string>
+</resources>

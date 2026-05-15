@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.model.BsaRecord
@@ -35,6 +36,8 @@ fun DermaBsaHistoryList(
     val coroutineScope = rememberCoroutineScope() // Necessario per avviare la generazione PDF (suspend)
     var selectedRecord by remember { mutableStateOf<BsaRecord?>(null) } // Stato per gestire quale record mostrare nel dialogo
 
+    val msgPermissionDenied = stringResource(R.string.bsa_permission_denied)
+
     // Gestore per richiedere il permesso di scrittura (solo per Android < 10)
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -42,14 +45,14 @@ fun DermaBsaHistoryList(
         if (isGranted) {
             coroutineScope.launch { bsaPdfGenerator(title, context, records, timeFilter, username) }
         } else {
-            Toast.makeText(context, "Permesso negato", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, msgPermissionDenied, Toast.LENGTH_LONG).show()
         }
     }
 
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         // Intestazione della sezione con titolo e icona di download
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Cronologia Calcoli", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+            Text(text = stringResource(R.string.bsa_history_list_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             IconButton(
                 onClick = {
                     // Controlla i permessi in base alla versione di Android

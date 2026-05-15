@@ -39,7 +39,7 @@ fun DermaBsaHistoryChart(
 
     // Contenitore grafico con titolo e sottotitolo dinamico
     DermaChartCard(
-        title = "BSA (m²)",
+        title = stringResource(R.string.bsa_chart_title),
         subtitle = "$stringaSubGrafico ${stringResource(timeFilter.displayName)}",
         indicatorColor = MaterialTheme.colorScheme.primary
     ) {

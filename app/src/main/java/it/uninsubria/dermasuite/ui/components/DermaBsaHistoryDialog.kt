@@ -8,9 +8,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.model.BsaRecord
 import it.uninsubria.dermasuite.viewmodels.paziente.HistoryBsaPageViewModel
 
@@ -37,24 +39,24 @@ fun DermaBsaHistoryDialog(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Dettaglio Calcolo",
+                    text = stringResource(R.string.bsa_dialog_title),
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
 
                 // Visualizzazione dei risultati calcolati
-                DetailRow(label = "Data e Ora", value = record.dataOra)
-                DetailRow(label = "Risultato BSA", value = "${record.bsa} m²")
-                DetailRow(label = "Valutazione", value = record.valutazione)
+                DetailRow(label = stringResource(R.string.bsa_dialog_date_time), value = record.dataOra)
+                DetailRow(label = stringResource(R.string.bsa_dialog_result_bsa), value = stringResource(R.string.bsa_dialog_result_m2, record.bsa))
+                DetailRow(label = stringResource(R.string.bsa_dialog_evaluation), value = record.valutazione)
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp)) // Linea di separazione
 
-                Text(text = "Dati inseriti:", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                Text(text = stringResource(R.string.bsa_dialog_input_data), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
 
                 // Visualizzazione dei parametri di input originali
-                DetailRow(label = "Peso", value = "${record.peso} kg")
-                DetailRow(label = "Altezza", value = "${record.altezza} cm")
-                DetailRow(label = "Sesso", value = record.sesso)
+                DetailRow(label = stringResource(R.string.bsa_dialog_weight), value = stringResource(R.string.bsa_dialog_weight_kg, record.peso))
+                DetailRow(label = stringResource(R.string.bsa_dialog_height), value = stringResource(R.string.bsa_dialog_height_cm, record.altezza))
+                DetailRow(label = stringResource(R.string.bsa_dialog_gender), value = record.sesso)
 
                 // Bottone per eliminare il record tramite il ViewModel
                 Button(
@@ -64,7 +66,7 @@ fun DermaBsaHistoryDialog(
                     },
                     modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
                 ) {
-                    Text(text = "Elimina Calcolo",
+                    Text(text = stringResource(R.string.bsa_dialog_delete_btn),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onPrimary
                     )

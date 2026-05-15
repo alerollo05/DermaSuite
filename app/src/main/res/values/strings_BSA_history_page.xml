@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bsa_history_report_title">BSA History Report</string>
+    <string name="bsa_history_topbar_title">BSA History</string>
+    <string name="bsa_history_heading_title">BSA Calculations History</string>
+    <string name="bsa_history_heading_subtitle">Monitor the trend of your body surface area.</string>
+    <string name="bsa_history_filter_title">Time Filter</string>
+    <string name="bsa_history_filter_subtitle">Select the period to view</string>
+    <string name="bsa_history_no_records">No calculations found in this period.</string>
+    <string name="bsa_history_fallback_username">DermaSuite Patient</string>
+
+    <string name="bsa_chart_title">BSA (m²)</string>
+    <string name="bsa_permission_denied">Permission denied</string>
+    <string name="bsa_history_list_title">Calculation History</string>
+    <string name="bsa_list_item_bsa">BSA: %1$s m²</string>
+    <string name="bsa_list_item_evaluation">Evaluation: %1$s</string>
+    <string name="bsa_dialog_title">Calculation Detail</string>
+    <string name="bsa_dialog_date_time">Date and Time</string>
+    <string name="bsa_dialog_result_bsa">BSA Result</string>
+    <string name="bsa_dialog_result_m2">%1$s m²</string>
+    <string name="bsa_dialog_evaluation">Evaluation</string>
+    <string name="bsa_dialog_input_data">Data entered:</string>
+    <string name="bsa_dialog_weight">Weight</string>
+    <string name="bsa_dialog_weight_kg">%1$s kg</string>
+    <string name="bsa_dialog_height">Height</string>
+    <string name="bsa_dialog_height_cm">%1$s cm</string>
+    <string name="bsa_dialog_gender">Gender</string>
+    <string name="bsa_dialog_delete_btn">Delete Calculation</string>
+
+    <string name="bsa_pdf_date_time">Date and Time</string>
+    <string name="bsa_pdf_weight">Weight</string>
+    <string name="bsa_pdf_height">Height</string>
+    <string name="bsa_pdf_gender">Gender</string>
+    <string name="bsa_pdf_bsa">BSA (m²)</string>
+    <string name="bsa_pdf_eval">Evaluation</string>
+</resources>

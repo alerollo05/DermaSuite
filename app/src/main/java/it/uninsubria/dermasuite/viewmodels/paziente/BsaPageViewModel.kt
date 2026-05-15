@@ -1,5 +1,6 @@
 package it.uninsubria.dermasuite.viewmodels.paziente
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.model.BsaRecord
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -81,9 +83,9 @@ class BsaPageViewModel(
     fun onSessoChange(newSesso: String) { _sesso.value = newSesso }
 
     // Funzione principale attivata dal pulsante "Calcola".
-    // L'annotazione @RequiresApi è necessaria perché usiamo LocalDateTime (introdotto in API 26).
+    // Passiamo il context per poter estrarre le stringhe tradotte!
     @RequiresApi(Build.VERSION_CODES.O)
-    fun calcolaBsa() {
+    fun calcolaBsa(context: Context) {
         val pesoVal = _peso.value.toDoubleOrNull()
         val altezzaVal = _altezza.value.toDoubleOrNull()
         val sessoVal = _sesso.value
@@ -92,19 +94,19 @@ class BsaPageViewModel(
         viewModelScope.launch {
             // Controllo che i campi non siano vuoti o formattati male
             if (pesoVal == null || altezzaVal == null) {
-                _errorMessage.emit("Inserisci tutti i dati richiesti.")
+                _errorMessage.emit(context.getString(R.string.bsa_error_missing_data))
                 return@launch // Interrompe l'esecuzione della funzione
             }
 
             // Controllo Altezza
             if (altezzaVal < 50.0 || altezzaVal > 280.0) {
-                _errorMessage.emit("L'altezza deve essere compresa tra 50 e 280 cm.")
+                _errorMessage.emit(context.getString(R.string.bsa_error_height_range))
                 return@launch
             }
 
             // Controllo Peso
             if (pesoVal < 30.0 || pesoVal > 500.0) {
-                _errorMessage.emit("Il peso deve essere compreso tra 30 e 500 kg.")
+                _errorMessage.emit(context.getString(R.string.bsa_error_weight_range))
                 return@launch
             }
 
@@ -115,7 +117,7 @@ class BsaPageViewModel(
             val bsaArrotondato = String.format(java.util.Locale.US, "%.2f", bsaCalcolato).toDouble()
 
             _risultatoBsa.value = bsaArrotondato
-            val valutazioneTesto = valutaBsa(bsaArrotondato, sessoVal)
+            val valutazioneTesto = valutaBsa(bsaArrotondato, sessoVal, context)
             _valutazione.value = valutazioneTesto
 
             salvaSuFirestore(pesoVal, altezzaVal, sessoVal, bsaArrotondato, valutazioneTesto)
@@ -123,13 +125,13 @@ class BsaPageViewModel(
     }
 
     // Determina se il BSA calcolato è nella norma rispetto alle medie adulte.
-    private fun valutaBsa(bsa: Double, sesso: String): String {
+    private fun valutaBsa(bsa: Double, sesso: String, context: Context): String {
         // Valori medi di riferimento per adulti
         val media = if (sesso.lowercase() == "maschio") 1.9 else 1.6
         return when {
-            bsa > media + 0.25 -> "Sopra la media"
-            bsa < media - 0.25 -> "Sotto la media"
-            else -> "Nella media"
+            bsa > media + 0.25 -> context.getString(R.string.bsa_eval_above_avg)
+            bsa < media - 0.25 -> context.getString(R.string.bsa_eval_below_avg)
+            else -> context.getString(R.string.bsa_eval_avg)
         }
     }
 
