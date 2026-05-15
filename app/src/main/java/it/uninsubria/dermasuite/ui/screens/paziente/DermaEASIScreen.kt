@@ -51,8 +51,8 @@ fun DermaEASIScreen(
         if(viewModel.scrollTrigger > 0){ // Se scrollTrigger è maggiore di 0 allora scrolla verso il basso
             delay(150) // Piccolo delay per dare il tempo a Compose di aggiungere la card alla colonna
             scrollState.animateScrollTo(scrollState.maxValue) // Questa è una suspend function, questo vuol dire che deve essere eseguita dentro una coroutine (cosa che LaunchedEffect ci permette di fare).
-                                                                // La funzione invece di fare un salto brusco alla fine della pagina, esegue un movimento fluido (animato).
-                                                                // scrollState.maxValue rappresenta il punto più basso possibile della tua DermaColumnScreen.
+            // La funzione invece di fare un salto brusco alla fine della pagina, esegue un movimento fluido (animato).
+            // scrollState.maxValue rappresenta il punto più basso possibile della tua DermaColumnScreen.
         }
     }
 
@@ -78,7 +78,7 @@ fun DermaEASIScreen(
     Scaffold(
         topBar = {
             DermaTopBar(
-                title = "Calcolo EASI",
+                title = stringResource(R.string.easi_title),
                 showBackButton = true,
                 onBackClick = onBack
             )
@@ -100,8 +100,8 @@ fun DermaEASIScreen(
             scrollState = scrollState
         ) {
             DermaHeading(
-                titolo = "Calcolo EASI",
-                sottotitolo = "Valuta l'estensione e la gravità della dermatite atopica.",
+                titolo = stringResource(R.string.easi_heading_title),
+                sottotitolo = stringResource(R.string.easi_heading_subtitle),
                 modifier = Modifier.padding(16.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -114,8 +114,8 @@ fun DermaEASIScreen(
             )
 
             DermaSelectorParameterCard(
-                title = "Eritema",
-                subtitle = "Seleziona il punteggio relativo all'eritema",
+                title = stringResource(R.string.easi_param_eritema_title),
+                subtitle = stringResource(R.string.easi_param_eritema_subtitle),
                 IconRes = R.drawable.ic_eritema, // Adatta l'icona
                 selectedValue = currentData.eritema,
                 maxValue = 3,
@@ -124,8 +124,8 @@ fun DermaEASIScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             DermaSelectorParameterCard(
-                title = "Edema/Papulizzazione",
-                subtitle = "Seleziona il punteggio relativo all'edema papulizzazione",
+                title = stringResource(R.string.easi_param_edema_title),
+                subtitle = stringResource(R.string.easi_param_edema_subtitle),
                 IconRes = R.drawable.ic_indurimento, // Adatta l'icona
                 maxValue = 3,
                 selectedValue = currentData.edemaPapulizzazione,
@@ -134,8 +134,8 @@ fun DermaEASIScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             DermaSelectorParameterCard(
-                title = "Escoriazione",
-                subtitle = "Seleziona il punteggio relativo all'escoriazione (grattamento)",
+                title = stringResource(R.string.easi_param_escoriazione_title),
+                subtitle = stringResource(R.string.easi_param_escoriazione_subtitle),
                 IconRes = R.drawable.ic_desquamazione, // Adatta l'icona
                 maxValue = 3,
                 selectedValue = currentData.escoriazione,
@@ -144,8 +144,8 @@ fun DermaEASIScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             DermaSelectorParameterCard(
-                title = "Lichenificazione",
-                subtitle = "Seleziona il punteggio relativo alla lichenificazione",
+                title = stringResource(R.string.easi_param_lichenificazione_title),
+                subtitle = stringResource(R.string.easi_param_lichenificazione_subtitle),
                 IconRes = R.drawable.ic_lichenificazione, // Adatta l'icona
                 maxValue = 3,
                 selectedValue = currentData.lichenificazione,
@@ -172,7 +172,7 @@ fun DermaEASIScreen(
 
             // Bottone per avviare il calcolo
             DermaButton(
-                text = stringResource(R.string.btn_calculate),
+                text = stringResource(R.string.easi_btn_calculate),
                 onClick = {
                     if(viewModel.abilitaCalcolo()){ // Se tutto è inserito correttamente
                         viewModel.calculateTotalEasiAndSave(
@@ -213,16 +213,16 @@ fun DermaEASIScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             val severityLabel = when(viewModel.serverityClass){
-                "LEVEL_LOW" -> "Lieve"
-                "LEVEL_MODERATE" -> "Moderato"
-                "LEVEL_SEVERE" -> "Grave"
+                "LEVEL_LOW" -> stringResource(R.string.easi_severity_low)
+                "LEVEL_MODERATE" -> stringResource(R.string.easi_severity_moderate)
+                "LEVEL_SEVERE" -> stringResource(R.string.easi_severity_severe)
                 else -> ""
             }
 
             // Visualizzazione condizionale della card dei risultati
             if(viewModel.showResult){
                 DermaResultCard(
-                    title = "Risultato EASI",
+                    title = stringResource(R.string.easi_result_title),
                     result = viewModel.totalEasiResult,
                     max = 72,
                     severity = severityLabel

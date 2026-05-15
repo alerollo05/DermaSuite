@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="easi_title">EASI Calculation</string>
+    <string name="easi_heading_title">EASI Calculation</string>
+    <string name="easi_heading_subtitle">Evaluate the extent and severity of atopic dermatitis.</string>
+
+    <string name="easi_param_eritema_title">Erythema</string>
+    <string name="easi_param_eritema_subtitle">Select the score for erythema</string>
+
+    <string name="easi_param_edema_title">Edema/Papulation</string>
+    <string name="easi_param_edema_subtitle">Select the score for edema/papulation</string>
+
+    <string name="easi_param_escoriazione_title">Excoriation</string>
+    <string name="easi_param_escoriazione_subtitle">Select the score for excoriation (scratching)</string>
+
+    <string name="easi_param_lichenificazione_title">Lichenification</string>
+    <string name="easi_param_lichenificazione_subtitle">Select the score for lichenification</string>
+
+    <string name="easi_btn_calculate">Calculate EASI</string>
+    <string name="easi_result_title">EASI Result</string>
+
+    <string name="easi_severity_low">Mild</string>
+    <string name="easi_severity_moderate">Moderate</string>
+    <string name="easi_severity_severe">Severe</string>
+</resources>

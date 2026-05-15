@@ -70,7 +70,7 @@ fun DermaBmiHistoryList(
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
-                text = stringResource(R.string.heading_list_history),
+                text = stringResource(R.string.title_list_history),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
