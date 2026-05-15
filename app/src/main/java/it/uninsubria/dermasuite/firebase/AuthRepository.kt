@@ -1,8 +1,10 @@
 package it.uninsubria.dermasuite.firebase
 
+import android.net.Uri
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.viewmodels.RegisterUiState
 import kotlinx.coroutines.tasks.await
@@ -15,6 +17,8 @@ class AuthRepository {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
+    //Per caricare file pesanti come le immagini di avatar, serve utilizzare firebase storage e non firestore che serve solo per i file di testo
+    private val storage = FirebaseStorage.getInstance()
 
     //Registra un nuovo utente in Firebase Auth e salva i suoi dati aggiuntivi su Firestore.
     // Le funzioni suspend, vengono eseguite in modalità asincrona (al main thread), perchè sono operazioni
@@ -28,6 +32,8 @@ class AuthRepository {
             //Convertiamo la data di nascita in formato TimeStamp
             val timestampNascita = state.dataNascitaMillis?.let {
                 com.google.firebase.Timestamp(java.util.Date(it))}
+            //Andiamo a prendere la lingua corrente con cui si sta registrando l'utente, in modo da poi avere la scelta dei medici della stessa lingua tra medico e paziente
+            val deviceLanguage = java.util.Locale.getDefault().language
 
            //I nomi delle proprietà diventeranno direttamente le chiavi su fireStore
             val newUser = DermaUser(
@@ -38,7 +44,8 @@ class AuthRepository {
                 username = state.username,
                 dataNascita = timestampNascita,
                 sesso = state.sesso,             // Adesso va al posto giusto!
-                role = state.accountType  // Adesso va al posto giusto!
+                role = state.accountType,  // Adesso va al posto giusto!
+                deviceLanguage //salvo anche la lingua dell'utente in automatico senza che l'utente lo sappia
             )
 
             //Salva i dati nella collezione "users" usando l'UID come ID documento
@@ -140,7 +147,7 @@ class AuthRepository {
         }
     }
 
-    // 3. Aggiorna la password (richiede che la ri-autenticazione sia appena avvenuta)
+    //Aggiorna la password (richiede che la ri-autenticazione sia appena avvenuta)
     suspend fun updatePassword(newPassword: String): Boolean {
         return try {
             val user = auth.currentUser ?: return false
@@ -154,6 +161,69 @@ class AuthRepository {
             // Gestione errori (es. password troppo debole o necessità di ri-autenticazione).
             e.printStackTrace()
             false
+        }
+    }
+
+    suspend fun getAvailableDoctors(): List<DermaUser> {
+        return try{
+            //andiamo a prendere la lista di medici disponibili nel db
+            val snapshot = db.collection("users")
+                    .whereEqualTo("role", "Medico")
+                    .get().await()
+
+            snapshot.toObjects(DermaUser::class.java)
+        }catch(e: Exception){
+            e.printStackTrace()
+            emptyList() // In caso di errore, restituisce una lista vuota
+        }
+    }
+
+    suspend fun linkDoctorToPatient(patientUid: String, doctorUid: String) : Boolean{
+        return try{
+            //Andiamo ad aggiornare il campo medico del paziente interessato
+            db.collection("users").document(patientUid)
+                .update("doctorId", doctorUid).await()
+            true
+        }catch(e: Exception){
+            e.printStackTrace()
+            false
+        }
+    }
+
+//Funzione per andare a prendere i pazienti associati al medico loggato in quel momento
+    suspend fun getMyPatients(doctorUid: String) : List<DermaUser>{
+        return try{
+            val snapshot = db.collection("users")
+                .whereEqualTo("role", "Paziente")
+                .whereEqualTo("doctorId", doctorUid).get().await()
+            //Andiamo a traformare il risultato della query in una lista di DermaUser
+            snapshot.toObjects(DermaUser::class.java)
+        }catch(e: Exception){
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    suspend fun uploadAvatar(uid: String, inputStream: java.io.InputStream): String? {
+        return try {
+            // Crea un riferimento al file: "avatars/UID.jpg"
+            val ref = storage.reference.child("avatars/$uid.jpg")
+
+            // Carica lo stream di dati
+            ref.putStream(inputStream).await()
+
+            // Recupera l'URL pubblico
+            val downloadUrl = ref.downloadUrl.await().toString()
+
+            // Salva l'URL nel documento dell'utente su Firestore
+            db.collection("users").document(uid).update("avatarUrl", downloadUrl).await()
+
+            downloadUrl
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        } finally {
+            try { inputStream.close() } catch (_: Exception) {}
         }
     }
 }

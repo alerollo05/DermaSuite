@@ -23,6 +23,10 @@ class PasiPageViewModel(): ViewModel() {
     //Aggiungiamo una variabile per stampare la card del risultato, una volta fatto il calcolo il risultato finale
     var showResult by mutableStateOf(false)
 
+    // Un semplice contatore che incrementiamo a ogni calcolo
+    //Ci serve per andare a far scorrere ad ogni pressione del bottone verso il basso la pagina in modo da visualizzare la card di result
+    var scrollTrigger by mutableStateOf(0)
+
     //Creiamo una variabile per tenere traccia del distretto attualmente selezionato
     var currentDistrict by mutableStateOf(DistrettoCorpo.HEAD)
     //by ci permette  di non dover sscrivere ogni volta setValue e getValue direttamente
@@ -44,9 +48,7 @@ class PasiPageViewModel(): ViewModel() {
     //Creiamo la variabile per andare a salvare la severità del risultato
     var serverityClass by mutableStateOf("")
 
-    // Un semplice contatore che incrementiamo a ogni calcolo
-    //Ci serve per andare a far scorrere ad ogni pressione del bottone verso il basso la pagina in modo da visualizzare la card di result
-    var scrollTrigger by mutableStateOf(0)
+
 
     //Creiamo una funzione per andare ad aggiornare i parametri del distretto corrente
     fun updateDistrictParameters(
@@ -133,6 +135,12 @@ class PasiPageViewModel(): ViewModel() {
                        db.collection("users").document(user.uid)
                            .collection("PASI")
                            .add(payload).await()// Aspettiamo che il salvataggio sia completato
+
+
+                       //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
+                       db.collection("users").document(user.uid).update(
+                           "ultimaValutazione", FieldValue.serverTimestamp()
+                       ).await()
 
                        // Se arriviamo qui, NESSUN errore si è verificato nei due .await()
                        onSuccess()

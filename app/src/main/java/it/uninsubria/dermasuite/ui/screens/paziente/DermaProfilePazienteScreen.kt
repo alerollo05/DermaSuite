@@ -1,10 +1,16 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,19 +39,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.ui.components.BottomBarAction
+import it.uninsubria.dermasuite.ui.components.DermaAccountTypeSelector
+import it.uninsubria.dermasuite.ui.components.DermaAvatar
 import it.uninsubria.dermasuite.ui.components.DermaBottomBar
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
+import it.uninsubria.dermasuite.ui.components.DermaDoctorListDialog
 import it.uninsubria.dermasuite.ui.components.DermaHeading
+import it.uninsubria.dermasuite.ui.components.DermaIsLoading
 import it.uninsubria.dermasuite.ui.components.DermaOutlinedTextField // IMPORT AGGIUNTO
 import it.uninsubria.dermasuite.ui.components.DermaProfileField
 import it.uninsubria.dermasuite.ui.components.DermaSpecialistCard
@@ -63,6 +78,21 @@ fun DermaProfilePazienteScreen(
     // Creiamo il "controllore" della Snackbar
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val context = LocalContext.current
+
+    // Estraiamo il medico corrente dal ViewModel
+    val currentDoctor = viewModel.currentDoctor
+
+    //Usiamo questa funzione per andare ad aprire la galleria
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia()
+        ) { uri ->
+            if (uri != null) {
+                viewModel.updateAvatar(uri, context.contentResolver)
+            }
+        }
+
+
     // Ascoltiamo i cambiamenti del messaggio nel ViewModel
     LaunchedEffect(viewModel.snackbarMessage) {
         // Se il messaggio non è nullo, mostriamo la Snackbar
@@ -76,9 +106,9 @@ fun DermaProfilePazienteScreen(
 
     // Definiamo le azioni per questa specifica schermata
     val dashboardActions = listOf(
-        BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", onNavigateToDashboardP),
-        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
-        BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", { /* Sei già qui */ }),
+        BottomBarAction(stringResource(R.string.label_bottom_home), R.drawable.ic_home, "dashboard_screen_paziente", onNavigateToDashboardP),
+        BottomBarAction(stringResource(R.string.label_bottom_chat), R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
+        BottomBarAction(stringResource(R.string.label_bottom_profile), R.drawable.ic_profile, "profile_screen_paziente", { /* Sei già qui */ }),
     )
 
     // Recupero dei campi dalla ViewModel
@@ -125,6 +155,26 @@ fun DermaProfilePazienteScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
+                    Box(
+                        modifier = Modifier
+                            .clickable{// Al click si apre la galleria foto
+                            launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))}
+                    ) {
+                        if (viewModel.isUploading) {
+                            // Se sta caricando mostriamo la rotellina
+                            DermaIsLoading()
+                        } else{
+                            // Se c'è un url salvato, usiamo Coil per scaricare e mostrare la foto
+                            DermaAvatar(
+                                avatarURL = viewModel.avatarUrl,
+                                isComplex = "\u270F\uFE0F", //Le grandezze dei componenti sono calcolati in automatico
+                                size = 100
+                            )
+                        }
+                    }
+
+
+                    Spacer(modifier = Modifier.height(16.dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 20.dp)
@@ -144,13 +194,13 @@ fun DermaProfilePazienteScreen(
                     }
 
                     if (nomeUtente == null || cognomeUtente == null) {
-                        CircularProgressIndicator() // Mostra una rotellina di caricamento
+                        DermaIsLoading() // Mostra una rotellina di caricamento
                     } else {
                         DermaProfileField(stringResource(R.string.label_nome), nomeUtente)
 
                         DermaProfileField(stringResource(R.string.label_cognome), cognomeUtente)
 
-                        DermaProfileField(stringResource(R.string.label_data_nascita), dataNascita)
+                        DermaProfileField(stringResource(R.string.label_data_nascita), dataNascita ?: stringResource(R.string.label_no_birthdate))
 
                         DermaProfileField(stringResource(R.string.label_sesso), sesso ?: "Non specificato")
 
@@ -203,19 +253,41 @@ fun DermaProfilePazienteScreen(
                     .padding(top = 24.dp, bottom = 8.dp)
             )
 
-            // Richiamo il componente riutilizzabile appena creato
-            DermaSpecialistCard(
-                doctorName = stringResource(R.string.mock_doctor_name),
-                doctorRole = stringResource(R.string.mock_doctor_role),
-                doctorDescription = stringResource(R.string.mock_doctor_description),
-                iconResId = R.drawable.ic_button_medico
-            )
+            // LOGICA CONDIZIONALE PER LA CARD DEL MEDICO
+            if (currentDoctor == null) {
+                //Nessun medico assegnato
+                DermaSpecialistCard(
+                    doctorName = stringResource(R.string.label_no_doctor_assigned),
+                    doctorRole = stringResource(R.string.label_dermatology),
+                    doctorDescription = stringResource(R.string.desc_no_doctor_assigned),
+                    iconResId = R.drawable.ic_button_medico,// Se hai un'icona tipo un punto di domanda o un "+" sarebbe perfetta qui
+                    doctorMail = "",
+                    doctorLanguage = "",
+                    doctorDataNascita = null
+                )
+            } else {
+                //Medico assegnato, mostro i dati reali
+                //Metto le stringhe formattate in modo corretto
+                val stringaNome = currentDoctor.nome.lowercase().replaceFirstChar { it.uppercase() }
+                val stringaCognome = currentDoctor.cognome.lowercase().replaceFirstChar { it.uppercase() }
+                DermaSpecialistCard(
+                    doctorName = "${stringResource(R.string.label_doctor_prefix)} $stringaNome$stringaCognome",
+                    // Usiamo l'operatore Elvis ?: per fornire un testo di default nel caso in cui specializzazione o descrizione siano null
+                    doctorRole = currentDoctor.specialization ?: stringResource(R.string.label_default_specialization),
+                    doctorDescription = currentDoctor.description ?: stringResource(R.string.desc_no_doctor_description),
+                    doctorDataNascita = currentDoctor.dataNascita,
+                    doctorMail = currentDoctor.email,
+                    doctorLanguage = currentDoctor.language,
+                    iconResId = R.drawable.ic_button_medico,
+                    avatarURL = currentDoctor.avatarUrl
+                )
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Bottone "Cambia Medico"
             Button(
-                onClick = { /* TODO: Logica per cambiare medico */ },
+                onClick = { viewModel.openDoctorDialog() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -305,7 +377,7 @@ fun DermaProfilePazienteScreen(
                 // Pulsante di Conferma (posizionato solitamente in basso a destra) :
                 // Quando cliccato, esegue la logica di salvataggio (confirmUsernameChange).
                 confirmButton = {
-                    TextButton(onClick = { viewModel.confirmUsernameChange() }) {
+                    TextButton(onClick = { viewModel.confirmUsernameChange(context) }) {
                         Text(
                             text = stringResource(R.string.btn_conferma),
                             style = MaterialTheme.typography.labelLarge // Stile del bottone
@@ -374,7 +446,7 @@ fun DermaProfilePazienteScreen(
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = { viewModel.confirmEmailChange() }) {
+                    TextButton(onClick = { viewModel.confirmEmailChange(context) }) {
                         Text(stringResource(R.string.btn_conferma), style = MaterialTheme.typography.labelLarge)
                     }
                 },
@@ -449,7 +521,7 @@ fun DermaProfilePazienteScreen(
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = { viewModel.confirmPasswordChange() }) {
+                    TextButton(onClick = { viewModel.confirmPasswordChange(context) }) {
                         Text(stringResource(R.string.btn_conferma), style = MaterialTheme.typography.labelLarge)
                     }
                 },
@@ -459,6 +531,11 @@ fun DermaProfilePazienteScreen(
                     }
                 }
             )
+        }
+
+        //PopUp del dottore
+        if(viewModel.showDoctorDialog){
+            DermaDoctorListDialog(viewModel, context)
         }
     }
 }

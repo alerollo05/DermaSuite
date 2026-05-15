@@ -131,7 +131,11 @@ class EasiPageViewModel : ViewModel() {
                         .add(payload)
                         .await()
 
-                    // ---> AGGIUNGI QUESTA RIGA QUI SOTTO <---
+                    //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
+                    db.collection("users").document(user.uid).update(
+                        "ultimaValutazione", FieldValue.serverTimestamp()
+                    ).await()
+
                     onSuccess() // Comunica che il salvataggio è andato a buon fine!
 
                 } else {

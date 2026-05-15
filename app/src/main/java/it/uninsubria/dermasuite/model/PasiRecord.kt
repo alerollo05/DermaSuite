@@ -13,7 +13,7 @@ data class PasiRecord(
     @DocumentId val id: String = "",
     @get:PropertyName("CalculationDate") @set:PropertyName("CalculationDate") var CalculationDate: Date = Date(),
     @get:PropertyName("ParameterDistrict") @set:PropertyName("ParameterDistrict") var ParameterDistrict: ParameterDistrictState = ParameterDistrictState(),
-    @get:PropertyName("PasiTot") @set:PropertyName("PasiTot") var PasiTot: Int = 0,
+    @get:PropertyName("PasiTot") @set:PropertyName("PasiTot") var PasiTot: Double = 0.0,
     @get:PropertyName("Severity") @set:PropertyName("Severity") var Severity: String = ""
 )
 

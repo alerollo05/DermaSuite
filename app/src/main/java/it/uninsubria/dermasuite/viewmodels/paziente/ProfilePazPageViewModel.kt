@@ -1,18 +1,21 @@
 package it.uninsubria.dermasuite.viewmodels.paziente
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import it.uninsubria.dermasuite.R
 import it.uninsubria.dermasuite.firebase.AuthRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.lang.reflect.Array.set
 import java.text.SimpleDateFormat
 import java.util.Locale
+import it.uninsubria.dermasuite.firebase.DermaUser
 
 
 // Enum per distinguere cosa stiamo modificando nel Bottom Sheet
@@ -48,6 +51,16 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
     var newPasswordText by mutableStateOf(""); private set
     var confirmNewPasswordText by mutableStateOf(""); private set
 
+    //Variabili di stato per la ricerca dei medici per il paziente
+    var currentDoctor by mutableStateOf<DermaUser?>(null); private set
+    var showDoctorDialog by mutableStateOf(false); private set
+    var doctorList by mutableStateOf<List<DermaUser>>(emptyList()); private set
+    var isLoadingDoctors by mutableStateOf(false); private set
+
+    //Variabili di stato per la gestione dell'avatar
+    var avatarUrl by mutableStateOf<String?>(null); private set
+    var isUploading by mutableStateOf(false); private set
+
 
     init {
         loadProfileData()
@@ -63,6 +76,7 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                     nomeUtente = dermaUser.nome
                     cognomeUtente = dermaUser.cognome
                     sesso = dermaUser.sesso
+                    avatarUrl = dermaUser.avatarUrl // Carica l'URL dell'avatar esistente
                     val timestamp = dermaUser.dataNascita // Questo è l'oggetto Timestamp di Firebase
                     // Converti Timestamp in Date
                     val date = timestamp?.toDate()
@@ -72,14 +86,46 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                         // Assegna la stringa formattata alla variabile dello stato
                         dataNascita = formatter.format(date)
                     } else {
-                        dataNascita = "Data di nascita non inserita"
+                        dataNascita = null
                     }
                     email = dermaUser.email
                     password = "********"
+                    if(dermaUser.doctorId != null){
+                        currentDoctor = repository.getUserData(dermaUser.doctorId) //Metto i dati del dottore linkato al paziente nel viewModel
+                    }
                 }
             }
         }
     }
+
+    //Metodi per la gestione del popup di ricerca dei medici
+    fun openDoctorDialog(){
+        showDoctorDialog = true
+        isLoadingDoctors = true
+        viewModelScope.launch {
+            doctorList = repository.getAvailableDoctors() //Andiamo a richiamare il metodo nel auth repository per ottenere la lista dei medici
+            isLoadingDoctors = false
+        }
+    }
+    fun closeDoctorDialog(){
+        showDoctorDialog = false
+    }
+    fun selectDoctor(doctorUid: String, context: android.content.Context){
+        val stringaDialogSuccesso = context.getString(R.string.dialog_successo_ricerca_medico)
+        val patientUid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewModelScope.launch {
+            val success = repository.linkDoctorToPatient(patientUid,doctorUid)
+            if(success){
+                snackbarMessage = stringaDialogSuccesso
+                currentDoctor = doctorList.find { it.uid == doctorUid } //Andiamo ad aggiornare la UI con il nuovo dottore
+                closeDoctorDialog()
+            }else{
+                snackbarMessage = context.getString(R.string.dialog_errore_ricerca_medico)
+            }
+        }
+    }
+
+
 
     // --- FUNZIONI DI UTILITY ---
     fun clearSnackbarMessage() { snackbarMessage = null }
@@ -99,13 +145,13 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
         editUsernameText = newText
         clearInputPopupError()
     }
-    fun confirmUsernameChange() { // Funzione che aggiorna l'username dell'utente
+    fun confirmUsernameChange(context: android.content.Context) { // Funzione che aggiorna l'username dell'utente
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         if (uid == null) return
 
         if (editUsernameText.isBlank()) {
             // Mostriamo l'errore DENTRO il popup
-            inputPopupError = "L'username non può essere vuoto!"
+            inputPopupError = context.getString(R.string.error_empty_username)
             return
         }
 
@@ -116,11 +162,11 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                 // L'aggiornamento su Firestore è andato a buon fine!
                 // Ora aggiorniamo lo stato locale per far cambiare il testo nella UI
                 user = editUsernameText
-                snackbarMessage = "Username aggiornato!" // Questa andrà bene nello Scaffold principale
+                snackbarMessage = context.getString(R.string.msg_username_updated) // Questa andrà bene nello Scaffold principale
                 closeUsernameDialog() // Il popup si chiude, la patina sparisce e la Snackbar brilla!
             } else {
                 // Se Firebase fallisce (es. no connessione)
-                inputPopupError = "Errore di connessione."
+                inputPopupError = context.getString(R.string.error_connection)
             }
         }
     }
@@ -142,12 +188,12 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
     fun updateCurrentPasswordForEmail(text: String) { currentPasswordForEmail = text; clearInputPopupError() } // Aggiorna il valore della password attuale necessaria per la ri-autenticazione.
 
     // Funzione per cambiare la mail
-    fun confirmEmailChange() {
+    fun confirmEmailChange(context: android.content.Context) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
         // Validazione Locale: Controlla che i campi non siano vuoti o composti solo da spazi.
         // Se mancano dati, imposta il messaggio di errore per il popup e si ferma.
         if (editEmailText.isBlank() || currentPasswordForEmail.isBlank()) {
-            inputPopupError = "Compila tutti i campi."
+            inputPopupError = context.getString(R.string.error_fill_all_fields)
             return
         }
 
@@ -159,7 +205,7 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
 
             // Se la password è sbagliata, mostra l'errore nel popup e interrompe la coroutine.
             if (!passwordSuccess) {
-                inputPopupError = "La password inserita è errata."
+                inputPopupError = context.getString(R.string.error_wrong_password)
                 return@launch // Interrompe il processo asincrono, ma lascia il popup aperto
             }
 
@@ -168,10 +214,10 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
             val updateSuccess = repository.updateEmail(uid, editEmailText)
             if (updateSuccess) {
                 email = editEmailText // Cambiamo la variabile locale per vederla aggiornata a schermo
-                snackbarMessage = "Email aggiornata con successo!"
+                snackbarMessage = context.getString(R.string.msg_email_updated)
                 closeEmailDialog()
             } else {
-                inputPopupError = "Errore durante l'aggiornamento."
+                inputPopupError = context.getString(R.string.error_update_failed)
             }
         }
     }
@@ -196,22 +242,22 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
     fun updateConfirmNewPasswordText(text: String) { confirmNewPasswordText = text; clearInputPopupError() }
 
     // Funzione per cambiare la password
-    fun confirmPasswordChange() {
+    fun confirmPasswordChange(context: android.content.Context) {
         // Primo controllo (Campi vuoti):
         // Verifica che l'utente abbia compilato tutti e tre i campi del popup.
         // Se anche solo uno è vuoto o contiene solo spazi, mostra l'errore e si ferma.
         if (currentPasswordText.isBlank() || newPasswordText.isBlank() || confirmNewPasswordText.isBlank()) {
-            inputPopupError = "Compila tutti i campi."
+            inputPopupError = context.getString(R.string.error_fill_all_fields)
             return
         }
         // Controllo se la nuova password coincide con la conferma
         if (newPasswordText != confirmNewPasswordText) {
-            inputPopupError = "Le password non coincidono."
+            inputPopupError = context.getString(R.string.error_passwords_not_match)
             return
         }
         // Controllo sulla lunghezza della password
         if (newPasswordText.length < 6) {
-            inputPopupError = "La password deve avere almeno 6 caratteri."
+            inputPopupError = context.getString(R.string.error_password_too_short)
             return
         }
 
@@ -222,18 +268,43 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
             val reauthSuccess = repository.reauthenticate(currentPasswordText)
             // Se la vecchia password inserita è sbagliata
             if (!reauthSuccess) {
-                inputPopupError = "Password attuale errata."
+                inputPopupError = context.getString(R.string.error_current_password_wrong)
                 return@launch // Interrompe il processo asincrono, ma lascia il popup aperto
             }
 
             // Aggiorno password su Firestore
             val updateSuccess = repository.updatePassword(newPasswordText)
             if (updateSuccess) {
-                snackbarMessage = "Password aggiornata con successo!"
+                snackbarMessage = context.getString(R.string.msg_password_updated)
                 closePasswordDialog()
             } else {
-                inputPopupError = "Errore durante l'aggiornamento."
+                inputPopupError = context.getString(R.string.error_update_failed)
             }
+        }
+    }
+
+    fun updateAvatar(uri: Uri, contentResolver: ContentResolver) {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewModelScope.launch {
+            isUploading = true
+            val inputStream = try {
+                contentResolver.openInputStream(uri)
+            } catch (e: Exception) {
+                null
+            }
+
+            if (inputStream != null) {
+                val url = repository.uploadAvatar(uid, inputStream)
+                if (url != null) {
+                    avatarUrl = url
+                    snackbarMessage = "Immagine caricata con successo."
+                } else {
+                    snackbarMessage = "Errore durante il caricamento."
+                }
+            } else {
+                snackbarMessage = "Immagine non trovata."
+            }
+            isUploading = false
         }
     }
 

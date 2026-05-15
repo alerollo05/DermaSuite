@@ -60,7 +60,7 @@ fun DermaButton(
 }
 @Preview(showBackground = true)
 @Composable
-fun DermaButtonPreview() {
+private fun DermaButtonPreview() {
     it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
         DermaButton("Login", onClick = {})
     }

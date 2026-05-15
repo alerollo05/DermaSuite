@@ -34,7 +34,8 @@ fun DermaEasiHistoryChart (
             yValues = scores,
             xLabels = months,
             lineColor = MaterialTheme.colorScheme.primary,
-            fullDates = fullDates
+            fullDates = fullDates,
+            valore = "EASI"
         )
     }
 }

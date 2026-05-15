@@ -41,6 +41,7 @@ fun DermaPasiHistoryDialog (
 ){
     val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
     val scrollState = rememberScrollState()
+
     Dialog(
         onDismissRequest = onDismiss, //Chiude il dialogo alla chiusura del popup, quando clicco fuori dallo schermo
         properties = DialogProperties(

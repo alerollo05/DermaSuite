@@ -40,7 +40,8 @@ fun DermaChartVico(
     xLabels: List<String>,
     fullDates: List<String>, // Lista per le date complete nel popup
     lineColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    valore: String = "PASI"
 ) {
 
     // 1. ALGORITMO DI CENTRAGGIO DELLE ETICHETTE
@@ -101,6 +102,7 @@ fun DermaChartVico(
                 val entry = point.entry
                 val index = entry.x.toInt()
                 val fullDate = fullDates.getOrNull(index) ?: ""
+                val formattedValue = String.format("%.1f", entry.y)
                 "Data: $fullDate ${tipoCalcolo}: ${"%.2f".format(entry.y)}" // "%.2f".format(entry.y) formatta il punteggio a 2 decimali
             } else {
                 ""
