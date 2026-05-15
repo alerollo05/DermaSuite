@@ -44,7 +44,7 @@ fun DermaChartVico(
     valore: String = "PASI"
 ) {
 
-    // 1. ALGORITMO DI CENTRAGGIO DELLE ETICHETTE
+    //ALGORITMO DI CENTRAGGIO DELLE ETICHETTE
     // Creiamo una mappa che associa l'indice esatto alla stringa da mostrare
     val centeredLabelsMap = remember(xLabels) {
         val map = mutableMapOf<Int, String>()
@@ -59,7 +59,7 @@ fun DermaChartVico(
                 i++
             }
 
-            // Applichiamo la logica di centraggio richiesta:
+            // Applichiamo la logica di centraggio:
             // Se N è dispari (es. 3), size / 2 = 1 (seconda posizione).
             // Se N è pari (es. 4), size / 2 = 2 (terza posizione, inizio seconda metà).
             val middleRelativeIndex = groupIndices.size / 2
@@ -70,7 +70,7 @@ fun DermaChartVico(
         map
     }
 
-    // CREAZIONE DEL MODELLO DATI
+    //CREAZIONE DEL MODELLO DATI
     // Usiamo 'remember' con 'yValues' come chiave affinché il modello venga ricreato solo se i dati cambiano.
     val model = remember(yValues) {
         CartesianChartModel(

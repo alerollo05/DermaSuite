@@ -9,16 +9,16 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.model.DistrettoCorpo
 import it.uninsubria.dermasuite.model.EasiDistrictState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class EasiPageViewModel : ViewModel() {
+class EasiPageViewModel(
+    private val repository: AuthRepository = AuthRepository()
+): ViewModel() {
 
-    // Riferimenti alle istanze di Firestore e FirebaseAuth per i dati e l'utente
-    private val db = Firebase.firestore
-    private val auth = Firebase.auth
 
     // Stato per decidere se mostrare o meno la card con il risultato finale
     var showResult by mutableStateOf(false)
@@ -100,46 +100,40 @@ class EasiPageViewModel : ViewModel() {
     private fun salvaEasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
         viewModelScope.launch {
             try {
-                val user = auth.currentUser ?: return@launch onError("Utente non autenticato") // Controllo login
+                // Prendi l'UID tramite FirebaseAuth (che è accessibile anche se non istanzi auth qui,
+                // ma se preferisci puoi aggiugnere un getCurrenUser() nel repository)
+                val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
 
-                // Verifica il ruolo dell'utente prima di procedere
-                val document = db.collection("users").document(user.uid).get().await()
-                if(document.exists() && document.getString("role") == "Paziente"){
+                if (uid == null) {
+                    onError("Utente non autenticato")
+                    return@launch
+                }
 
-                    // Prepara i dettagli tecnici per ogni distretto da salvare
-                    val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
-                        mapOf(
-                            "Erythema" to entry.value.eritema,
-                            "EdemaPapulation" to entry.value.edemaPapulizzazione,
-                            "Excoriation" to entry.value.escoriazione,
-                            "Lichenification" to entry.value.lichenificazione,
-                            "PercentageArea" to entry.value.percentualeArea
-                        )
-                    }
-
-                    // Crea il documento finale (payload)
-                    val payload = hashMapOf(
-                        "CalculationDate" to FieldValue.serverTimestamp(),
-                        "EasiTot" to totalEasiResult,
-                        "Severity" to severityClass,
-                        "ParameterDistrict" to dettagliMappa
+                // Creazione del Payload (questa parte rimane nel ViewModel perché è logica di business)
+                val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
+                    mapOf(
+                        "Erythema" to entry.value.eritema,
+                        "EdemaPapulation" to entry.value.edemaPapulizzazione,
+                        "Excoriation" to entry.value.escoriazione,
+                        "Lichenification" to entry.value.lichenificazione,
+                        "PercentageArea" to entry.value.percentualeArea
                     )
+                }
 
-                    // Salva nella sottocollezione "EASI" del paziente
-                    db.collection("users").document(user.uid)
-                        .collection("EASI")
-                        .add(payload)
-                        .await()
+                val payload = hashMapOf(
+                    "CalculationDate" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
+                    "EasiTot" to totalEasiResult,
+                    "Severity" to severityClass,
+                    "ParameterDistrict" to dettagliMappa
+                )
 
-                    //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
-                    db.collection("users").document(user.uid).update(
-                        "ultimaValutazione", FieldValue.serverTimestamp()
-                    ).await()
+                // LA CHIAMATA PULITA AL REPOSITORY
+                val isSuccess = repository.salvaEasiRecord(uid, payload)
 
-                    onSuccess() // Comunica che il salvataggio è andato a buon fine!
-
+                if (isSuccess) {
+                    onSuccess()
                 } else {
-                    onError("Solo i pazienti possono salvare i calcoli")
+                    onError("Errore durante il salvataggio")
                 }
             }catch (e: Exception){
                 // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo

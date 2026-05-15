@@ -17,6 +17,7 @@ import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
 import it.uninsubria.dermasuite.ui.screens.medico.DermaChatMedicoScreen
+import it.uninsubria.dermasuite.ui.screens.medico.DermaDettagliPazienteScreen
 import it.uninsubria.dermasuite.ui.screens.medico.DermaProfileMedicoScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIScreen
@@ -28,6 +29,7 @@ import it.uninsubria.dermasuite.ui.screens.paziente.DermaEASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaProfilePazienteScreen
+import it.uninsubria.dermasuite.viewmodels.medico.DettagliPazienteViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -196,7 +198,21 @@ class MainActivity : ComponentActivity() {
                         DermaDashBoardMedicoScreen(
                             navController = navController,
                             onNavigateToChatM = {navController.navigate("chat_screen_medico")},
-                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")}
+                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")},
+                            onNavigateToPaziente = { pazienteId ->
+                                navController.navigate("info_paziente_screen/$pazienteId")
+                            }
+                        )
+                    }
+                    //Contiene la logica per visualizzare i dati specifici di un utente, in base alla scelta del medico
+                    composable("info_paziente_screen/{pazienteId}"){ backStackEntry ->
+                        val idStringa = backStackEntry.arguments?.getString("pazienteId") ?: ""
+                        DermaDettagliPazienteScreen(
+                            pazienteId = idStringa, //Lo usiamo per passare da una pagina all'altrà il riferimento al paziente che vogliamo vedere
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_medico")},
+                            onNavigateToChatM = {navController.navigate("chat_screen_medico")},
+                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")},
                         )
                     }
                     composable("chat_screen_medico") {

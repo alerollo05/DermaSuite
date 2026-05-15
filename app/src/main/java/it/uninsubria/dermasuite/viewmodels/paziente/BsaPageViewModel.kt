@@ -25,11 +25,11 @@ import kotlin.math.sqrt
 // ViewModel responsabile per la pagina di calcolo del BSA.
 // Gestisce gli input dell'utente, esegue il calcolo matematico
 // e salva il risultato su Firestore.
-class BsaPageViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel() {
-    private val db = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
+class BsaPageViewModel(
+    private val repository: AuthRepository = AuthRepository()
+) : ViewModel() {
 
-    // --- STATI DI INPUT DELLA UI ---
+    // STATI DI INPUT DELLA UI
     // StateFlow per raccogliere i dati digitati dall'utente in tempo reale.
     private val _peso = MutableStateFlow("")
     val peso: StateFlow<String> = _peso.asStateFlow()
@@ -66,14 +66,11 @@ class BsaPageViewModel(private val repository: AuthRepository = AuthRepository()
     }
 
     private fun recuperaSessoPaziente() {
-        val userId = auth.currentUser?.uid
+        val userId = repository.getCurrentUserId()
+
         if (userId != null) {
             viewModelScope.launch {
-                // Chiamiamo la funzione che hai già creato nel tuo AuthRepository!
-                val dermaUser = repository.getUserData(userId)
-
-                // Se l'utente esiste e ha un sesso salvato lo usiamo, altrimenti fallback a "Maschio"
-                _sesso.value = dermaUser?.sesso ?: "Maschio"
+                _sesso.value = repository.getSessoPaziente(userId)
             }
         }
     }
@@ -138,18 +135,16 @@ class BsaPageViewModel(private val repository: AuthRepository = AuthRepository()
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun salvaSuFirestore(peso: Double, altezza: Double, sesso: String, bsa: Double, valutazione: String) {
-        val userId = auth.currentUser?.uid
+        val userId = repository.getCurrentUserId()
 
         if (userId == null) {
             _isLoading.value = false
             return
         }
 
-        // Generiamo il timestamp testuale al momento del salvataggio
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
         val dataOraAttuale = LocalDateTime.now().format(formatter)
 
-        // Prepariamo l'oggetto (record) da inviare a Firebase
         val record = BsaRecord(
             dataOra = dataOraAttuale,
             peso = peso,
@@ -159,24 +154,16 @@ class BsaPageViewModel(private val repository: AuthRepository = AuthRepository()
             valutazione = valutazione
         )
 
-        // Lanciamo una coroutine per l'operazione di rete (non blocca la UI)
         viewModelScope.launch {
-            try {
-                db.collection("users").document(userId)
-                    .collection("BSA") // Salviamo nella sotto-collezione "BSA" del paziente
-                    .add(record)
-                    .await() // Attendiamo la conferma da parte di Firebase
+            // CHIAMATA AL REPOSITORY E GESTIONE DELL'ESITO
+            val isSuccess = repository.salvaBsaRecord(userId, record)
 
-                //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
-                db.collection("users").document(userId).update(
-                    "ultimaValutazione", FieldValue.serverTimestamp()
-                ).await()
-
-                _isLoading.value = false // Sblocchiamo il pulsante
-                _saveSuccess.emit(true)  // Diciamo alla View di mostrare la Snackbar di successo
-            } catch (e: Exception) {
-                Log.e("BsaViewModel", "Errore: ${e.message}")
+            if (isSuccess) {
                 _isLoading.value = false
+                _saveSuccess.emit(true)
+            } else {
+                _isLoading.value = false
+                _errorMessage.emit("Errore durante il salvataggio dei dati.")
             }
         }
     }

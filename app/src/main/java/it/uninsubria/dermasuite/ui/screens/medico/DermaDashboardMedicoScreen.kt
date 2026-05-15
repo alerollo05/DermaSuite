@@ -30,6 +30,7 @@ fun DermaDashBoardMedicoScreen(
     navController: NavController,
     onNavigateToChatM: () -> Unit = {},
     onNavigateToProfileM: () -> Unit = {},
+    onNavigateToPaziente: (String) -> Unit = {},
     viewModel: DashboardPageMedicoViewModel = viewModel()
 ){
     // Definiamo le azioni per la BottomBar del medico
@@ -74,7 +75,7 @@ fun DermaDashBoardMedicoScreen(
                        color = MaterialTheme.colorScheme.primary
                    )
             }else{
-                DermaListaPazienti(viewModel, modifier = Modifier.weight(1f))
+                DermaListaPazienti(viewModel, modifier = Modifier.weight(1f),onNavigateToPaziente)
             }
         }
     }

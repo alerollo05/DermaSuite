@@ -10,13 +10,14 @@ import it.uninsubria.dermasuite.viewmodels.medico.DashboardPageMedicoViewModel
 @Composable
 fun DermaListaPazienti(
     viewModel: DashboardPageMedicoViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToPaziente: (String) -> Unit = {}
 ){
         LazyColumn(
             modifier = modifier.fillMaxWidth()
         ) {
             items(viewModel.filteredPatients) { paziente ->
-                DermaCardPaziente(paziente = paziente, onClick = { /* TODO() */ })
+                DermaCardPaziente(paziente = paziente, onClick = {onNavigateToPaziente(paziente.uid)})
             }
         }
 }

@@ -9,16 +9,13 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.model.DistrettoCorpo
 import it.uninsubria.dermasuite.model.PasiDistrictState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class PasiPageViewModel(): ViewModel() {
-
-    //Andiamo a creare le variabili per fare la connessione al DB
-    private val db = Firebase.firestore
-    private val auth = Firebase.auth
+class PasiPageViewModel(private val repository: AuthRepository = AuthRepository()): ViewModel() {
 
     //Aggiungiamo una variabile per stampare la card del risultato, una volta fatto il calcolo il risultato finale
     var showResult by mutableStateOf(false)
@@ -100,53 +97,41 @@ class PasiPageViewModel(): ViewModel() {
     private fun salvaPasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
        viewModelScope.launch{
            try {
-               val user = auth.currentUser
-               if (user == null) {
-                   onError("utente non autenticato")
+               //Prendiamo l'ID utente dal repository invece che da FirebaseAuth
+               val uid = repository.getCurrentUserId()
+
+               if (uid == null) {
+                   onError("Utente non autenticato")
                    return@launch
                }
-               //Andiamo a verificare che l'utente sia un paziente (per sicurezza)
-               val document = db.collection("users").document(user.uid).get().await()//La coroutine si ferma qui finché Firebase non risponde
 
-               if (document.exists() && document.getString("role") == "Paziente") {
+               //Prepariamo i dati (questo è compito del ViewModel)
+               val dettagliMappa = districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
+                   mapOf(
+                       "Erythema" to entry.value.erythema,
+                       "Hardening" to entry.value.hardening,
+                       "Desquamation" to entry.value.desquamation,
+                       "PercentageArea" to entry.value.percentageArea
+                   )
+               }
 
-                       //Andiamo a preparare i dati dei distretti per il salvataggio dei dati su DB
-                       //Prepariamo i dati dei distretti mappandoli in stringhe
-                       //it.name.key va a prendere il nome del distretto che è un enum e lo trasforma in stringa
-                       //cosi diventa salvabile in firestore
-                       //Mentre mapValues converte le istanze di districtState in stringhe
-                       val dettagliMappa =
-                           districtValues.mapKeys { it.key.technicalName }.mapValues { entry ->
-                               mapOf(
-                                   "Erythema" to entry.value.erythema,
-                                   "Hardening" to entry.value.hardening,
-                                   "Desquamation" to entry.value.desquamation,
-                                   "PercentageArea" to entry.value.percentageArea
-                               )
-                           }
-                       //Creiamo il pacchetto finito da spedire al DB
-                       val payload = hashMapOf(
-                           "CalculationDate" to FieldValue.serverTimestamp(),
-                           "PasiTot" to totalPasiResult,
-                           "Severity" to severityClass,
-                           "ParameterDistrict" to dettagliMappa
-                       )
-                       // Salvataggio nella sottocollezione PASI
-                       db.collection("users").document(user.uid)
-                           .collection("PASI")
-                           .add(payload).await()// Aspettiamo che il salvataggio sia completato
+               // Creiamo il pacchetto finito
+               val payload = hashMapOf(
+                   // Usiamo il percorso completo per FieldValue così non serve l'import in alto
+                   "CalculationDate" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
+                   "PasiTot" to totalPasiResult,
+                   "Severity" to severityClass,
+                   "ParameterDistrict" to dettagliMappa
+               )
 
+               //Deleghiamo il salvataggio al Repository
+               val isSuccess = repository.salvaPasiRecord(uid, payload)
 
-                       //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
-                       db.collection("users").document(user.uid).update(
-                           "ultimaValutazione", FieldValue.serverTimestamp()
-                       ).await()
-
-                       // Se arriviamo qui, NESSUN errore si è verificato nei due .await()
-                       onSuccess()
-                   } else {
-                       onError("Solo i pazienti possono salvare i calcoli")
-                   }
+               if (isSuccess) {
+                   onSuccess()
+               } else {
+                   onError("Errore durante il salvataggio dei dati su Firebase")
+               }
            }catch (e: Exception){
                // Gestisce qualsiasi errore (Auth, Firestore, Rete) in un colpo solo
                // Se il get().await() o l'add().await() falliscono (es. niente internet),

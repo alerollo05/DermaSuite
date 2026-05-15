@@ -12,12 +12,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.model.BmiRecord
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 
-class BmiPageViewModel : ViewModel() {
+class BmiPageViewModel(
+    private val repository: AuthRepository = AuthRepository()
+) : ViewModel() {
 
     data class BmiUiState(
             val height: String = "",
@@ -39,8 +42,6 @@ class BmiPageViewModel : ViewModel() {
     //Ci serve per andare a far scorrere ad ogni pressione del bottone verso il basso la pagina in modo da visualizzare la card di result
     var scrollTrigger by mutableStateOf(0)
 
-    val auth = Firebase.auth
-    val db = Firebase.firestore
 
     //Metodi per l'aggiornamento delle variabili in base alla UI
     fun onHeightChanged(newHeight: String) {
@@ -107,40 +108,32 @@ class BmiPageViewModel : ViewModel() {
             try {
                 uiState = uiState.copy(isSaving = true)
 
-                val user = auth.currentUser
-                if (user == null) {
+                //Chiediamo l'UID al repository
+                val uid = repository.getCurrentUserId()
+
+                if (uid == null) {
+                    uiState = uiState.copy(isSaving = false)
                     onError()
                     return@launch
                 }
 
-                val document = db.collection("users").document(user.uid).get().await()
+                //Creiamo il pacchetto dati da salvare
+                val payload = hashMapOf(
+                    // Usiamo il percorso completo per FieldValue
+                    "CalculationDate" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
+                    "BmiTot" to bmi,
+                    "Category" to category,
+                    "Height" to uiState.height.toInt(),
+                    "Weight" to uiState.weight.toInt(),
+                )
 
-                if(document != null && document.exists()){
-                    val role = document.getString("role")
-                    if(role == "Paziente"){ //Controlliamo che l'utente sia effettivamente un paziente per sicurezza
-                        //Creiamo il pacchetto finito da spedire al DB
-                        val payload = hashMapOf(
-                            "CalculationDate" to FieldValue.serverTimestamp(),
-                            "BmiTot" to bmi,
-                            "Category" to category,
-                            "Height" to uiState.height.toInt(),
-                            "Weight" to uiState.weight.toInt(),
-                        )
+                //Deleghiamo il lavoro pesante al repository
+                val isSuccess = repository.salvaBmiRecord(uid, payload)
 
-                        db.collection("users").document(user.uid).collection("BMI").add(payload).await()
-
-                        //Aggiorniamo il campo "ultimaValutazione" nel documento root del Paziente
-                        db.collection("users").document(user.uid).update(
-                            "ultimaValutazione", FieldValue.serverTimestamp()
-                        ).await()
-
-                        onSuccess()
-                        uiState = uiState.copy(isSaving = false)
-                    }else{
-                        uiState = uiState.copy(isSaving = false)
-                        onError()
-                    }
-                }else{
+                if (isSuccess) {
+                    uiState = uiState.copy(isSaving = false)
+                    onSuccess()
+                } else {
                     uiState = uiState.copy(isSaving = false)
                     onError()
                 }

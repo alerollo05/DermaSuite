@@ -61,6 +61,7 @@
     <string name="desc_no_doctor_assigned">Attualmente non sei seguito da nessuno specialista. Clicca sul pulsante qui sotto per sceglierne uno dalla lista.</string>
     <string name="label_default_specialization">Specialista in Dermatologia</string>
     <string name="desc_no_doctor_description">Nessuna descrizione fornita dal medico.</string>
+    <string name="desc_no_doctor_specialization">Nessuna specializzazione fornita dal medico.</string>
     <string name="dialog_close">Chiudi</string>
 
     <string name="dialog_description">Descrizione: </string>

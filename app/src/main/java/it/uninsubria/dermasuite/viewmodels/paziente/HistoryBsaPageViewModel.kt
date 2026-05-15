@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.model.BsaRecord
 import it.uninsubria.dermasuite.model.TimeFilter
@@ -18,9 +19,10 @@ import java.util.Date
 import java.util.Locale
 
 // ViewModel responsabile di scaricare, filtrare e cancellare i dati dello storico BSA.
-class HistoryBsaPageViewModel: ViewModel() {
+class HistoryBsaPageViewModel(
+    private val repository: AuthRepository = AuthRepository()
+): ViewModel() {
 
-    private val db = Firebase.firestore
 
     // Questa variabile mantiene tutti i calcoli scaricati da Firebase (non filtrati).
     // È utile per non dover rifare chiamate al server ogni volta che si cambia il filtro.
@@ -48,25 +50,14 @@ class HistoryBsaPageViewModel: ViewModel() {
             try {
                 _isLoading.value = true
 
-                // --- SCARICHIAMO I DATI DELL'UTENTE ---
-                // Recuperiamo il documento dell'utente dalla collection "users"
-                val userSnapshot = db.collection("users").document(UserId).get().await()
-                _userData.value = userSnapshot.toObject(DermaUser::class.java)
+                //Recuperiamo i dati dell'utente dal repository
+                _userData.value = repository.getUserData(UserId)
 
-                // Scarichiamo tutta la collection BSA per l'utente loggato
-                val result = db.collection("users")
-                    .document(UserId)
-                    .collection("BSA")
-                    .get().await()
-
-                // Mappiamo i documenti scaricati nella data class BsaRecord.
-                // Usiamo sortedByDescending per avere subito l'ordine cronologico inverso
-                listaCalcoli = result.toObjects(BsaRecord::class.java)
+                //Recuperiamo i record BSA dal repository
+                listaCalcoli = repository.getBsaRecords(UserId)
                     .sortedByDescending { parseDate(it.dataOra) }
 
-                // Applichiamo il filtro di default (ultimi 6 mesi) prima di mostrare la lista
                 applyFilter(_currentFilter.value)
-
                 _isLoading.value = false
             } catch(e: Exception) {
                 _isLoading.value = false
@@ -99,20 +90,13 @@ class HistoryBsaPageViewModel: ViewModel() {
 
         viewModelScope.launch {
             try {
-                // 1. Cancelliamo il documento da Firebase usando il suo ID univoco
-                if (UserId != null) {
-                    db.collection("users")
-                        .document(UserId)
-                        .collection("BSA")
-                        .document(record.id).delete().await()
+                //CANCELLAZIONE TRAMITE REPOSITORY
+                val isDeleted = repository.deleteBsaRecord(UserId!!, record.id)
+
+                if (isDeleted) {
+                    listaCalcoli = listaCalcoli.filter { it.id != record.id }
+                    applyFilter(_currentFilter.value)
                 }
-
-                // 2. Rimuoviamo il record dalla nostra lista locale per aggiornare la UI istantaneamente
-                // senza dover scaricare di nuovo tutto il database
-                listaCalcoli = listaCalcoli.filter { it.id != record.id }
-
-                // 3. Riapplichiamo il filtro corrente per aggiornare le View
-                applyFilter(_currentFilter.value)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -10,4 +10,5 @@
     <string name="search_placeholder">Search patient…</string>
     <string name="label_stato_paziente">Under treatment</string>
     <string name="label_ultima_valutazione">Last evaluation</string>
+    <string name="no_data_found">Not enough data to show</string>
 </resources>

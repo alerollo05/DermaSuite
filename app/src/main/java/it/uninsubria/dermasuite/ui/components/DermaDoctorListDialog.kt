@@ -146,9 +146,9 @@ fun DermaDoctorListDialog(
                                             )
                                             Spacer(modifier = Modifier.height(4.dp))
                                             Text(
-                                                text = doctor.description ?: stringResource(R.string.desc_no_doctor_description),
+                                                text = doctor.specialization ?: stringResource(R.string.desc_no_doctor_specialization),
                                                 style = MaterialTheme.typography.bodySmall,
-                                                maxLines = 3
+                                                maxLines = 2
                                             )
                                         }
 

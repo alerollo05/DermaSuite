@@ -6,6 +6,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import it.uninsubria.dermasuite.firebase.DermaUser
+import it.uninsubria.dermasuite.model.BmiRecord
+import it.uninsubria.dermasuite.model.BsaRecord
+import it.uninsubria.dermasuite.model.EasiRecord
+import it.uninsubria.dermasuite.model.PasiRecord
 import it.uninsubria.dermasuite.viewmodels.RegisterUiState
 import kotlinx.coroutines.tasks.await
 
@@ -23,6 +27,22 @@ class AuthRepository {
     //Registra un nuovo utente in Firebase Auth e salva i suoi dati aggiuntivi su Firestore.
     // Le funzioni suspend, vengono eseguite in modalità asincrona (al main thread), perchè sono operazioni
      // che se svolte nel mainthread farebbero crashare l'app
+
+    fun getCurrentUserId(): String? {
+        return auth.currentUser?.uid
+    }
+
+    suspend fun getSessoPaziente(uid: String): String {
+        return try {
+            val dermaUser = getUserData(uid)
+            // Se l'utente esiste e ha il sesso lo restituisce, altrimenti di default "Maschio"
+            dermaUser?.sesso ?: "Maschio"
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "Maschio" // Fallback in caso di assenza di rete
+        }
+    }
+
     suspend fun registerUser(state: RegisterUiState): Result<Unit> {
         return try {
             //Crea l'account su Firebase Authentication
@@ -224,6 +244,168 @@ class AuthRepository {
             null
         } finally {
             try { inputStream.close() } catch (_: Exception) {}
+        }
+    }
+
+    //Getter dei dati specifici per ogni calcolo
+    suspend fun getPasiRecords(uid: String): List<PasiRecord> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(uid)
+                .collection("PASI") // Assicurati che il nome sia identico a quello usato nel salvataggio
+                .orderBy("CalculationDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+            snapshot.toObjects(PasiRecord::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    suspend fun getEasiRecords(uid: String): List<EasiRecord> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(uid)
+                .collection("EASI") // Nome della collezione usato nel salvataggio
+                .orderBy("CalculationDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+            snapshot.toObjects(EasiRecord::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    suspend fun getBsaRecords(uid: String): List<BsaRecord> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(uid)
+                .collection("BSA")
+                .get()
+                .await()
+
+            snapshot.toObjects(BsaRecord::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    suspend fun getBmiRecords(uid: String): List<BmiRecord> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(uid)
+                .collection("BMI") // Uso il nome che hai nel tuo codice
+                .orderBy("CalculationDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+            snapshot.toObjects(BmiRecord::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    //CANCELLAZIONE CALCOLI
+
+    suspend fun deleteEasiRecord(uid: String, recordId: String): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("EASI").document(recordId).delete().await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun deletePasiRecord(uid: String, recordId: String): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("PASI").document(recordId).delete().await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun deleteBsaRecord(uid: String, recordId: String): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("BSA").document(recordId).delete().await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+    suspend fun deleteBmiRecord(uid: String, recordId: String): Boolean {
+        return try {
+            db.collection("users")
+                .document(uid)
+                .collection("BMI")
+                .document(recordId)
+                .delete()
+                .await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    private suspend fun aggiornaUltimaValutazione(uid: String) {
+        try {
+            db.collection("users").document(uid).update(
+                "ultimaValutazione", com.google.firebase.firestore.FieldValue.serverTimestamp()
+            ).await()
+        } catch (e: Exception) {
+            e.printStackTrace() // Logghiamo ma non blocchiamo l'app se fallisce questo piccolo update
+        }
+    }
+
+    //SALVATAGGIO DEI DATI
+    suspend fun salvaEasiRecord(uid: String, payload: HashMap<String, Any>): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("EASI").add(payload).await()
+            aggiornaUltimaValutazione(uid)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun salvaBmiRecord(uid: String, payload: HashMap<String, Any>): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("BMI").add(payload).await()
+            aggiornaUltimaValutazione(uid)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun salvaPasiRecord(uid: String, payload: HashMap<String, Any>): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("PASI").add(payload).await()
+            aggiornaUltimaValutazione(uid)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun salvaBsaRecord(uid: String, record: it.uninsubria.dermasuite.model.BsaRecord): Boolean {
+        return try {
+            db.collection("users").document(uid).collection("BSA").add(record).await()
+            aggiornaUltimaValutazione(uid)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 }

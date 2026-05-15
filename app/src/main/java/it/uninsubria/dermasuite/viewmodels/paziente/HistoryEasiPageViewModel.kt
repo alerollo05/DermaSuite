@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.model.EasiRecord // IMPORTANTE: Usa il tuo nuovo modello EASI
 import it.uninsubria.dermasuite.model.TimeFilter
@@ -15,10 +16,9 @@ import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.Date
 
-class HistoryEasiPageViewModel: ViewModel() {
+class HistoryEasiPageViewModel(var repository: AuthRepository = AuthRepository()): ViewModel() {
 
     // creazione della variabile per accedere a firebase
-    private val db = Firebase.firestore
 
     // Creazione della lista dei calcoli fatti da un utente scaricati da firebase
     private var listaCalcoli = listOf<EasiRecord>()
@@ -42,21 +42,14 @@ class HistoryEasiPageViewModel: ViewModel() {
     fun getHistoryDB(UserId: String) {
         viewModelScope.launch {
             try {
-                _isLoading.value = true // Inizia il caricamento
+                _isLoading.value = true
 
-                // IMPORTANTE: Ora peschiamo dalla collection "EASI"
-                val result = db.collection("users")
-                    .document(UserId)
-                    .collection("EASI")
-                    .get().await()
-
-                // Mappiamo il documento FireStore nella data class dell'EASI
-                listaCalcoli = result.toObjects(EasiRecord::class.java)
-                    .sortedByDescending { it.CalculationDate } // Ordiniamo dal calcolo più recente in poi
+                //Chiamata al repository
+                listaCalcoli = repository.getEasiRecords(UserId)
 
                 applyFilter(_currentFilter.value)
 
-                _isLoading.value = false // Impostiamo lo stato di fine caricamento
+                _isLoading.value = false
             } catch(e: Exception) {
                 _isLoading.value = false
             }
@@ -82,16 +75,12 @@ class HistoryEasiPageViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 // Rimuoviamo il record dalla lista di calcoli su Firebase (collection EASI)
-                db.collection("users")
-                    .document(UserId)
-                    .collection("EASI")
-                    .document(record.id).delete().await()
+                val isDeleted = repository.deleteEasiRecord(UserId, record.id)
 
-                // Andiamo a fare un aggiornamento sulla lista dei calcoli locale
-                listaCalcoli = listaCalcoli.filter { it.id != record.id }
-
-                // Riapplichiamo i filtri per aggiornare la lista nella UI
-                applyFilter(_currentFilter.value)
+                if (isDeleted) {
+                    listaCalcoli = listaCalcoli.filter { it.id != record.id }
+                    applyFilter(_currentFilter.value)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

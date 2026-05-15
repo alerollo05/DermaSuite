@@ -66,6 +66,7 @@
     <string name="desc_no_doctor_assigned">You are currently not followed by any specialist. Click the button below to choose one from the list.</string>
     <string name="label_default_specialization">Specialist in Dermatology</string>
     <string name="desc_no_doctor_description">No description provided by the doctor.</string>
+    <string name="desc_no_doctor_specialization">No specialization provided by the doctor.</string>
     <string name="dialog_close">Close</string>
 
     <string name="dialog_description">Description: </string>

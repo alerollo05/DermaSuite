@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
 import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.model.BmiRecord
 import it.uninsubria.dermasuite.model.TimeFilter
@@ -15,9 +16,10 @@ import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.Date
 
-class HistoryBmiPageViewModel : ViewModel() {
+class HistoryBmiPageViewModel(
+    private val repository: AuthRepository = AuthRepository()
+): ViewModel() {
 
-    val db = Firebase.firestore
     var ListaCalcoli = listOf<BmiRecord>()
 
     private val _uiState = MutableStateFlow<List<BmiRecord>>(emptyList())
@@ -40,12 +42,14 @@ class HistoryBmiPageViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val resultList = db.collection("users").document(UserId).collection("BMI").get().await()
 
-                ListaCalcoli = resultList.toObjects(BmiRecord::class.java).sortedByDescending { it.CalculationDate }
+                // Nota: Il repository te li restituisce già ordinati in modo discendente
+                ListaCalcoli = repository.getBmiRecords(UserId)
+
                 _latestRecord.value = ListaCalcoli.firstOrNull()
 
                 applyFilter(_currentFilter.value)
+
                 _isLoading.value = false
                 onSuccess()
             }catch (e: Exception){
@@ -69,17 +73,14 @@ class HistoryBmiPageViewModel : ViewModel() {
     fun deleteRecord(record: BmiRecord, UserId: String) {
         if (record.id.isEmpty() || UserId == "null") return
         viewModelScope.launch {
-            try {
-                db.collection("users")
-                    .document(UserId)
-                    .collection("BMI")
-                    .document(record.id).delete().await()
+            // SOSTITUZIONE: Deleghiamo la cancellazione al repository
+            val isDeleted = repository.deleteBmiRecord(UserId, record.id)
 
+            if (isDeleted) {
+                // Aggiorniamo la UI solo se la cancellazione su Firebase ha avuto successo
                 ListaCalcoli = ListaCalcoli.filter { it.id != record.id }
                 _latestRecord.value = ListaCalcoli.firstOrNull()
                 applyFilter(_currentFilter.value)
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }
