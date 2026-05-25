@@ -194,7 +194,8 @@ fun DermaPASIScreen(
                         }
 
                     }
-                }
+                },
+                enabled = viewModel.abilitaCalcolo()
             )
             Spacer(modifier = Modifier.height(20.dp))
 

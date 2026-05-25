@@ -228,9 +228,9 @@ fun DermaProfileMedicoScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Bottone di Logout distanziato correttamente dopo la card principale
+            // Bottone di Logout
             DermaButton(
                 text = stringResource(R.string.btn_logout),
                 modifier = Modifier
@@ -239,11 +239,22 @@ fun DermaProfileMedicoScreen(
                     .height(56.dp),
                 onClick = { onLogout() }
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            DermaButton(
+                stringResource(R.string.btn_elimina_account),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(56.dp),
+                onClick = { viewModel.openDeleteDialog() }
+            )
         }
 
         // --- POPUP DI MODIFICA (ALERT DIALOGS) ---
 
-        // 1. POPUP USERNAME
+        // POPUP USERNAME
         if (viewModel.showUsernameDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeUsernameDialog() },
@@ -267,7 +278,7 @@ fun DermaProfileMedicoScreen(
             )
         }
 
-        // 2. POPUP EMAIL
+        // POPUP EMAIL
         if (viewModel.showEmailDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeEmailDialog() },
@@ -298,7 +309,7 @@ fun DermaProfileMedicoScreen(
             )
         }
 
-        // 3. POPUP PASSWORD
+        // POPUP PASSWORD
         if (viewModel.showPasswordDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closePasswordDialog() },
@@ -319,7 +330,7 @@ fun DermaProfileMedicoScreen(
             )
         }
 
-        // 4. POPUP SPECIALIZZAZIONE
+        // POPUP SPECIALIZZAZIONE
         if (viewModel.showSpecializationDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeSpecializationDialog() },
@@ -343,7 +354,7 @@ fun DermaProfileMedicoScreen(
             )
         }
 
-        // 5. POPUP DESCRIZIONE
+        // POPUP DESCRIZIONE
         if (viewModel.showDescriptionDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeDescriptionDialog() },
@@ -364,6 +375,65 @@ fun DermaProfileMedicoScreen(
                 },
                 confirmButton = { TextButton(onClick = { viewModel.confirmDescriptionChange(context) }) { Text(stringResource(R.string.btn_conferma), style = MaterialTheme.typography.labelLarge) } },
                 dismissButton = { TextButton(onClick = { viewModel.closeDescriptionDialog() }) { Text(stringResource(R.string.btn_annulla), color = Color.Gray, style = MaterialTheme.typography.labelLarge) } }
+            )
+        }
+        // --- POPUP ELIMINA ACCOUNT ---
+        if (viewModel.showDeleteDialog) {
+            AlertDialog(
+                onDismissRequest = { viewModel.closeDeleteDialog() },
+                title = {
+                    Text(
+                        text = "Elimina Account", // Se hai una string resource, usala qui
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.error // Lo facciamo rosso per attirare l'attenzione
+                    )
+                },
+                text = {
+                    Column {
+                        Text(
+                            text = "Attenzione: questa azione è irreversibile. Tutti i tuoi dati verranno cancellati. Inserisci la tua password per confermare.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.deletePasswordText,
+                            onValueChange = { viewModel.updateDeletePasswordText(it) },
+                            label = stringResource(R.string.label_password_attuale),
+                            isPassword = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        if (viewModel.inputPopupError != null) {
+                            Text(
+                                text = viewModel.inputPopupError!!,
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            // Passiamo onLogout come callback di onSuccess!
+                            viewModel.confirmDeleteAccount(context) { onLogout() }
+                        }
+                    ) {
+                        Text(
+                            text = "Elimina definitivamente",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.error // Bottone rosso
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { viewModel.closeDeleteDialog() }) {
+                        Text(
+                            text = stringResource(R.string.btn_annulla),
+                            color = Color.Gray,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
             )
         }
     }

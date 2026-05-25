@@ -92,6 +92,48 @@ class AuthRepository {
         }
     }
 
+    // Funzione per eliminare l'account utente
+    suspend fun deleteAccount(currentPassword: String): Boolean {
+        return try {
+            val user = auth.currentUser ?: return false
+            val uid = user.uid
+            val userDocRef = db.collection("users").document(uid)
+
+            // Ri-autenticazione (Obbligatoria prima di azioni distruttive)
+            val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+            user.reauthenticate(credential).await()
+
+            // Eliminazione di tutte le sotto-collezioni associate all'utente
+            val sottoCollezioni = listOf("BMI", "PASI", "EASI", "BSA")
+            for (collezione in sottoCollezioni) {
+                val snapshot = userDocRef.collection(collezione).get().await()
+                for (documento in snapshot.documents) {
+                    documento.reference.delete().await()
+                }
+            }
+
+            // Eliminazione dell'avatar da Firebase Storage (se presente)
+            try {
+                storage.reference.child("avatars/$uid.jpg").delete().await()
+            } catch (e: Exception) {
+                // Se l'avatar non esiste o è già stato cancellato, ignoriamo l'errore
+                // per evitare di bloccare l'intero processo di eliminazione account
+                e.printStackTrace()
+            }
+
+            // Eliminazione del documento principale dell'utente da Firestore
+            userDocRef.delete().await()
+
+            // Eliminazione definitiva dell'account da Firebase Authentication
+            user.delete().await()
+
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
     // Effettua il logout dell'utente.
     fun signOut() {
         auth.signOut()

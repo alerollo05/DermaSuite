@@ -24,6 +24,7 @@
     <string name="btn_cambia_medico">Change Doctor</string>
 
     <string name="btn_logout">Logout</string>
+    <string name="btn_elimina_account">Delete Account</string>
     <string name="btn_conferma">Confirm</string>
     <string name="btn_annulla">Cancel</string>
 

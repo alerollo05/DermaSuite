@@ -61,11 +61,52 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
     var avatarUrl by mutableStateOf<String?>(null); private set
     var isUploading by mutableStateOf(false); private set
 
+    // --- STATI POPUP ELIMINAZIONE ACCOUNT ---
+    var showDeleteDialog by mutableStateOf(false); private set
+    var deletePasswordText by mutableStateOf(""); private set
+
 
     init {
         loadProfileData()
     }
 
+    // --- LOGICA ELIMINAZIONE ACCOUNT ---
+    fun openDeleteDialog() {
+        deletePasswordText = ""
+        clearInputPopupError()
+        showDeleteDialog = true
+    }
+
+    fun closeDeleteDialog() {
+        showDeleteDialog = false
+        clearInputPopupError()
+    }
+
+    fun updateDeletePasswordText(text: String) {
+        deletePasswordText = text
+        clearInputPopupError()
+    }
+
+    fun confirmDeleteAccount(context: android.content.Context, onSuccess: () -> Unit) {
+        if (deletePasswordText.isBlank()) {
+            inputPopupError = context.getString(R.string.error_fill_all_fields) // "Compila tutti i campi"
+            return
+        }
+
+        viewModelScope.launch {
+            // Chiamiamo il repository passando la password inserita
+            val success = repository.deleteAccount(deletePasswordText)
+
+            if (success) {
+                closeDeleteDialog()
+                // Se l'eliminazione ha successo, chiamiamo la funzione che farà il logout/navigazione
+                onSuccess()
+            } else {
+                // Se fallisce (es. password errata)
+                inputPopupError = context.getString(R.string.error_wrong_password) // "Password errata"
+            }
+        }
+    }
     private fun loadProfileData() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let { firebaseUser ->

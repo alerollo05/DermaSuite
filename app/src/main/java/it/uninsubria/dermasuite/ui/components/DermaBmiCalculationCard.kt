@@ -135,20 +135,9 @@ fun DermaBMICalculationCard (
                             }
                         }
                     },
-                    enabled = true,
+                    enabled = viewModel.isCalcoloAbilitato(),
                 )
             }
         }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-private fun DermaBMICalculationCardPreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-
-        DermaBMICalculationCard(
-            title = "Titolo",
-            snackBarHostState = SnackbarHostState()
-        )
     }
 }

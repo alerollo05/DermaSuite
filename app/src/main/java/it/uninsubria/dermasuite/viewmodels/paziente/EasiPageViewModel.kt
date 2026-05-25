@@ -60,6 +60,10 @@ class EasiPageViewModel(
             percentualeArea = percentualeArea ?: currentData.percentualeArea
         )
         districtValues = currentStateMap // Assegna la nuova mappa per scatenare la ricomposizione della UI
+
+        // Quando un parametro cambia, nascondi il vecchio risultato.
+        // Questo farà sì che !showResult in abilitaCalcolo() torni true!
+        showResult = false
     }
 
     // Funzione principale per il calcolo dell'indice EASI
@@ -153,6 +157,6 @@ class EasiPageViewModel(
 
     // Controlla se l'intero modulo è pronto per il calcolo
     fun abilitaCalcolo(): Boolean {
-        return DistrettoCorpo.values().all { isDistrictComplete(it) }
+        return DistrettoCorpo.values().all { isDistrictComplete(it) } && !showResult
     }
 }
