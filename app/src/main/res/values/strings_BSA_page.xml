@@ -17,4 +17,5 @@
     <string name="bsa_eval_above_avg">Above average</string>
     <string name="bsa_eval_below_avg">Below average</string>
     <string name="bsa_eval_avg">Average</string>
+    <string name="bsa_card_title">Insert your data</string>
 </resources>

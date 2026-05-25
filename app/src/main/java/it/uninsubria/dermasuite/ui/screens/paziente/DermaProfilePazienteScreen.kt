@@ -316,7 +316,7 @@ fun DermaProfilePazienteScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             DermaButton(stringResource(R.string.btn_logout),
                 modifier = Modifier
@@ -325,7 +325,18 @@ fun DermaProfilePazienteScreen(
                     .height(56.dp),
                 onClick = {onLogout()}
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            DermaButton(
+                stringResource(R.string.btn_elimina_account),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(56.dp),
+                onClick = { viewModel.openDeleteDialog() }
+            )
         }
+
+
         // --- POPUP (ALERT DIALOG) PER MODIFICARE USERNAME ---
         // Il popup viene "disegnato" solo se showUsernameDialog è vera.
         // Se nel ViewModel showUsernameDialog diventa false, Compose rimuove istantaneamente il popup dallo schermo.
@@ -536,6 +547,65 @@ fun DermaProfilePazienteScreen(
         //PopUp del dottore
         if(viewModel.showDoctorDialog){
             DermaDoctorListDialog(viewModel, context)
+        }
+        // --- POPUP ELIMINA ACCOUNT ---
+        if (viewModel.showDeleteDialog) {
+            AlertDialog(
+                onDismissRequest = { viewModel.closeDeleteDialog() },
+                title = {
+                    Text(
+                        text = "Elimina Account", // Se hai una string resource, usala qui
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.error // Lo facciamo rosso per attirare l'attenzione
+                    )
+                },
+                text = {
+                    Column {
+                        Text(
+                            text = "Attenzione: questa azione è irreversibile. Tutti i tuoi dati verranno cancellati. Inserisci la tua password per confermare.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        DermaOutlinedTextField(
+                            value = viewModel.deletePasswordText,
+                            onValueChange = { viewModel.updateDeletePasswordText(it) },
+                            label = stringResource(R.string.label_password_attuale),
+                            isPassword = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        if (viewModel.inputPopupError != null) {
+                            Text(
+                                text = viewModel.inputPopupError!!,
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            // Passiamo onLogout come callback di onSuccess!
+                            viewModel.confirmDeleteAccount(context) { onLogout() }
+                        }
+                    ) {
+                        Text(
+                            text = "Elimina definitivamente",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.error // Bottone rosso
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { viewModel.closeDeleteDialog() }) {
+                        Text(
+                            text = stringResource(R.string.btn_annulla),
+                            color = Color.Gray,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
+            )
         }
     }
 }

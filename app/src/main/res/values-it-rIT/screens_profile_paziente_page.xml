@@ -20,6 +20,7 @@
     <string name="btn_cambia_medico">Cambia Medico</string>
 
     <string name="btn_logout">Logout</string>
+    <string name="btn_elimina_account">Elimina Account</string>
     <string name="btn_conferma">Conferma</string>
     <string name="btn_annulla">Annulla</string>
 

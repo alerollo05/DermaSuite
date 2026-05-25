@@ -65,6 +65,10 @@ class PasiPageViewModel(private val repository: AuthRepository = AuthRepository(
             percentageArea = percentualeArea ?: currentData.percentageArea
         )
         districtValues = currentStateMap //Necessario per far aggiornare Compose
+
+        // Quando un parametro cambia, nascondi il vecchio risultato.
+        // Questo farà sì che !showResult in abilitaCalcolo() torni true!
+        showResult = false
     }
 
     //Creiamo la funzione che calcola effettivamente il PASI una volta che abbiamo i dati aggiornati
@@ -153,7 +157,7 @@ class PasiPageViewModel(private val repository: AuthRepository = AuthRepository(
 
         fun abilitaCalcolo(): Boolean{
             // Verifichiamo che per ogni distretto la funzione isDistrictComplete restituisca true
-             return DistrettoCorpo.values().all { isDistrictComplete(it) }
-            }
-    }
+             return DistrettoCorpo.values().all { isDistrictComplete(it) } && !showResult
+        }
+}
 

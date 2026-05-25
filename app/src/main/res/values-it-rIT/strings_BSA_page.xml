@@ -17,4 +17,5 @@
     <string name="bsa_eval_above_avg">Sopra la media</string>
     <string name="bsa_eval_below_avg">Sotto la media</string>
     <string name="bsa_eval_avg">Nella media</string>
+    <string name="bsa_card_title">Inserisci i tuoi dati</string>
 </resources>

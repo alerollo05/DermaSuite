@@ -62,6 +62,7 @@ class BsaPageViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+
     // Blocco init per recuperare automaticamente il sesso del paziente all'avvio
     init {
         recuperaSessoPaziente()
@@ -78,9 +79,16 @@ class BsaPageViewModel(
     }
 
     // Funzioni per aggiornare gli stati quando l'utente digita nei TextField
-    fun onPesoChange(newPeso: String) { _peso.value = newPeso }
-    fun onAltezzaChange(newAltezza: String) { _altezza.value = newAltezza }
-    fun onSessoChange(newSesso: String) { _sesso.value = newSesso }
+    fun onPesoChange(newPeso: String) {
+        _peso.value = newPeso
+        _risultatoBsa.value = null // Nasconde la card quando l'utente inizia a scrivere un nuovo peso
+    }
+
+    fun onAltezzaChange(newAltezza: String) {
+        _altezza.value = newAltezza
+        _risultatoBsa.value = null // Nasconde la card quando l'utente inizia a scrivere una nuova altezza
+    }
+
 
     // Funzione principale attivata dal pulsante "Calcola".
     // Passiamo il context per poter estrarre le stringhe tradotte!
@@ -163,10 +171,23 @@ class BsaPageViewModel(
             if (isSuccess) {
                 _isLoading.value = false
                 _saveSuccess.emit(true)
+
             } else {
                 _isLoading.value = false
                 _errorMessage.emit("Errore durante il salvataggio dei dati.")
             }
         }
+    }
+    fun isCalcoloAbilitato(): Boolean {
+        // Usiamo .value per leggere il testo attuale dentro lo StateFlow.
+        // Aggiungiamo anche il controllo su isLoading per evitare calcoli multipli!
+        // Il bottone è attivo SOLO SE:
+        // 1. I campi sono pieni
+        // 2. Non sta salvando
+        // 3. NON stiamo già mostrando il risultato di questo esatto calcolo
+        return peso.value.isNotBlank() &&
+                altezza.value.isNotBlank() &&
+                !isLoading.value &&
+                risultatoBsa.value == null
     }
 }

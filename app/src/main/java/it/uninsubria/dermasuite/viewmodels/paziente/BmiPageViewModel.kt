@@ -46,10 +46,12 @@ class BmiPageViewModel(
     //Metodi per l'aggiornamento delle variabili in base alla UI
     fun onHeightChanged(newHeight: String) {
         uiState = uiState.copy(height = newHeight)
+        showResult = false // Nasconde la card del risultato appena digiti una nuova altezza
     }
 
     fun onWeightChanged(newWeight: String) {
         uiState = uiState.copy(weight = newWeight)
+        showResult = false // Nasconde la card del risultato appena digiti un nuovo peso
     }
 
     fun onCalculatedBMI(newResult: Double){
@@ -65,9 +67,13 @@ class BmiPageViewModel(
         uiState = uiState.copy(saveSuccess = newSuccess)
     }
 
+    // Funzione usata per vedere se i campi sono stati inseriti tutti per il calcolo del bmi
     fun isCalcoloAbilitato(): Boolean {
-        //Vediamo se i valori sono stati modificati
-        return uiState.height != "" && uiState.weight != ""
+        // Il bottone è abilitato SOLO SE:
+        // 1. I campi contengono dati reali
+        // 2. Non stiamo già effettuando un salvataggio (evita i click multipli)
+        // 3. NON stiamo già mostrando il risultato di questo esatto calcolo
+        return uiState.height.isNotBlank() && uiState.weight.isNotBlank() && !uiState.isSaving && !showResult
     }
 
 

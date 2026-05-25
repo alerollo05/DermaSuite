@@ -174,10 +174,10 @@ fun DermaEASIScreen(
             DermaButton(
                 text = stringResource(R.string.easi_btn_calculate),
                 onClick = {
-                    if(viewModel.abilitaCalcolo()){ // Se tutto è inserito correttamente
+                    if (viewModel.abilitaCalcolo()) { // Se tutto è inserito correttamente
                         viewModel.calculateTotalEasiAndSave(
                             onSucces = {
-                                scope.launch{
+                                scope.launch {
                                     snakBarHostState.showSnackbar(
                                         message = succMess,
                                         duration = SnackbarDuration.Short
@@ -185,7 +185,7 @@ fun DermaEASIScreen(
                                 }
                             },
                             onError = {
-                                scope.launch{
+                                scope.launch {
                                     snakBarHostState.showSnackbar(
                                         message = errMess,
                                         duration = SnackbarDuration.Short
@@ -194,21 +194,23 @@ fun DermaEASIScreen(
                             }
                         )
                     } else {// Se mancano dati, identifica il distretto incompleto e avvisa l'utente
-                        val distrettoMancante = DistrettoCorpo.entries.find { !viewModel.isDistrictComplete(it) }
+                        val distrettoMancante =
+                            DistrettoCorpo.entries.find { !viewModel.isDistrictComplete(it) }
                         val messaggio = if (distrettoMancante != null) {
                             val distrettoDaCompletare = distrettiNomi[distrettoMancante] ?: ""
                             "$completaDistretto $distrettoDaCompletare"
                         } else {
                             completaAllDistretti
                         }
-                        scope.launch{
+                        scope.launch {
                             snakBarHostState.showSnackbar(
                                 messaggio,
                                 duration = SnackbarDuration.Short
                             )
                         }
                     }
-                }
+                },
+                enabled = viewModel.abilitaCalcolo()
             )
             Spacer(modifier = Modifier.height(20.dp))
 
