@@ -35,7 +35,7 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
 
             //Recupera i dati anagrafici del paziente
             val paziente = repository.getUserData(pazienteId)
-            nomePaziente = if (paziente != null) "${paziente.nome} ${paziente.cognome}" else "Paziente non trovato"
+            nomePaziente = if (paziente != null) "${paziente.nome.lowercase().replaceFirstChar { it.uppercase() }} ${paziente.cognome.lowercase().replaceFirstChar{it.uppercase()}}" else "Paziente non trovato"
             usernamePaz = if (paziente != null) "@${paziente.username}" else ""
 
             //Recupero record dal repository centralizzato
