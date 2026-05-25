@@ -184,6 +184,30 @@ class AuthRepository {
         }
     }
 
+    // Metodo per aggiornare il campo specializzazione
+    suspend fun updateSpecialization(uid: String, newSpecialization: String): Boolean {
+        return try {
+            // Aggiorna il campo "specialization" del documento medico su Firestore
+            db.collection("users").document(uid).update("specialization", newSpecialization).await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    // Metodo per aggiornare il campo descrizione
+    suspend fun updateDescription(uid: String, newDescription: String): Boolean {
+        return try {
+            // Aggiorna il campo "description" del documento medico su Firestore
+            db.collection("users").document(uid).update("description", newDescription).await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
     suspend fun getAvailableDoctors(): List<DermaUser> {
         return try{
             //andiamo a prendere la lista di medici disponibili nel db
