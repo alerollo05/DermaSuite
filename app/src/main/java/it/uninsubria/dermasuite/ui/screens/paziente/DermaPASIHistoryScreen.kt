@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 fun DermaPASIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
     onNavigateToDashBoardPaziente: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     viewModel: HistoryPasiPageViewModel = viewModel()
@@ -65,7 +64,6 @@ fun DermaPASIHistoryScreen(
 
     val listaIcone = listOf(
         BottomBarAction(stringResource(R.string.menu_home), R.drawable.ic_home, "dashboard_screen_paziente", {onNavigateToDashBoardPaziente()}),
-        BottomBarAction(stringResource(R.string.menu_chat), R.drawable.ic_chat, "chat_screen_paziente", {onNavigateToChatP()}),
         BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "pasi_history_screen", {}),
         BottomBarAction(stringResource(R.string.menu_profile), R.drawable.ic_profile, "profile_screen_paziente", {onNavigateToProfileP()})
     )

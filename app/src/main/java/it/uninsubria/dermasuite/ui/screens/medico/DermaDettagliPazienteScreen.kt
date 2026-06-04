@@ -27,7 +27,6 @@ import it.uninsubria.dermasuite.viewmodels.medico.DettagliPazienteViewModel
 fun DermaDettagliPazienteScreen(
     pazienteId: String,
     navController: NavController,
-    onNavigateToChatM: () -> Unit = {},
     onNavigateToProfileM: () -> Unit = {},
     onBack: () -> Unit = {},
     viewModel: DettagliPazienteViewModel = viewModel()
@@ -40,7 +39,6 @@ fun DermaDettagliPazienteScreen(
     // Definiamo le azioni per la BottomBar del medico
     val dashboardActions = listOf(
         BottomBarAction(stringResource(R.string.bottom_bar_paziente).uppercase(), R.drawable.ic_patients, "dashboard_screen_medico", onBack),
-        BottomBarAction(stringResource(R.string.bottom_bar_chat).uppercase(), R.drawable.ic_chat, "chat_screen_medico", onNavigateToChatM),
         BottomBarAction(stringResource(R.string.bottom_bar_profilo).uppercase(), R.drawable.ic_profile, "profile_screen_medico", onNavigateToProfileM)
     )
     Scaffold(

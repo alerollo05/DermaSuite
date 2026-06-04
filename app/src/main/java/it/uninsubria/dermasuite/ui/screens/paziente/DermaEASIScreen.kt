@@ -36,7 +36,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun DermaEASIScreen(
     onBack: () -> Unit,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateToEasiHistory: () -> Unit,
     navController: NavController,
@@ -61,10 +60,6 @@ fun DermaEASIScreen(
             stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente",
             {onBack()}),
-        BottomBarAction(
-            stringResource(R.string.menu_chat), R.drawable.ic_chat,
-            "chat_screen_paziente",
-            {onNavigateToChatP()}),
         BottomBarAction(
             stringResource(R.string.menu_history), R.drawable.ic_history,
             "easi_history_screen",

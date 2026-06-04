@@ -26,7 +26,6 @@ import it.uninsubria.dermasuite.viewmodels.paziente.BsaPageViewModel
 @Composable
 fun DermaBSAScreen(
     onBack: () -> Unit,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateToBsaHistory: () -> Unit,
     navController: NavController,
@@ -79,8 +78,7 @@ fun DermaBSAScreen(
 
     val listaIcone = listOf(
         BottomBarAction(stringResource(R.string.menu_home), R.drawable.ic_home, "dashboard_screen_paziente", { onBack() }),
-        BottomBarAction(stringResource(R.string.menu_chat), R.drawable.ic_chat, "chat_screen_paziente", { onNavigateToChatP() }),
-        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "bmi_history_screen", { onNavigateToBsaHistory() }), // Considera di rinominare la rotta se necessario
+        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "bmi_history_screen", { onNavigateToBsaHistory() }),
         BottomBarAction(stringResource(R.string.menu_profile), R.drawable.ic_profile, "profile_screen_paziente", { onNavigateToProfileP() })
     )
 

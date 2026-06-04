@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 fun DermaEASIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
     onNavigateToDashBoardPaziente: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     viewModel: HistoryEasiPageViewModel = viewModel()
@@ -50,7 +49,7 @@ fun DermaEASIHistoryScreen(
         if (isGranted) {
             coroutineScope.launch { easiPdfGenerator(title, context, records, currentFilter, username) }
         } else {
-            Toast.makeText(context, context.getString(R.string.stringa_errore_download), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.stringa_errore_download, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -60,8 +59,7 @@ fun DermaEASIHistoryScreen(
 
     val listaIcone = listOf(
         BottomBarAction(stringResource(R.string.menu_home), R.drawable.ic_home, "dashboard_screen_paziente", {onNavigateToDashBoardPaziente()}),
-        BottomBarAction(stringResource(R.string.menu_chat), R.drawable.ic_chat, "chat_screen_paziente", {onNavigateToChatP()}),
-        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "easi_history_screen", {}), // Aggiornato route se necessario
+        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "easi_history_screen", {}),
         BottomBarAction(stringResource(R.string.menu_profile), R.drawable.ic_profile, "profile_screen_paziente", {onNavigateToProfileP()})
     )
 

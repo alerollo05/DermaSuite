@@ -56,7 +56,6 @@ fun DermaProfileMedicoScreen(
     onLogout: () -> Unit,
     navController: NavController,
     onNavigateToDashboardM: () -> Unit,
-    onNavigateToChatM: () -> Unit,
     viewModel: ProfileMedPageViewModel = viewModel()
 ){
     val snackbarHostState = remember { SnackbarHostState() }
@@ -80,7 +79,6 @@ fun DermaProfileMedicoScreen(
     // Azioni della barra inferiore ottimizzate per i percorsi del medico
     val dashboardActions = listOf(
         BottomBarAction(stringResource(R.string.label_bottom_home), R.drawable.ic_home, "dashboard_screen_medico", onNavigateToDashboardM),
-        BottomBarAction(stringResource(R.string.label_bottom_chat), R.drawable.ic_chat, "chat_screen_medico", onNavigateToChatM),
         BottomBarAction(stringResource(R.string.label_bottom_profile), R.drawable.ic_profile, "profile_screen_medico", { /* Sei già qui */ }),
     )
 

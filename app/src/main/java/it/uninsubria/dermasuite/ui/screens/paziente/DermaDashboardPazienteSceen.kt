@@ -45,7 +45,6 @@ import it.uninsubria.dermasuite.viewmodels.paziente.DashboardPagePazienteViewMod
 @Composable
 fun DermaDashBoardPazienteScreen(
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateDashboardPASI: () -> Unit,
     onNavigateDashboardEASI: () -> Unit = {},
@@ -56,7 +55,6 @@ fun DermaDashBoardPazienteScreen(
     // Definiamo le azioni per questa specifica schermata
     val dashboardActions = listOf(
         BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", { /* Sei già qui */ }),
-        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", onNavigateToProfileP)
     )
     val username = viewModel.username // Recupera l'username dal ViewModel
