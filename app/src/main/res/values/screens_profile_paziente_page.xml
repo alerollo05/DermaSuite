@@ -75,4 +75,15 @@
     <string name="dialog_lingua">Language: </string>
     <string name="dialog_data_nascita">Date of Birth: </string>
 
+    <string name="label_pasi_average">PASI Average</string>
+    <string name="label_easi_average">EASI Average</string>
+    <string name="label_bmi_average">BMI Average</string>
+    <string name="label_bsa_average">BSA Average</string>
+
+    <string name="label_mild">Mild</string>
+    <string name="label_moderate">Moderate</string>
+    <string name="label_severe">Severe</string>
+    <string name="label_stable">Stable</string>
+    <string name="label_patient_not_found">Patient not found</string>
+
 </resources>

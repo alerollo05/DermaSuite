@@ -70,5 +70,15 @@
     <string name="dialog_lingua">Lingua: </string>
     <string name="dialog_data_nascita">Data di Nascita: </string>
 
+    <string name="label_pasi_average">Media PASI</string>
+    <string name="label_easi_average">Media EASI</string>
+    <string name="label_bmi_average">Media BMI</string>
+    <string name="label_bsa_average">Media BSA</string>
+
+    <string name="label_mild">Lieve</string>
+    <string name="label_moderate">Moderato</string>
+    <string name="label_severe">Grave</string>
+    <string name="label_stable">Stabile</string>
+    <string name="label_patient_not_found">Paziente non trovato</string>
 
 </resources>

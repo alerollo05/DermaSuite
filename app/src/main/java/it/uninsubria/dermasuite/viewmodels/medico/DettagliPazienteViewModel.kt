@@ -32,17 +32,22 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
     //FUNZIONE PRINCIPALE: CARICAMENTO DATI
     fun loadPatientData(
         pazienteId: String,
-        pasiTitle: String = "PASI Average",
-        easiTitle: String = "EASI Average",
-        bmiTitle: String = "BMI Average",
-        bsaTitle: String = "BSA Average"
+        pasiTitle: String,
+        easiTitle: String,
+        bmiTitle: String,
+        bsaTitle: String,
+        mildLabel: String,
+        moderateLabel: String,
+        severeLabel: String,
+        stableLabel: String,
+        patientNotFoundMsg: String
     ) {
         viewModelScope.launch {
             isLoading = true
 
             //Recupera i dati anagrafici del paziente
             val paziente = repository.getUserData(pazienteId)
-            nomePaziente = if (paziente != null) "${paziente.nome.lowercase().replaceFirstChar { it.uppercase() }} ${paziente.cognome.lowercase().replaceFirstChar{it.uppercase()}}" else "Paziente non trovato"
+            nomePaziente = if (paziente != null) "${paziente.nome.lowercase().replaceFirstChar { it.uppercase() }} ${paziente.cognome.lowercase().replaceFirstChar{it.uppercase()}}" else patientNotFoundMsg
             usernamePaz = if (paziente != null) "@${paziente.username}" else ""
 
             //Recupero record dal repository centralizzato
@@ -56,38 +61,62 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
             pasiSummary = calculateMetric(
                 title = pasiTitle,
                 scores = pasiRecords.map { it.PasiTot.toFloat() }.reversed(),
-                isLowerBetter = true
+                isLowerBetter = true,
+                mildLabel = mildLabel,
+                moderateLabel = moderateLabel,
+                severeLabel = severeLabel,
+                stableLabel = stableLabel
             )
 
             easiSummary = calculateMetric(
                 title = easiTitle,
                 scores = easiRecords.map { it.EasiTot }.reversed(),
-                isLowerBetter = true
+                isLowerBetter = true,
+                mildLabel = mildLabel,
+                moderateLabel = moderateLabel,
+                severeLabel = severeLabel,
+                stableLabel = stableLabel
             )
 
             bmiSummary = calculateMetric(
                 title = bmiTitle,
                 scores = bmiRecords.map { it.BmiTot.toFloat() }.reversed(),
-                isLowerBetter = true
+                isLowerBetter = true,
+                mildLabel = mildLabel,
+                moderateLabel = moderateLabel,
+                severeLabel = severeLabel,
+                stableLabel = stableLabel
             )
 
             bsaSummary = calculateMetric(
                 title = bsaTitle,
                 scores = bsaRecords.map { it.bsa.toFloat() }.reversed(),
-                isLowerBetter = true // Per il BSA solitamente si cerca la stabilità
+                isLowerBetter = true, // Per il BSA solitamente si cerca la stabilità
+                mildLabel = mildLabel,
+                moderateLabel = moderateLabel,
+                severeLabel = severeLabel,
+                stableLabel = stableLabel
             )
 
             isLoading = false
         }
     }
-    private fun calculateMetric(title: String, scores: List<Float>, isLowerBetter: Boolean): MetricSummaryState {
+    private fun calculateMetric(
+        title: String,
+        scores: List<Float>,
+        isLowerBetter: Boolean,
+        mildLabel: String,
+        moderateLabel: String,
+        severeLabel: String,
+        stableLabel: String
+    ): MetricSummaryState {
         if (scores.isEmpty()) return MetricSummaryState(title = title)
 
         val last = scores.last()
         val avg = scores.average().toFloat()
 
         // Calcolo Trend (confronto ultimo con penultimo)
-        var trendStr = "Stable"
+        var trendStr = stableLabel
         var worsening = false
         if (scores.size >= 2) {
             val prev = scores[scores.size - 2]
@@ -99,9 +128,9 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
 
         // Definizione Severità (Esempio semplificato)
         val severity = when {
-            last < 7 -> "Mild"
-            last < 15 -> "Moderate"
-            else -> "Severe"
+            last < 7 -> mildLabel
+            last < 15 -> moderateLabel
+            else -> severeLabel
         }
 
         return MetricSummaryState(

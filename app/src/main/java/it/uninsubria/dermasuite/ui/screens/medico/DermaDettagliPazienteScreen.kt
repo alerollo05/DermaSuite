@@ -32,8 +32,29 @@ fun DermaDettagliPazienteScreen(
     viewModel: DettagliPazienteViewModel = viewModel()
     ){
 
-    LaunchedEffect(pazienteId) {
-        viewModel.loadPatientData(pazienteId)
+    val pasiTitle = stringResource(R.string.label_pasi_average)
+    val easiTitle = stringResource(R.string.label_easi_average)
+    val bmiTitle = stringResource(R.string.label_bmi_average)
+    val bsaTitle = stringResource(R.string.label_bsa_average)
+    val mildLabel = stringResource(R.string.label_mild)
+    val moderateLabel = stringResource(R.string.label_moderate)
+    val severeLabel = stringResource(R.string.label_severe)
+    val stableLabel = stringResource(R.string.label_stable)
+    val patientNotFoundMsg = stringResource(R.string.label_patient_not_found)
+
+    LaunchedEffect(pazienteId, pasiTitle, easiTitle, bmiTitle, bsaTitle, mildLabel, moderateLabel, severeLabel, stableLabel, patientNotFoundMsg) {
+        viewModel.loadPatientData(
+            pazienteId,
+            pasiTitle,
+            easiTitle,
+            bmiTitle,
+            bsaTitle,
+            mildLabel,
+            moderateLabel,
+            severeLabel,
+            stableLabel,
+            patientNotFoundMsg
+        )
     }
 
     // Definiamo le azioni per la BottomBar del medico
