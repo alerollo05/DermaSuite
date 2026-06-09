@@ -36,7 +36,6 @@ import it.uninsubria.dermasuite.viewmodels.paziente.HistoryBmiPageViewModel
 fun DermaBMIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateToDashBoardPaziente: () -> Unit,
     viewModel: HistoryBmiPageViewModel = viewModel()
@@ -65,10 +64,6 @@ fun DermaBMIHistoryScreen(
             stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente",
             {onNavigateToDashBoardPaziente()}),
-        BottomBarAction(
-            stringResource(R.string.menu_chat), R.drawable.ic_chat,
-            "chat_screen_paziente",
-            {onNavigateToChatP()}),
         BottomBarAction(
             stringResource(R.string.menu_history), R.drawable.ic_history,
             "bmi_history_screen",

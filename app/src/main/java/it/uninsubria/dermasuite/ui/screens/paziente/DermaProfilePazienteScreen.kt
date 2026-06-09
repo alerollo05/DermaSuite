@@ -72,7 +72,6 @@ fun DermaProfilePazienteScreen(
     onLogout: () -> Unit,
     navController: NavController,
     onNavigateToDashboardP: () -> Unit,
-    onNavigateToChatP: () -> Unit,
     viewModel: ProfilePazPageViewModel = viewModel()
 ){
     // Creiamo il "controllore" della Snackbar
@@ -107,7 +106,6 @@ fun DermaProfilePazienteScreen(
     // Definiamo le azioni per questa specifica schermata
     val dashboardActions = listOf(
         BottomBarAction(stringResource(R.string.label_bottom_home), R.drawable.ic_home, "dashboard_screen_paziente", onNavigateToDashboardP),
-        BottomBarAction(stringResource(R.string.label_bottom_chat), R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
         BottomBarAction(stringResource(R.string.label_bottom_profile), R.drawable.ic_profile, "profile_screen_paziente", { /* Sei già qui */ }),
     )
 

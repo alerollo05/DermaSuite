@@ -30,7 +30,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun DermaBMIScreen(
     onBack: () -> Unit,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateToBmiHistory: () -> Unit,
     navController: NavController,
@@ -57,10 +56,6 @@ fun DermaBMIScreen(
             stringResource(R.string.menu_home), R.drawable.ic_home,
             "dashboard_screen_paziente",
             {onBack()}),
-        BottomBarAction(
-            stringResource(R.string.menu_chat), R.drawable.ic_chat,
-            "chat_screen_paziente",
-            {onNavigateToChatP()}),
         BottomBarAction(
             stringResource(R.string.menu_history), R.drawable.ic_history,
             "bmi_history_screen",

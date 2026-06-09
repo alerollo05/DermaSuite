@@ -28,7 +28,6 @@ import it.uninsubria.dermasuite.ui.components.DermaListaPazienti
 @Composable
 fun DermaDashBoardMedicoScreen(
     navController: NavController,
-    onNavigateToChatM: () -> Unit = {},
     onNavigateToProfileM: () -> Unit = {},
     onNavigateToPaziente: (String) -> Unit = {},
     viewModel: DashboardPageMedicoViewModel = viewModel()
@@ -36,7 +35,6 @@ fun DermaDashBoardMedicoScreen(
     // Definiamo le azioni per la BottomBar del medico
     val dashboardActions = listOf(
         BottomBarAction(stringResource(R.string.bottom_bar_paziente).uppercase(), R.drawable.ic_patients, "dashboard_screen_medico", {}),
-        BottomBarAction(stringResource(R.string.bottom_bar_chat).uppercase(), R.drawable.ic_chat, "chat_screen_medico", onNavigateToChatM),
         BottomBarAction(stringResource(R.string.bottom_bar_profilo).uppercase(), R.drawable.ic_profile, "profile_screen_medico", onNavigateToProfileM)
     )
 
