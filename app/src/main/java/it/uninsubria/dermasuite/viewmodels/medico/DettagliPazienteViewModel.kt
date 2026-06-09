@@ -20,16 +20,23 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
     var usernamePaz by mutableStateOf("...")
         private set
     // Stati per le singole Card
-    var pasiSummary by mutableStateOf(MetricSummaryState(title = "PASI Average"))
+    var pasiSummary by mutableStateOf(MetricSummaryState())
         private set
-    var easiSummary by mutableStateOf(MetricSummaryState(title = "EASI Average"))
+    var easiSummary by mutableStateOf(MetricSummaryState())
         private set
-    var bmiSummary by mutableStateOf(MetricSummaryState(title = "BMI Average"))
+    var bmiSummary by mutableStateOf(MetricSummaryState())
         private set
-    var bsaSummary by mutableStateOf(MetricSummaryState(title = "BSA Average"))
+    var bsaSummary by mutableStateOf(MetricSummaryState())
+        private set
 
     //FUNZIONE PRINCIPALE: CARICAMENTO DATI
-    fun loadPatientData(pazienteId: String) {
+    fun loadPatientData(
+        pazienteId: String,
+        pasiTitle: String = "PASI Average",
+        easiTitle: String = "EASI Average",
+        bmiTitle: String = "BMI Average",
+        bsaTitle: String = "BSA Average"
+    ) {
         viewModelScope.launch {
             isLoading = true
 
@@ -43,29 +50,29 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
             val easiRecords = repository.getEasiRecords(pazienteId)
             val bmiRecords = repository.getBmiRecords(pazienteId)
             val bsaRecords = repository.getBsaRecords(pazienteId)
-
+            
             //Calcolo medie e trend per ogni metrica
             // Invertiamo le liste (.reversed()) perché Vico vuole i dati dal più vecchio al più nuovo
             pasiSummary = calculateMetric(
-                title = "PASI Average",
+                title = pasiTitle,
                 scores = pasiRecords.map { it.PasiTot.toFloat() }.reversed(),
                 isLowerBetter = true
             )
 
             easiSummary = calculateMetric(
-                title = "EASI Average",
-                scores = easiRecords.map { it.EasiTot.toFloat() }.reversed(),
+                title = easiTitle,
+                scores = easiRecords.map { it.EasiTot }.reversed(),
                 isLowerBetter = true
             )
 
             bmiSummary = calculateMetric(
-                title = "BMI Average",
+                title = bmiTitle,
                 scores = bmiRecords.map { it.BmiTot.toFloat() }.reversed(),
                 isLowerBetter = true
             )
 
             bsaSummary = calculateMetric(
-                title = "BSA Average",
+                title = bsaTitle,
                 scores = bsaRecords.map { it.bsa.toFloat() }.reversed(),
                 isLowerBetter = true // Per il BSA solitamente si cerca la stabilità
             )

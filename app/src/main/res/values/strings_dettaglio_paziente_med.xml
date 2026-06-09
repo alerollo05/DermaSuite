@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="titolo_dettaglio_paz">Patient Resume</string>
+    <string name="sottotitolo_dettaglio_paz">Here you can see the average of each calculation for the individual patient</string>
+    <string name="label_username_detail">Username: </string>
+    <string name="pasi_average">PASI Average</string>
+    <string name="easi_average">EASI Average</string>
+    <string name="bmi_average">BMI Average</string>
+    <string name="bsa_average">BSA Average</string>
+</resources>

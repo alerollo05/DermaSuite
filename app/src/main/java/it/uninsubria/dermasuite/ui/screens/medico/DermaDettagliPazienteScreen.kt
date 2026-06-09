@@ -58,10 +58,14 @@ fun DermaDettagliPazienteScreen(
             DermaColumnScreen(innerPadding = padding) {
 
                 Spacer(modifier = Modifier.height(16.dp))
-
+                DermaHeading(
+                    titolo = stringResource(R.string.titolo_dettaglio_paz),
+                    sottotitolo = stringResource(R.string.sottotitolo_dettaglio_paz)
+                )
+                val s = stringResource(R.string.label_username_detail)
                 DermaHeading(
                     titolo = viewModel.nomePaziente,
-                    sottotitolo = "Username: ${viewModel.usernamePaz}"
+                    sottotitolo = "$s ${viewModel.usernamePaz}"
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
