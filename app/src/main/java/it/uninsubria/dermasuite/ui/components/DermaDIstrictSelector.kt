@@ -14,13 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
+import it.uninsubria.dermasuite.model.DistrettoCorpo
 
 @Composable
 fun DermaDistrictSelector(
     label: String,
     selectedDistrict: DistrettoCorpo,
-    chkComplete: (DistrettoCorpo) -> Boolean, //Devi fornirmi una funzione che accetta un distretto corpo e restituisce un bool
+    chkComplete: (DistrettoCorpo) -> Boolean, // funzione che accetta un distretto corpo e restituisce un bool
     onDistrictSelected: (DistrettoCorpo) -> Unit
 ){
     Column(

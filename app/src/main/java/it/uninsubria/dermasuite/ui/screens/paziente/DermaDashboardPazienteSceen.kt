@@ -1,17 +1,23 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
 import android.R.attr.icon
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,21 +45,19 @@ import it.uninsubria.dermasuite.viewmodels.paziente.DashboardPagePazienteViewMod
 @Composable
 fun DermaDashBoardPazienteScreen(
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateDashboardPASI: () -> Unit,
     onNavigateDashboardEASI: () -> Unit = {},
     onNavigateDashboardBMI: () -> Unit = {},
     onNavigateDashboardBSA: () -> Unit = {},
-    viewModel: DashboardPagePazienteViewModel = viewModel() // Iniezione del ViewModel
+    viewModel: DashboardPagePazienteViewModel = viewModel()
 ){
-    // Definiamo le azioni per questa specifica schermata
+
     val dashboardActions = listOf(
         BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", { /* Sei già qui */ }),
-        BottomBarAction("CHAT", R.drawable.ic_chat, "chat_screen_paziente", onNavigateToChatP),
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", onNavigateToProfileP)
     )
-    val nomeUtente = viewModel.username // Recupera l'username dal ViewModel
+    val username = viewModel.username
 
     Scaffold(
         topBar= {
@@ -66,7 +70,12 @@ fun DermaDashBoardPazienteScreen(
         DermaColumnScreen(innerPadding = padding, verticalArrangement = Arrangement.Top) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = stringResource(R.string.Hello) + "$nomeUtente!" , style= MaterialTheme.typography.displayLarge)
+            if (username == null) {
+                CircularProgressIndicator()
+            } else {
+                Text(text = stringResource(R.string.Hello) + "$username!" , style= MaterialTheme.typography.displayLarge)
+            }
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -76,35 +85,45 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_pasi),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(6.dp)
+                            .background(MaterialTheme.colorScheme.primary)
                     )
-                    Text(
-                        text = stringResource(R.string.title_pasi),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.Black
-                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_pasi),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.title_pasi),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.Black
+                        )
 
-                    Text(
-                        text = stringResource(R.string.description_pasi),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
-                    )
+                        Text(
+                            text = stringResource(R.string.description_pasi),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
+                        )
+                    }
                 }
             }
 
@@ -113,35 +132,45 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_easi),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(6.dp)
+                            .background(MaterialTheme.colorScheme.primary)
                     )
-                    Text(
-                        text = stringResource(R.string.title_easi),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.Black
-                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_easi),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.title_easi),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.Black
+                        )
 
-                    Text(
-                        text = stringResource(R.string.description_easi),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray
-                    )
+                        Text(
+                            text = stringResource(R.string.description_easi),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
+                    }
                 }
             }
 
@@ -150,35 +179,45 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_bmi),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ){
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(6.dp)
+                            .background(MaterialTheme.colorScheme.primary)
                     )
-                    Text(
-                        text = stringResource(R.string.title_bmi),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.Black
-                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_bmi),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.title_bmi),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.Black
+                        )
 
-                    Text(
-                        text = stringResource(R.string.description_bmi),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
-                    )
+                        Text(
+                            text = stringResource(R.string.description_bmi),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
+                        )
+                    }
                 }
             }
             ElevatedCard(
@@ -186,35 +225,45 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_bsa),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ){
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(6.dp)
+                            .background(MaterialTheme.colorScheme.primary)
                     )
-                    Text(
-                        text = stringResource(R.string.title_bsa),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.Black
-                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_bsa),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.title_bsa),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.Black
+                        )
 
-                    Text(
-                        text = stringResource(R.string.description_bsa),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray
-                    )
+                        Text(
+                            text = stringResource(R.string.description_bsa),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))

@@ -1,9 +1,11 @@
 package it.uninsubria.dermasuite
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,19 +18,22 @@ import it.uninsubria.dermasuite.ui.screens.LoginPageScreen
 import it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme
 import it.uninsubria.dermasuite.ui.screens.StartPageScreen
 import it.uninsubria.dermasuite.ui.screens.DermaRegisterPageScreen
+import it.uninsubria.dermasuite.ui.screens.medico.DermaDettagliPazienteScreen
+import it.uninsubria.dermasuite.ui.screens.medico.DermaProfileMedicoScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBMIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBSAHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaBSAScreen
-import it.uninsubria.dermasuite.ui.screens.paziente.DermaChatPazienteScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaEASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaEASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIHistoryScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaPASIScreen
 import it.uninsubria.dermasuite.ui.screens.paziente.DermaProfilePazienteScreen
+import it.uninsubria.dermasuite.viewmodels.medico.DettagliPazienteViewModel
 
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -90,7 +95,6 @@ class MainActivity : ComponentActivity() {
                     composable("dashboard_screen_paziente") {
                         DermaDashBoardPazienteScreen(
                             navController = navController,
-                            onNavigateToChatP = { navController.navigate("chat_screen_paziente") },
                             onNavigateToProfileP = { navController.navigate("profile_screen_paziente") },
                             onNavigateDashboardPASI = {navController.navigate("pasi_page_screen")},
                             onNavigateDashboardEASI = {navController.navigate("easi_page_screen")},
@@ -102,7 +106,6 @@ class MainActivity : ComponentActivity() {
                         DermaPASIScreen(
                             navController = navController,
                             onBack = {navController.navigate("dashboard_screen_paziente")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToPasiHistory = {navController.navigate("pasi_history_screen")}
                         )
@@ -111,7 +114,6 @@ class MainActivity : ComponentActivity() {
                         DermaEASIScreen(
                             navController = navController,
                             onBack = {navController.navigate("dashboard_screen_paziente")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToEasiHistory = {navController.navigate("easi_history_screen")}
                         )
@@ -120,7 +122,6 @@ class MainActivity : ComponentActivity() {
                         DermaBMIScreen(
                             navController = navController,
                             onBack = {navController.navigate("dashboard_screen_paziente")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToBmiHistory = {navController.navigate("bmi_history_screen")}
                         )
@@ -129,7 +130,6 @@ class MainActivity : ComponentActivity() {
                         DermaBSAScreen(
                             navController = navController,
                             onBack = {navController.navigate("dashboard_screen_paziente")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
                             onNavigateToBsaHistory = {navController.navigate("bsa_history_screen")}
                         )
@@ -138,15 +138,15 @@ class MainActivity : ComponentActivity() {
                         DermaPASIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("pasi_page_screen")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
                     composable("easi_history_screen"){
                         DermaEASIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("easi_page_screen")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")},
                             onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
                         )
                     }
@@ -154,26 +154,19 @@ class MainActivity : ComponentActivity() {
                         DermaBMIHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("bmi_page_screen")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
                     composable("bsa_history_screen"){
                         DermaBSAHistoryScreen(
                             navController = navController,
                             onBack = {navController.navigate("bsa_page_screen")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
+                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")},
+                            onNavigateToDashBoardPaziente = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
-                    composable("chat_screen_paziente") {
-                        DermaChatPazienteScreen(
-                            onBack = {navController.navigate("dashboard_screen_paziente")},
-                            navController = navController,
-                            onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
-                            onNavigateToProfileP = {navController.navigate("profile_screen_paziente")}
-                        )
-                    }
+
                     composable("profile_screen_paziente") {
                         DermaProfilePazienteScreen(
                             onLogout = {
@@ -182,20 +175,39 @@ class MainActivity : ComponentActivity() {
                                     popUpTo(0)
                                 }
                             },
-                            onBack = {navController.navigate("dashboard_screen_paziente")},
                             navController = navController,
-                            onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")},
-                            onNavigateToChatP = {navController.navigate("chat_screen_paziente")}
+                            onNavigateToDashboardP = {navController.navigate("dashboard_screen_paziente")}
                         )
                     }
                     composable(route = "dashboard_screen_medico"){
                         DermaDashBoardMedicoScreen(
+                            navController = navController,
+                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")},
+                            onNavigateToPaziente = { pazienteId ->
+                                navController.navigate("info_paziente_screen/$pazienteId")
+                            }
+                        )
+                    }
+                    //Contiene la logica per visualizzare i dati specifici di un utente, in base alla scelta del medico
+                    composable("info_paziente_screen/{pazienteId}"){ backStackEntry ->
+                        val idStringa = backStackEntry.arguments?.getString("pazienteId") ?: ""
+                        DermaDettagliPazienteScreen(
+                            pazienteId = idStringa, //Lo usiamo per passare da una pagina all'altrà il riferimento al paziente che vogliamo vedere
+                            navController = navController,
+                            onBack = {navController.navigate("dashboard_screen_medico")},
+                            onNavigateToProfileM = {navController.navigate("profile_screen_medico")},
+                        )
+                    }
+                    composable("profile_screen_medico") {
+                        DermaProfileMedicoScreen(
                             onLogout = {
                                 Firebase.auth.signOut()
                                 navController.navigate("start_screen") {
                                     popUpTo(0)
                                 }
-                            }
+                            },
+                            navController = navController,
+                            onNavigateToDashboardM = {navController.navigate("dashboard_screen_medico")}
                         )
                     }
                     // Pagina intermedia per decidere dove andare se l'utente era già loggato

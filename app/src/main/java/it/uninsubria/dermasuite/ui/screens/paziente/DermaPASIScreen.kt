@@ -27,8 +27,8 @@ import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaResultCard
 import it.uninsubria.dermasuite.ui.components.DermaSelectorParameterCard
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrictState
+import it.uninsubria.dermasuite.model.DistrettoCorpo
+import it.uninsubria.dermasuite.model.PasiDistrictState
 import it.uninsubria.dermasuite.viewmodels.paziente.PasiPageViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,15 +36,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun DermaPASIScreen(
     onBack: () -> Unit,
-    onNavigateToChatP: () -> Unit,
     onNavigateToProfileP: () -> Unit,
     onNavigateToPasiHistory: () -> Unit,
     navController: NavController,
     viewModel: PasiPageViewModel = viewModel()
 ){
-    //Andiamo a definire una variabile che tiene a memoria in che pos si trova lo scroll della pagina
+
     val scrollState = rememberScrollState()
-    //Andiamo a creare una variabile per tenere traccia dello stato in cui si trova la snakbar
     val snakBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -61,10 +59,6 @@ fun DermaPASIScreen(
             "dashboard_screen_paziente"
         ) { onBack() },
         BottomBarAction(
-            stringResource(R.string.menu_chat), R.drawable.ic_chat,
-            "chat_screen_paziente"
-        ) { onNavigateToChatP() },
-        BottomBarAction(
             stringResource(R.string.menu_history), R.drawable.ic_history,
             "pasi_history_screen"
         ) { onNavigateToPasiHistory() },
@@ -73,6 +67,7 @@ fun DermaPASIScreen(
             "profile_screen_paziente"
         ) { onNavigateToProfileP() }
     )
+
     Scaffold(
         topBar = {
             DermaTopBar(
@@ -89,12 +84,10 @@ fun DermaPASIScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snakBarHostState) }
     ) { padding ->
-        //Andiamo a recuperare i dati relativi al distretto selezionato al momento
-        val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: DistrictState()
+        val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: PasiDistrictState()
 
         DermaColumnScreen(
             innerPadding = padding,
-            //Andiamo a collegare lo stato dello scroll alla column che contiene tutti i componenti della pagina
             scrollState = scrollState
         ) {
             DermaHeading(
@@ -113,7 +106,7 @@ fun DermaPASIScreen(
                 title = stringResource(R.string.eritema),
                 subtitle = stringResource(R.string.desc_eritema),
                 IconRes = R.drawable.ic_eritema,
-                selectedValue = currentData.eritema,
+                selectedValue = currentData.erythema,
                 maxValue = 4,
                 onValueChange = { viewModel.updateDistrictParameters(eritema = it) },
             )
@@ -123,7 +116,7 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_indurimento),
                 IconRes = R.drawable.ic_indurimento,
                 maxValue = 4,
-                selectedValue = currentData.indurimento,
+                selectedValue = currentData.hardening,
                 onValueChange = { viewModel.updateDistrictParameters(indurimento = it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -132,7 +125,7 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_desquamazione),
                 IconRes = R.drawable.ic_desquamazione,
                 maxValue = 4,
-                selectedValue = currentData.desquamazione,
+                selectedValue = currentData.desquamation,
                 onValueChange = { viewModel.updateDistrictParameters(desquamazione = it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -141,17 +134,14 @@ fun DermaPASIScreen(
                 subtitle = stringResource(R.string.desc_area),
                 IconRes = R.drawable.ic_area_parametri,
                 maxValue = 6,
-                selectedValue = currentData.percentualeArea,
+                selectedValue = currentData.percentageArea,
                 onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
-            //Creiamo quattro variabili con all'interno la stringa perchè la string Resource puoi usarla solo
-            //in componenti @Composable
             val succMess = stringResource(R.string.snak_success)
             val errMess = stringResource(R.string.snak_error)
             val completaDistretto = stringResource(R.string.complete_district)
             val completaAllDistretti = stringResource(R.string.complete_all_districts)
-            // Pre-mappiamo i nomi dei distretti per evitare l'uso di context.getString nel click listener
             val distrettiNomi = DistrettoCorpo.entries.associateWith { stringResource(it.nameResId) }
 
             DermaButton(
@@ -178,7 +168,6 @@ fun DermaPASIScreen(
                             }
                         )
                     }else{
-                        //Andiamo ad identificare il primo distretto mancante che viene trovato e messo in una variabile
                         val distrettoMancante = DistrettoCorpo.entries.find { !viewModel.isDistrictComplete(it) }
                         val messaggio = if (distrettoMancante != null) {
                             val distrettoDaCompletare = distrettiNomi[distrettoMancante] ?: ""
@@ -194,11 +183,11 @@ fun DermaPASIScreen(
                         }
 
                     }
-                }
+                },
+                enabled = viewModel.abilitaCalcolo()
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            //Creaimo una funzione per andare a mappare il livello di severità cambiando in base alla lingua
             val severityLabel = when(viewModel.serverityClass){
                 "LEVEL_LOW" -> stringResource(R.string.pasi_severity_low)
                 "LEVEL_MODERATE" -> stringResource(R.string.pasi_severity_moderate)

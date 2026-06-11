@@ -23,7 +23,7 @@
     <string name = "range_severità">Range of severity</string>
     <string name = "punteggio">Score:</string>
     <string name = "distretto_testa">Head</string>
-    <string name = "distretto_braccia">Upper limbs</string>
+    <string name = "distretto_braccia">Arms</string>
     <string name = "distretto_tronco">Trunk</string>
-    <string name = "distretto_gambe">Lower Limbs</string>
+    <string name = "distretto_gambe">Legs</string>
 </resources>

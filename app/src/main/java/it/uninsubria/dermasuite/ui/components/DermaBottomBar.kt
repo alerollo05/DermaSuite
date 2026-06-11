@@ -16,7 +16,7 @@ import it.uninsubria.dermasuite.ui.theme.BgBottomBar
 // Modello per ogni pulsante della barra
 data class BottomBarAction(
     val label: String,
-    val iconRes: Int,      // ID del tuo SVG/Vector Drawable
+    val iconRes: Int,      // ID del SVG/Vector Drawable
     val route: String,     // La rotta verso cui punta
     val onClick: () -> Unit // L'azione da eseguire (passata dalla MainActivity)
 )
@@ -34,7 +34,7 @@ fun DermaBottomBar(
     // Funzione composable di Jetpack Compose per creare la BottomBar con icone e label
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = 8.dp // Aggiunge una leggera ombra alla BottomBar
+        tonalElevation = 8.dp
     ) {
         // Ciclo su ogni elemento della lista actions passata come argomento
         actions.forEach { action ->
@@ -59,8 +59,7 @@ fun DermaBottomBar(
                             tint = if (isSelected) MaterialTheme.colorScheme.primary
                             else MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        // Inseriamo il testo qui dentro!
-                        // Ora l'indicatore (il colore di sfondo dell'icon) si espanderà per includerlo.
+
                         Text(
                             text = action.label,
                             style = MaterialTheme.typography.labelSmall,

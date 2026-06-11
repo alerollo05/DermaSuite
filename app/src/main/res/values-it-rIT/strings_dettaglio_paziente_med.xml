@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="titolo_dettaglio_paz">Riepilogo Paziente</string>
+    <string name="sottotitolo_dettaglio_paz">Qui puoi vedere la media di ogni calcolo per ogni singolo paziente</string>
+    <string name="label_username_detail">Nome utente: </string>
+    <string name="pasi_average">Media PASI</string>
+    <string name="easi_average">Media EASI</string>
+    <string name="bmi_average">Media BMI</string>
+    <string name="bsa_average">Media BSA</string>
+</resources>

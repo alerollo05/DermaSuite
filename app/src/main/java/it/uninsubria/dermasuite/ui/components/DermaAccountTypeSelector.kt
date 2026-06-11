@@ -38,19 +38,18 @@ fun DermaAccountTypeSelector(
              modifier = Modifier.padding(bottom = 8.dp)
          )
          Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)){
-             //diamo la spaziatura orizzontale ai bottoni in modo tale da rendere il tutto più bello
              AccountTypeButton(
-                 text = stringResource(R.string.patient), //Andiamo a prendere il testo da strings.xml)
-                 iconRes = it.uninsubria.dermasuite.R.drawable.ic_button_paziente, // Andiamo a passargli l'id dell'icona SVG corrispondente a uno o all'altro
-                 isSelected = selectedType == "Paziente", //Vado a controllare e se è selezionato paziente, metto la var a ture
-                 onClick = { onTypeSelected("Paziente")}, //Quando clicco seleziono il fatto di aver scelto il paziente
+                 text = stringResource(R.string.patient),
+                 iconRes = it.uninsubria.dermasuite.R.drawable.ic_button_paziente,
+                 isSelected = selectedType == "Paziente",
+                 onClick = { onTypeSelected("Paziente")},
                  modifier = Modifier.weight(1f)
              )
              AccountTypeButton(
                  text = stringResource(R.string.doctor),
-                 iconRes = it.uninsubria.dermasuite.R.drawable.ic_button_medico, // Andiamo a passargli l'id dell'icona SVG corrispondente a uno o all'altro
-                 isSelected = selectedType == "Medico",//Vado a controllare e se è selezionato medico, metto la var a ture
-                 onClick = { onTypeSelected("Medico")}, //Quando clicco seleziono il fatto di aver scelto il medico
+                 iconRes = it.uninsubria.dermasuite.R.drawable.ic_button_medico,
+                 isSelected = selectedType == "Medico",
+                 onClick = { onTypeSelected("Medico")},
                  modifier = Modifier.weight(1f)
                  )
          }
@@ -104,10 +103,3 @@ private fun AccountTypeButton(
 
 
 
-@Preview(showBackground = true)
-@Composable
-private fun DermaAccountTypeSelectorPreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        DermaAccountTypeSelector(selectedType = "Paziente", onTypeSelected = {})
-    }
-}

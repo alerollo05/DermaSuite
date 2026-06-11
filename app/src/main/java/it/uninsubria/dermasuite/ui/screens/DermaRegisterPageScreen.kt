@@ -31,6 +31,7 @@ import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
 import it.uninsubria.dermasuite.ui.components.DermaDatePicker
 import it.uninsubria.dermasuite.ui.components.DermaHeading
 import it.uninsubria.dermasuite.ui.components.DermaPrivacyDisclaimerBox
+import it.uninsubria.dermasuite.ui.components.DermaSelectorSesso
 import it.uninsubria.dermasuite.ui.components.DermaTextField
 import it.uninsubria.dermasuite.ui.components.DermaTopBar
 import it.uninsubria.dermasuite.viewmodels.RegisterPageViewModel
@@ -57,8 +58,6 @@ fun DermaRegisterPageScreen(
     // Effetto per navigare automaticamente se la registrazione ha successo
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            // Invece di onRegistrationSuccess (alla dashboard),
-            // usa onNavigateToLogin per fargli fare il login manuale
             onNavigateToLogin()
         }
     }
@@ -69,18 +68,7 @@ fun DermaRegisterPageScreen(
             DermaTopBar(
                 title = "DermaSuite",
                 showBackButton = true,
-                onBackClick = onNavigateToStart,
-                actions = {
-                    // Esempio di utilizzo dello slot 'actions' per l'icona profilo
-                    /*
-                    IconButton(onClick = { /* Azione opzionale */ }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_arrow),
-                            contentDescription = "Profilo",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }*/
-                }
+                onBackClick = onNavigateToStart
             )
         }
     ) { padding ->
@@ -89,14 +77,14 @@ fun DermaRegisterPageScreen(
         DermaColumnScreen(innerPadding = padding){
             Spacer(modifier = Modifier.height(40.dp))
 
-            //Mettiamo l'intestazione della pagina
+            // intestazione della pagina
             DermaHeading(
                 titolo = stringResource(R.string.titolo_register),
                 sottotitolo = stringResource(R.string.subtitle_register)
             )
             Spacer(modifier = Modifier.height(40.dp))
             DermaAccountTypeSelector(
-                selectedType = uiState.accountType, //Quindi di default nel file della classe abbiamo messo che viene selezionato paziente
+                selectedType = uiState.accountType,
                 onTypeSelected = { viewModel.onAccountTypeSelected(it) }
             )
             Spacer(modifier = Modifier.height(40.dp))
@@ -120,6 +108,11 @@ fun DermaRegisterPageScreen(
                 label = stringResource(R.string.textfield_birth),
                 value = uiState.dataNascita,
                 onDataSelected = { viewModel.onDataNascitaChanged(it) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DermaSelectorSesso(
+                selectedSesso = uiState.sesso,
+                onSessoSelected = { viewModel.onSessoChanged(it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
             DermaTextField(
@@ -162,9 +155,30 @@ fun DermaRegisterPageScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Spacer(modifier = Modifier.height(24.dp))
+            // Recupero delle stringhe di errore localizzate
+            val errorFillAll = stringResource(R.string.error_fill_all_fields)
+            val errorInvalidName = stringResource(R.string.error_invalid_name)
+            val errorInvalidSurname = stringResource(R.string.error_invalid_surname)
+            val errorNameTooShort = stringResource(R.string.error_name_too_short)
+            val errorInvalidEmail = stringResource(R.string.error_invalid_email)
+            val errorPassTooShort = stringResource(R.string.error_password_too_short_reg)
+            val errorPassNotMatch = stringResource(R.string.error_passwords_not_match_reg)
+            val errorRegFailed = stringResource(R.string.error_registration_failed)
+
             DermaButton(
                 text = if (uiState.isLoading) stringResource(R.string.loading_button) else stringResource(R.string.btn_register_create_account),
-                onClick = { viewModel.onRegisterClick() }
+                onClick = {
+                    viewModel.onRegisterClick(
+                        errorFillAll,
+                        errorInvalidName,
+                        errorInvalidSurname,
+                        errorNameTooShort,
+                        errorInvalidEmail,
+                        errorPassTooShort,
+                        errorPassNotMatch,
+                        errorRegFailed
+                    )
+                }
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(verticalAlignment = Alignment.CenterVertically){
@@ -181,11 +195,5 @@ fun DermaRegisterPageScreen(
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-private fun DermaRegisterPageScreenPreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-    DermaRegisterPageScreen(onNavigateToLogin = {}, onNavigateToStart = {})
-    }
-}
+
 

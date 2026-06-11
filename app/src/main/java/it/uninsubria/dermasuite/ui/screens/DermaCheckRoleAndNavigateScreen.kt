@@ -2,6 +2,8 @@ package it.uninsubria.dermasuite.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import it.uninsubria.dermasuite.firebase.AuthRepository
+import it.uninsubria.dermasuite.ui.components.DermaIsLoading
 
 @Composable
 fun DermaCheckRoleAndNavigateScreen(navController: NavController) {
@@ -22,7 +25,7 @@ fun DermaCheckRoleAndNavigateScreen(navController: NavController) {
     // LaunchedEffect viene eseguito una sola volta all'avvio della schermata
     LaunchedEffect(Unit) {
         if (currentUser != null) {
-            // Usiamo il tuo metodo getUserData per recuperare l'oggetto DermaUser
+            // Usiamo il metodo getUserData per recuperare l'oggetto DermaUser
             val userModel = repository.getUserData(currentUser.uid)
 
             if (userModel != null) {
@@ -51,14 +54,6 @@ fun DermaCheckRoleAndNavigateScreen(navController: NavController) {
         }
     }
 
-    // Mentre il sistema "pensa", mostriamo un caricamento centrato
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(50.dp),
-            color = Color(0xFF003366) // Usa il blu del tuo brand
-        )
-    }
+    DermaIsLoading(modifier = Modifier.fillMaxSize().height(250.dp))
 }
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "history_bmi_title">History of BMI calculation</string>
+    <string name = "history_bmi_subtitle">Tracking longitudinal biometric data for clinical assessment and weight management efficacy.</string>
+    <string name = "title_bmi_current_situation">Your current situation</string>
+    <string name = "title_list_history">Recent BMI calculations</string>
+    <string name = "label_bmi_score">BMI Score: </string>
+    <string name = "top_bar_bmi_history">History BMI</string>
+    <string name = "title_pdf_bmi">Report for BMI calculation</string>
+    <string name = "no_records_found_bmi">No records were found.</string>
+    <string name = "title_filter_bmi">Filter</string>
+    <string name = "description_filter_bmi">Choose a time period to view BMI data</string>
+    <string name = "data_pdf_bmi">Date</string>
+    <string name = "severity_pdf_bmi">Severity</string>
+    <string name = "label_bmi">BMI</string>
+</resources>

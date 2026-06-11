@@ -46,4 +46,13 @@
     <string name="menu_chat">CHAT</string>
     <string name="menu_history">STORICO</string>
     <string name="menu_profile">PROFILO</string>
+
+    <string name="error_fill_all_fields">Compila tutti i campi obbligatori.</string>
+    <string name="error_invalid_name">Il nome contiene numeri o caratteri non validi.</string>
+    <string name="error_invalid_surname">Il cognome contiene numeri o caratteri non validi.</string>
+    <string name="error_name_too_short">Nome e cognome devono avere almeno 2 caratteri.</string>
+    <string name="error_invalid_email">Inserisci un indirizzo email valido.</string>
+    <string name="error_password_too_short_reg">La password deve avere almeno 6 caratteri.</string>
+    <string name="error_passwords_not_match_reg">Le password non coincidono!</string>
+    <string name="error_registration_failed">Errore durante la registrazione</string>
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="easi_title">Calcolo EASI</string>
+    <string name="easi_heading_title">Calcolo EASI</string>
+    <string name="easi_heading_subtitle">Valuta l\'estensione e la gravità della dermatite atopica.</string>
+
+    <string name="easi_param_eritema_title">Eritema</string>
+    <string name="easi_param_eritema_subtitle">Seleziona il punteggio relativo all\'eritema</string>
+
+    <string name="easi_param_edema_title">Edema/Papulizzazione</string>
+    <string name="easi_param_edema_subtitle">Seleziona il punteggio relativo all\'edema papulizzazione</string>
+
+    <string name="easi_param_escoriazione_title">Escoriazione</string>
+    <string name="easi_param_escoriazione_subtitle">Seleziona il punteggio relativo all\'escoriazione (grattamento)</string>
+
+    <string name="easi_param_lichenificazione_title">Lichenificazione</string>
+    <string name="easi_param_lichenificazione_subtitle">Seleziona il punteggio relativo alla lichenificazione</string>
+
+    <string name="easi_btn_calculate">Calcola EASI</string>
+    <string name="easi_result_title">Risultato EASI</string>
+
+    <string name="easi_severity_low">Lieve</string>
+    <string name="easi_severity_moderate">Moderato</string>
+    <string name="easi_severity_severe">Grave</string>
+</resources>

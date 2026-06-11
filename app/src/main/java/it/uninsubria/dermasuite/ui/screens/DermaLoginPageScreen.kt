@@ -44,7 +44,7 @@ import it.uninsubria.dermasuite.viewmodels.LoginPageViewModel
 fun LoginPageScreen(
     onNavigateToRegister: () -> Unit,
     onNavigateToStart: () -> Unit,
-    onLoginSuccess: (String) -> Unit, // Questo ti porta alla dashboard una volta verificato l' accesso
+    onLoginSuccess: (String) -> Unit,
     viewModel: LoginPageViewModel = viewModel()
 ){
     val uiState = viewModel.uiState
@@ -71,18 +71,7 @@ fun LoginPageScreen(
             DermaTopBar(
                 title = "DermaSuite",
                 showBackButton = true,
-                onBackClick = onNavigateToStart,
-                actions = {
-                    // Esempio di utilizzo dello slot 'actions' per l'icona profilo
-                    /*
-                    IconButton(onClick = { /* Azione opzionale */ }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_arrow),
-                            contentDescription = "Profilo",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }*/
-                }
+                onBackClick = onNavigateToStart
             )
         }
     ){ padding ->
@@ -96,20 +85,20 @@ fun LoginPageScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             Column(
-                modifier = Modifier.fillMaxWidth(), // 1. Prende tutta la larghezza
-                horizontalAlignment = Alignment.CenterHorizontally // 2. Centra i componenti Text
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(R.string.title_login) ,
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center // 3. Centra il testo internamente
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = stringResource(R.string.subtitle_login),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center, // 3. Centra il testo internamente
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 8.dp, bottom = 32.dp)
                 )
             }
@@ -118,15 +107,15 @@ fun LoginPageScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface // Colore di sfondo della card
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ){
                 Column(
                     modifier = Modifier
-                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .padding(24.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
@@ -179,14 +168,4 @@ fun LoginPageScreen(
     }
 
 
-
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPagePreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        LoginPageScreen({},{}, onLoginSuccess ={})
-    }
 }

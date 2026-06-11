@@ -34,13 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.uninsubria.dermasuite.ui.components.DermaButton
 import it.uninsubria.dermasuite.ui.theme.Placeholder
-import it.uninsubria.dermasuite.viewmodels.StartPageViewModel
 
 @Composable
 fun StartPageScreen(
     onNavigateToLogin: () -> Unit,
     onNavigateToRegister: () -> Unit,
-    viewModel: StartPageViewModel = viewModel() // Iniezione automatica
+
 ) {
     val scrollState = rememberScrollState()
 
@@ -56,7 +55,7 @@ fun StartPageScreen(
         // Logo e Titolo e sottotitolo
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(id = R.mipmap.ic_launcher_foreground), // Questo è il logo
+                painter = painterResource(id = R.mipmap.ic_launcher_foreground),
                 contentDescription = "Logo DermaSuite",
                 modifier = Modifier.size(110.dp).clip(MaterialTheme.shapes.large)
             )
@@ -65,7 +64,7 @@ fun StartPageScreen(
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.primary
             )
-            // Aggiunge 8dp di spazio verticale
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
@@ -75,11 +74,9 @@ fun StartPageScreen(
                 color = Placeholder
             )
         }
-        // --- SPAZIO TRA SOTTOTITOLO E IMMAGINE ---
-        // Riduci questo valore per avvicinare l'immagine al testo
+
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Immagine centrale (Laboratorio)
         Image(
             painter = painterResource(id = R.drawable.img_doc_home),
             contentDescription = null,
@@ -90,12 +87,8 @@ fun StartPageScreen(
             contentScale = ContentScale.Crop,
         )
 
-        // --- SPAZIO TRA IMMAGINE E BOTTONI ---
-        // Riduci questo valore per avvicinare i bottoni all'immagine
         Spacer(modifier = Modifier.height(10.dp))
 
-
-        // Bottoni di azione
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -106,15 +99,13 @@ fun StartPageScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.btn_home_register),
-                        style = MaterialTheme.typography.bodyLarge, // Usa il tuo stile da Type.kt
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
 
-                    // Aggiunge un piccolo spazio tra il testo e la freccia
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    // Se hai un tuo file vettoriale in drawable
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow),
                         contentDescription = null,
@@ -127,13 +118,5 @@ fun StartPageScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun StartPagePreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        StartPageScreen({}, {})
     }
 }

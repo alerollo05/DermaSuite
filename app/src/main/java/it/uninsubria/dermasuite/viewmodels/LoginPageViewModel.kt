@@ -18,14 +18,9 @@ data class LoginUiState(
     val userRole: String? = null           //Per scegliere quale dashborad mostrare tra paziente e medico
 )
 class LoginPageViewModel (private val repository: AuthRepository = AuthRepository()) : ViewModel() {
-    /*
-     Il "by mutableStateOf" rende questa variabile reattiva
-     Quando il valore di 'uiState' cambia, Compose ridisegna automaticamente
-     solo le parti dello schermo che leggono questi dati
-     */
+
     var uiState by mutableStateOf(LoginUiState())
-        private set //Imposta il fatto che solo questo viewmodel può modificare questo valore,
-                    // mentre tutti gli altri possono solo leggere i valori
+        private set
     // Creiamo delle funzioni di aggiornamento per ogni campo di testo
     // Ogni volta che l'utente scrive un carattere, chiamiamo una di queste funzioni
     fun onEmailChanged(nuovaEmail: String) {

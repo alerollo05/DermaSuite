@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bsa_calc_saved_success">Calcolo salvato correttamente!</string>
+    <string name="bsa_title">Calcolo BSA</string>
+    <string name="bsa_heading_title">Calcola la tua Body Surface Area</string>
+    <string name="bsa_heading_subtitle">Inserisci peso e altezza per calcolare la tua superficie corporea.</string>
+    <string name="bsa_label_height">Altezza (cm)</string>
+    <string name="bsa_placeholder_height">Inserisci la tua altezza</string>
+    <string name="bsa_label_weight">Peso (kg)</string>
+    <string name="bsa_placeholder_weight">Inserisci il tuo peso</string>
+    <string name="bsa_btn_saving">SALVATAGGIO...</string>
+    <string name="bsa_btn_calculate">CALCOLA</string>
+    <string name="bsa_result_title">La tua BSA</string>
+    <string name="bsa_error_missing_data">Inserisci tutti i dati richiesti.</string>
+    <string name="bsa_error_height_range">L\'altezza deve essere compresa tra 50 e 280 cm.</string>
+    <string name="bsa_error_weight_range">Il peso deve essere compreso tra 30 e 500 kg.</string>
+    <string name="bsa_eval_above_avg">Sopra la media</string>
+    <string name="bsa_eval_below_avg">Sotto la media</string>
+    <string name="bsa_eval_avg">Nella media</string>
+    <string name="bsa_card_title">Inserisci i tuoi dati</string>
+</resources>

@@ -29,18 +29,15 @@ import it.uninsubria.dermasuite.R
 fun DermaTextField(
     label: String,
     value: String,
-    onValueChange: (String) -> Unit, // funzione che viene chiamata quando il valore cambia
-    // Unit è una funzione che non riceve in input nulla e non restituisce nulla
-    placeholder: String, //prende la stringa da mettere come placheholder
-    leadingIconRes: Int? = null, // prende (se c'è l'id del icona drawable che dobbiamo mettere
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    leadingIconRes: Int? = null,
     isPassword: Boolean = false,
-    // AGGIUNTA: permettiamo di decidere se è a riga singola (default true)
     singleLine: Boolean = true,
-    // AGGIUNTA: per gestire il tasto della tastiera (es. Next o Done)
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     modifier: Modifier = Modifier
 ){
-    //Creiamo una variabile per ricordarci se la password è visibile oppure no
+
     var passwordIsVisibile by remember { mutableStateOf(false) }
     Column(modifier = modifier.fillMaxWidth()){
         Text(

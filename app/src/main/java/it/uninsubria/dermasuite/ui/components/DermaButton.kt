@@ -21,17 +21,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.uninsubria.dermasuite.R
 
-@Composable //specifichiamo che questa funzione serve a disegnare un componente UI
+@Composable
 fun DermaButton(
-    text: String,            // Il testo che apparirà sul bottone
-    onClick: () -> Unit,     // Cosa succede quando viene cliccato (una funzione passata come dato)
-    modifier: Modifier = Modifier, // Per posizionarlo dall'esterno
-    enabled: Boolean = true  // Se il bottone è attivo o "grigetto" (es. se i campi non sono compilati)
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
-            .fillMaxWidth() // Si allarga per tutta la larghezza disponibile
+            .fillMaxWidth()
             .height(56.dp),
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
@@ -44,10 +44,10 @@ fun DermaButton(
         ){
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelLarge, // Quello che abbiamo impostato in Plus Jakarta nel file Type.kt
+                style = MaterialTheme.typography.labelLarge,
                 color = Color.White,
             )
-            Spacer(modifier = Modifier.width(10.dp)) // Questo spazio serve a separare il testo dall'icona
+            Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(R.drawable.ic_arrow),
                 contentDescription = null,
@@ -56,12 +56,5 @@ fun DermaButton(
             )
         }
 
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun DermaButtonPreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-        DermaButton("Login", onClick = {})
     }
 }

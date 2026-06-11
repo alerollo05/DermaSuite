@@ -1,6 +1,151 @@
 package it.uninsubria.dermasuite.viewmodels.paziente
 
+import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.firestore
+import it.uninsubria.dermasuite.firebase.AuthRepository
+import it.uninsubria.dermasuite.model.BmiRecord
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
 
-class BmiPageViewModel : ViewModel() {
+class BmiPageViewModel(
+    private val repository: AuthRepository = AuthRepository()
+) : ViewModel() {
+
+    data class BmiUiState(
+            val height: String = "",
+            val weight: String = "",
+            val calculatedCategory: String = "",
+            val calculatedBMI: Double = 0.0,
+            val isSaving: Boolean = false,
+            val saveSuccess: Boolean = false,
+
+            )
+
+    var uiState by mutableStateOf(BmiUiState())
+
+
+    //La usiamo per abilitare il risultato della card
+    var showResult by mutableStateOf(false)
+
+    // Un semplice contatore che incrementiamo a ogni calcolo
+    //Ci serve per andare a far scorrere ad ogni pressione del bottone verso il basso la pagina in modo da visualizzare la card di result
+    var scrollTrigger by mutableStateOf(0)
+
+
+    //Metodi per l'aggiornamento delle variabili in base alla UI
+    fun onHeightChanged(newHeight: String) {
+        uiState = uiState.copy(height = newHeight)
+        showResult = false // Nasconde la card del risultato appena digiti una nuova altezza
+    }
+
+    fun onWeightChanged(newWeight: String) {
+        uiState = uiState.copy(weight = newWeight)
+        showResult = false // Nasconde la card del risultato appena digiti un nuovo peso
+    }
+
+    fun onCalculatedBMI(newResult: Double){
+        uiState = uiState.copy(calculatedBMI = newResult)
+    }
+    fun onCalculatedCategoryChange(newCategory: String){
+        uiState = uiState.copy(calculatedCategory = newCategory)
+    }
+    fun onIsSaving(newIsSaving: Boolean){
+        uiState = uiState.copy(isSaving = newIsSaving)
+    }
+    fun onSaveSuccess(newSuccess: Boolean){
+        uiState = uiState.copy(saveSuccess = newSuccess)
+    }
+
+    // Funzione usata per vedere se i campi sono stati inseriti tutti per il calcolo del bmi
+    fun isCalcoloAbilitato(): Boolean {
+        // Non stiamo già effettuando un salvataggio (evita i click multipli)
+        // Non stiamo già mostrando il risultato di questo esatto calcolo
+        return uiState.height.isNotBlank() && uiState.weight.isNotBlank() && !uiState.isSaving && !showResult
+    }
+
+
+    fun calcolaBMIAndSave (context: Context, onSuccess: () -> Unit, onError: () -> Unit) {
+        if(isCalcoloAbilitato()){
+            //Convertiamo l'altezza da centimetri a metri
+            val heightMeters = uiState.height.toDouble() / 100.0
+            val weight = uiState.weight.toDouble()
+
+            //Calcolo del BMI effettivo
+            val bmi = weight / (heightMeters * heightMeters)
+            //Usiamo la funzione getBMICategory per ricavare la categoria in base al BMI
+            val category = BmiRecord.getBMICategory(bmi, context)
+
+            //Arrotondiamo a una cifra decimale
+            val bmiFinale = Math.round(bmi * 10.0) / 10.0
+
+            //Aggiorniamo i valori dell'UI con il risultato finale calcolato
+            onCalculatedBMI(bmiFinale)
+            onCalculatedCategoryChange(category)
+
+            salvaBMI(bmiFinale, category, onSuccess = {
+                showResult= true //Attiviamo la card quando il salvataggio è andato a buon fine
+                scrollTrigger++ //Incrementiamo il contatore per far scorrere la pagina verso il basso (vedi nel BMIPageScreen)
+                onSuccess()
+            }, onError = onError)
+        }
+    }
+
+    fun salvaBMI(
+        bmi: Double,
+        category: String,
+        onSuccess: () -> Unit,
+        onError: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                uiState = uiState.copy(isSaving = true)
+
+                //Chiediamo l'UID al repository
+                val uid = repository.getCurrentUserId()
+
+                if (uid == null) {
+                    uiState = uiState.copy(isSaving = false)
+                    onError()
+                    return@launch
+                }
+
+                //Creiamo il pacchetto dati da salvare
+                val payload = hashMapOf(
+                    // Usiamo il percorso completo per FieldValue
+                    "CalculationDate" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
+                    "BmiTot" to bmi,
+                    "Category" to category,
+                    "Height" to uiState.height.toInt(),
+                    "Weight" to uiState.weight.toInt(),
+                )
+
+                //Deleghiamo il lavoro pesante al repository
+                val isSuccess = repository.salvaBmiRecord(uid, payload)
+
+                if (isSuccess) {
+                    uiState = uiState.copy(isSaving = false)
+                    onSuccess()
+                } else {
+                    uiState = uiState.copy(isSaving = false)
+                    onError()
+                }
+
+            }catch(e: Exception){
+                uiState = uiState.copy(isSaving = false)
+                onError()
+            }
+        }
+    }
+
 }

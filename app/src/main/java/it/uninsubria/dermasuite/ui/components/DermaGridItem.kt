@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.viewmodels.paziente.DistrettoCorpo
+import it.uninsubria.dermasuite.model.DistrettoCorpo
 
 @Composable
 fun DermaGridItem(
@@ -39,7 +39,7 @@ fun DermaGridItem(
     onSelect: () -> Unit, //Funzione da eseguire quando viene selezionato
     modifier: Modifier
 ){
-    //Setup dei colori
+    //Setup colori
     val backgroundColor = if (isSelected) Color.White else Color(0xFFF8F9FA)
     val indicatorColor = if (isSelected) MaterialTheme.colorScheme.primary else Color(0xFF40E0D0)  // Turchese per la percentuale
 

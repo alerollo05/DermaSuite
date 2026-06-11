@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="gestione_profilo_title">Gestione Profilo</string>
+    <string name="gestione_profilo_subtitle">Modifica le tue informazioni personali e gestisci la sicurezza del tuo account clinico.</string>
+
+    <string name="dati_anagrafici_title">Dati Anagrafici</string>
+    <string name="label_nome">Nome</string>
+    <string name="label_cognome">Cognome</string>
+    <string name="label_data_nascita">Data di Nascita</string>
+    <string name="label_sesso">Sesso</string>
+    <string name="label_username">Username</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+
+    <string name="specialista_riferimento_title">Specialista di Riferimento</string>
+    <string name="mock_doctor_name">Dott.ssa Elena Bianchi</string>
+    <string name="mock_doctor_role">Dermatologa Senior</string>
+    <string name="mock_doctor_description">La Dott.ssa Elena Bianchi è specializzata in dermatologia clinica e oncologica. Ha maturato oltre 15 anni di esperienza nel trattamento delle patologie della pelle e nella prevenzione dei melanomi.</string>
+    <string name="btn_cambia_medico">Cambia Medico</string>
+
+    <string name="btn_logout">Logout</string>
+    <string name="btn_elimina_account">Elimina Account</string>
+    <string name="btn_conferma">Conferma</string>
+    <string name="btn_annulla">Annulla</string>
+
+    <string name="modifica_username_title">Modifica Username</string>
+    <string name="modifica_username_desc">Inserisci il tuo nuovo username qui sotto.</string>
+    <string name="label_nuovo_username">Nuovo Username</string>
+
+    <string name="modifica_email_title">Modifica Email</string>
+    <string name="modifica_email_desc">Inserisci la tua nuova email e la tua password attuale (per confermare l\'autenticazione).</string>
+    <string name="label_nuova_email">Nuova Email</string>
+    <string name="label_password_attuale">Password Attuale</string>
+
+    <string name="modifica_password_title">Cambia Password</string>
+    <string name="modifica_password_desc">Inserisci la tua nuova password e confermala.</string>
+    <string name="label_nuova_password">Nuova Password</string>
+    <string name="label_conferma_password">Conferma Password</string>
+
+    <string name="dialog_successo_ricerca_medico">Medico selezionato con successo!</string>
+    <string name="dialog_errore_ricerca_medico">Errore durante la selezione del medico!</string>
+    <string name="dialog_doctor_title">Seleziona un Medico</string>
+    <string name="dialog_doctor_not_found">Nessun medico trovato</string>
+
+    <string name="error_empty_username">L\'username non può essere vuoto!</string>
+    <string name="msg_username_updated">Username aggiornato!</string>
+    <string name="error_connection">Errore di connessione.</string>
+    <string name="error_wrong_password">La password inserita è errata.</string>
+    <string name="msg_email_updated">Email aggiornata con successo!</string>
+    <string name="error_update_failed">Errore durante l\'aggiornamento.</string>
+    <string name="error_passwords_not_match">Le password non coincidono.</string>
+    <string name="error_password_too_short">La password deve avere almeno 6 caratteri.</string>
+    <string name="error_current_password_wrong">Password attuale errata.</string>
+    <string name="msg_password_updated">Password aggiornata con successo!</string>
+    <string name="label_doctor_prefix">Dott.</string>
+    <string name="label_no_birthdate">Data di nascita non inserita</string>
+
+    <string name="label_no_doctor_assigned">Nessun medico assegnato</string>
+    <string name="label_dermatology">Dermatologia</string>
+    <string name="desc_no_doctor_assigned">Attualmente non sei seguito da nessuno specialista. Clicca sul pulsante qui sotto per sceglierne uno dalla lista.</string>
+    <string name="label_default_specialization">Specialista in Dermatologia</string>
+    <string name="desc_no_doctor_description">Nessuna descrizione fornita dal medico.</string>
+    <string name="desc_no_doctor_specialization">Nessuna specializzazione fornita dal medico.</string>
+    <string name="dialog_close">Chiudi</string>
+
+    <string name="dialog_description">Descrizione: </string>
+    <string name="dialog_mail">Email: </string>
+    <string name="dialog_lingua">Lingua: </string>
+    <string name="dialog_data_nascita">Data di Nascita: </string>
+
+    <string name="label_pasi_average">Media PASI</string>
+    <string name="label_easi_average">Media EASI</string>
+    <string name="label_bmi_average">Media BMI</string>
+    <string name="label_bsa_average">Media BSA</string>
+
+    <string name="label_mild">Lieve</string>
+    <string name="label_moderate">Moderato</string>
+    <string name="label_severe">Grave</string>
+    <string name="label_stable">Stabile</string>
+    <string name="label_patient_not_found">Paziente non trovato</string>
+
+</resources>

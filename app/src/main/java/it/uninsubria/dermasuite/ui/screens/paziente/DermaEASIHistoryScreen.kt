@@ -1,69 +1,124 @@
 package it.uninsubria.dermasuite.ui.screens.paziente
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import it.uninsubria.dermasuite.R
-import it.uninsubria.dermasuite.ui.components.BottomBarAction
-import it.uninsubria.dermasuite.ui.components.DermaBottomBar
-import it.uninsubria.dermasuite.ui.components.DermaColumnScreen
-import it.uninsubria.dermasuite.ui.components.DermaHeading
-import it.uninsubria.dermasuite.ui.components.DermaTopBar
+import it.uninsubria.dermasuite.ui.components.*
+import it.uninsubria.dermasuite.viewmodels.paziente.HistoryEasiPageViewModel
+import it.uninsubria.dermasuite.model.easiPdfGenerator // Chiamiamo il nuovo generatore
+import kotlinx.coroutines.launch
 
 @Composable
 fun DermaEASIHistoryScreen(
     onBack: () -> Unit,
     navController: NavController,
-    onNavigateToChatP: () -> Unit,
-    onNavigateToProfileP: () -> Unit
-) {
+    onNavigateToDashBoardPaziente: () -> Unit,
+    onNavigateToProfileP: () -> Unit,
+    viewModel: HistoryEasiPageViewModel = viewModel()
+){
+    val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+    val currentFilter by viewModel.currentFilter.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val records by viewModel.uiState.collectAsState()
+    val userData by viewModel.userData.collectAsState()
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val title = stringResource(R.string.title_PDF_EASI)
+    val username = if (userData != null) "${userData?.nome} ${userData?.cognome}" else currentUser?.displayName
+
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            coroutineScope.launch { easiPdfGenerator(title, context, records, currentFilter, username) }
+        } else {
+            Toast.makeText(context, R.string.stringa_errore_download, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        currentUser?.uid?.let { uid -> viewModel.getHistoryDB(uid) }
+    }
+
     val listaIcone = listOf(
-        BottomBarAction(
-            "HOME", R.drawable.ic_home,
-            "dashboard_screen_paziente",
-            { onBack() }),
-        BottomBarAction(
-            "CHAT", R.drawable.ic_chat,
-            "chat_screen_paziente",
-            { onNavigateToChatP() }),
-        BottomBarAction(
-            "HISTORY", R.drawable.ic_history,
-            "easi_history_screen",
-            {}),
-        BottomBarAction(
-            "PROFILE", R.drawable.ic_profile,
-            "profile_screen_paziente",
-            { onNavigateToProfileP() })
+        BottomBarAction(stringResource(R.string.menu_home), R.drawable.ic_home, "dashboard_screen_paziente", {onNavigateToDashBoardPaziente()}),
+        BottomBarAction(stringResource(R.string.menu_history), R.drawable.ic_history, "easi_history_screen", {}),
+        BottomBarAction(stringResource(R.string.menu_profile), R.drawable.ic_profile, "profile_screen_paziente", {onNavigateToProfileP()})
     )
 
     Scaffold(
         topBar = {
             DermaTopBar(
-                title = "History EASI",
+                title = "DermaSuite",
                 showBackButton = true,
-                onBackClick = onBack
+                onBackClick = onBack,
+                actions = {
+                    IconButton(
+                        onClick = {
+                            when {
+                                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                                    coroutineScope.launch { easiPdfGenerator(title, context, records, currentFilter, username) }
+                                }
+                                ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
+                                    coroutineScope.launch { easiPdfGenerator(title, context, records, currentFilter, username) }
+                                }
+                                else -> {
+                                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                }
+                            }
+                        }
+                    ){
+                        Icon(painter = painterResource(R.drawable.ic_download), contentDescription = "Download PDF", tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
             )
         },
-        bottomBar = {
-            DermaBottomBar(
-                navController = navController,
-                actions = listaIcone
-            )
-        }
-    ) { padding ->
-        DermaColumnScreen(innerPadding = padding) {
+        bottomBar = { DermaBottomBar(navController = navController, actions = listaIcone) }
+    ){ padding ->
+        DermaColumnScreen(innerPadding = padding){
             DermaHeading(
-                titolo = "Hisotry EASI",
-                sottotitolo = "Descrizione del EASI",
+                titolo = stringResource(R.string.title_HistoryEASI),
+                sottotitolo = stringResource(R.string.description_Hist_EASI),
                 modifier = Modifier.padding(16.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
+
+            DermaFilterCard(
+                title = stringResource(R.string.title_Filter),
+                subtitle = stringResource(R.string.description_filter_easi),
+                modifier = Modifier.padding(16.dp),
+                currentFilter = currentFilter,
+                onFilterSelected = { nuovoFiltro ->
+                    viewModel.applyFilter(nuovoFiltro)
+                }
+            )
+
+            if(isLoading){
+                DermaIsLoading(modifier = Modifier.fillMaxWidth().height(250.dp))
+            } else if(records.isEmpty()){
+                Text(text = stringResource(R.string.no_records_found), color = MaterialTheme.colorScheme.primary)
+            } else {
+                DermaEasiHistoryChart(records = records, timeFilter = currentFilter)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                DermaEasiHistoryList(title = title, records = records, timeFilter = currentFilter, username = username, viewModel = viewModel)
+            }
         }
     }
-
 }

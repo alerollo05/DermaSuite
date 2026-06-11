@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "history_bmi_title">Storico del calcolo BMI</string>
+    <string name = "history_bmi_subtitle">Tracciamento dei dati biometrici longitudinali per la valutazione clinica e l\'efficacia della gestione del peso.</string>
+    <string name = "title_bmi_current_situation">Situazione corrente</string>
+    <string name = "title_list_history">Calcoli BMI recenti</string>
+    <string name = "label_bmi_score">Risultato BMI: </string>
+    <string name = "top_bar_bmi_history">Storico BMI</string>
+    <string name = "title_pdf_bmi">Report per il calcolo del BMI</string>
+    <string name = "no_records_found_bmi">Nessun dato trovato.</string>
+    <string name = "title_filter_bmi">Filtra</string>
+    <string name = "description_filter_bmi">Seleziona un periodo temporale per visualizzare i dati BMI</string>
+    <string name = "data_pdf_bmi">Data</string>
+    <string name = "severity_pdf_bmi">Severità</string>
+    <string name = "label_bmi">BMI</string>
+</resources>

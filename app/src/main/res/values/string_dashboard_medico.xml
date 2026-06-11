@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_errore_caricamento_dati">Doctor</string>
+    <string name="bottom_bar_paziente">Patients</string>
+    <string name="bottom_bar_chat">Chat</string>
+    <string name="bottom_bar_profilo">Profile</string>
+    <string name="title_dashboard_medico">My patients</string>
+    <string name="description_dashboard_medico">Here you can see all your patients and their results</string>
+    <string name="no_patients_found">No patients found</string>
+    <string name="search_placeholder">Search patient…</string>
+    <string name="label_stato_paziente">Under treatment</string>
+    <string name="label_ultima_valutazione">Last evaluation</string>
+    <string name="no_data_found">Not enough data to show</string>
+    <string name="one_data_found">Only one data found</string>"
+</resources>

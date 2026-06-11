@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bsa_calc_saved_success">Calculation saved successfully!</string>
+    <string name="bsa_title">BSA Calculation</string>
+    <string name="bsa_heading_title">Calculate your Body Surface Area</string>
+    <string name="bsa_heading_subtitle">Enter weight and height to calculate your body surface area.</string>
+    <string name="bsa_label_height">Height (cm)</string>
+    <string name="bsa_placeholder_height">Enter your height</string>
+    <string name="bsa_label_weight">Weight (kg)</string>
+    <string name="bsa_placeholder_weight">Enter your weight</string>
+    <string name="bsa_btn_saving">SAVING...</string>
+    <string name="bsa_btn_calculate">CALCULATE</string>
+    <string name="bsa_result_title">Your BSA</string>
+    <string name="bsa_error_missing_data">Please enter all required data.</string>
+    <string name="bsa_error_height_range">Height must be between 50 and 280 cm.</string>
+    <string name="bsa_error_weight_range">Weight must be between 30 and 500 kg.</string>
+    <string name="bsa_eval_above_avg">Above average</string>
+    <string name="bsa_eval_below_avg">Below average</string>
+    <string name="bsa_eval_avg">Average</string>
+    <string name="bsa_card_title">Insert your data</string>
+</resources>

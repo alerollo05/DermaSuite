@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "time_filter_six_months">6 mesi</string>
+    <string name = "time_filter_one_year">1 anno</string>
+    <string name = "time_filter_two_years">2 anni</string>
+    <string name = "time_filter_all_time">Tutto</string>
+    <string name = "title_HistoryPASI">Storico del calcolo PASI</string>
+    <string name = "description_Hist_PASI">Monitora l\'andamento del tuo indice PASI nel tempo. Visualizza i risultati dei calcoli precedenti per valutare l\'efficacia dei trattamenti e condividere i dati con il tuo specialista.</string>
+    <string name = "no_records_found">Nessun calcolo trovato.</string>
+    <string name = "title_Filter">Filtra</string>
+    <string name = "description_filter">Scegli un periodo di tempo per visualizzare i dati PASI</string>
+    <string name = "title_PDF_PASI">Report del calcolo PASI </string>
+    <string name = "heading_list_history">Calcoli PASI recenti</string>
+    <string name = "stringa_generato_il">Generato il: </string>
+    <string name = "stringa_paziente">Paziente: </string>
+    <string name = "data_pdf">Data</string>
+    <string name = "pasi_tot_pdf">Totale P</string>
+    <string name = "eritema_pdf">Eritema</string>
+    <string name = "indurimento_pdf">Indurimento</string>
+    <string name = "desquamazione_pdf">Desquamazione</string>
+    <string name = "area_pdf">Area </string>
+    <string name = "severity_pdf">Severità</string>
+    <string name="severity_severe">Grave</string>
+    <string name="severity_moderate">Moderata</string>
+    <string name="severity_low">Lieve</string>
+    <string name="stringa_conferma_download">File scaricato con successo in Download</string>
+    <string name="stringa_errore_download">Errore durante il download</string>
+    <string name="stringa_filtro">Filtro temporale: </string>
+    <string name="stringa_livello">Liv. </string>
+    <string name="stringa_ris_pasi">Risultato PASI: </string>
+    <string name="dialog_subtitle">Informazioni del distretto</string>
+    <string name="dialog_title">Dettagli del calcolo</string>
+    <string name="string_sub_chart_card">Grafico per i calcoli: </string>
+    <string name="dialog_button">Elimina il calcolo</string>
+</resources>
