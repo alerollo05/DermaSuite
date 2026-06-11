@@ -90,7 +90,6 @@ class HistoryBsaPageViewModel(
 
         viewModelScope.launch {
             try {
-                //CANCELLAZIONE TRAMITE REPOSITORY
                 val isDeleted = repository.deleteBsaRecord(UserId!!, record.id)
 
                 if (isDeleted) {

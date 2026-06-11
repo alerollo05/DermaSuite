@@ -37,7 +37,7 @@ fun DermaAvatar(
     iconResId: Int = R.drawable.ic_profile,
     size: Int = 48
 ) {
-    //Box dove metti tutto per l'avatar
+
     Box(
         modifier = modifier.size(size.dp)
     ) {
@@ -45,9 +45,9 @@ fun DermaAvatar(
         //Box dove mettiamo l'immagine e l'icona
         Box(
             modifier = Modifier
-                .fillMaxSize() // Occupa tutto il box padre
+                .fillMaxSize()
                 .clip(CircleShape) // Ritagliamo solo l'immagine/icona!
-                .background(Color.Gray.copy(alpha = 0.2f)), // Sfondo grigio leggero in caso non ci sia l'immagine
+                .background(Color.Gray.copy(alpha = 0.2f)),
             contentAlignment = Alignment.Center
         ) {
             if (avatarURL != null) {
@@ -64,7 +64,6 @@ fun DermaAvatar(
                     painter = painterResource(id = iconResId),
                     contentDescription = "Icona Default",
                     tint = MaterialTheme.colorScheme.primary,
-                    // Rendiamo l'icona grande il 60% della dimensione totale per mantenerla proporzionata
                     modifier = Modifier.size((size * 0.6).dp)
                 )
             }
@@ -83,16 +82,15 @@ fun DermaAvatar(
 
             Box(
                 modifier = Modifier
-                    .align(Alignment.BottomEnd) // Allineato in basso a destra
+                    .align(Alignment.BottomEnd)
                     // Sporge in positivo fuori dal cerchio
                     .offset(x = badgeOffset, y = badgeOffset)
                     .background(Color.White, CircleShape)
-                    .padding(badgePadding), // Anche il bordino bianco scala con l'immagine
+                    .padding(badgePadding),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = isComplex,
-                    // La grandezza del testo è il 35% dell'immagine Così si adatta a size=48 o size=100!
                     fontSize = emojiSize,
                 )
             }

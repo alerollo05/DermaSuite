@@ -196,7 +196,6 @@ fun DermaProfileMedicoScreen(
                             )
                         })
 
-                        // --- NUOVO CAMPO: SPECIALIZZAZIONE ---
                         DermaProfileField(
                             label = "Specializzazione",
                             value = specializzazione ?: "Non specificata",
@@ -209,7 +208,6 @@ fun DermaProfileMedicoScreen(
                             }
                         )
 
-                        // --- NUOVO CAMPO: DESCRIZIONE ---
                         DermaProfileField(
                             label = "Descrizione Professionale",
                             value = descrizione ?: "Nessuna descrizione inserita",

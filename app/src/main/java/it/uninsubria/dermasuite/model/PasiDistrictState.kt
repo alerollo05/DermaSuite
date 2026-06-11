@@ -13,8 +13,6 @@ data class PasiDistrictState(
     @get:PropertyName("PercentageArea") @set:PropertyName("PercentageArea") var percentageArea: Int = -1
 )
 
-//Non possiamo usare la classe enumerativa perchè firebase deve fare riferimento a un valore preciso singolo per il mapping dei dati tra firestore
-//e una data class corretta
 data class ParameterDistrictState(
     @get:PropertyName("ARMS") @set:PropertyName("ARMS") var arms: PasiDistrictState = PasiDistrictState(),
     @get:PropertyName("HEAD") @set:PropertyName("HEAD") var head: PasiDistrictState = PasiDistrictState(),

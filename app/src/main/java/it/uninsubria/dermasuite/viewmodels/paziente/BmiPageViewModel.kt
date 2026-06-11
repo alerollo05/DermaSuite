@@ -88,8 +88,7 @@ class BmiPageViewModel(
             //Usiamo la funzione getBMICategory per ricavare la categoria in base al BMI
             val category = BmiRecord.getBMICategory(bmi, context)
 
-            //Arrotondiamo a una cifra decimale (es. da 22.8571... a 22.9)
-            //Moltiplichiamo per 10, arrotondiamo all'intero più vicino, e dividiamo per 10
+            //Arrotondiamo a una cifra decimale
             val bmiFinale = Math.round(bmi * 10.0) / 10.0
 
             //Aggiorniamo i valori dell'UI con il risultato finale calcolato

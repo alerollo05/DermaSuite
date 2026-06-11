@@ -58,8 +58,6 @@ fun DermaRegisterPageScreen(
     // Effetto per navigare automaticamente se la registrazione ha successo
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            // Invece di onRegistrationSuccess (alla dashboard),
-            // usa onNavigateToLogin per fargli fare il login manuale
             onNavigateToLogin()
         }
     }
@@ -70,18 +68,7 @@ fun DermaRegisterPageScreen(
             DermaTopBar(
                 title = "DermaSuite",
                 showBackButton = true,
-                onBackClick = onNavigateToStart,
-                actions = {
-                    // Esempio di utilizzo dello slot 'actions' per l'icona profilo
-                    /*
-                    IconButton(onClick = { /* Azione opzionale */ }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_arrow),
-                            contentDescription = "Profilo",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }*/
-                }
+                onBackClick = onNavigateToStart
             )
         }
     ) { padding ->
@@ -90,14 +77,14 @@ fun DermaRegisterPageScreen(
         DermaColumnScreen(innerPadding = padding){
             Spacer(modifier = Modifier.height(40.dp))
 
-            //Mettiamo l'intestazione della pagina
+            // intestazione della pagina
             DermaHeading(
                 titolo = stringResource(R.string.titolo_register),
                 sottotitolo = stringResource(R.string.subtitle_register)
             )
             Spacer(modifier = Modifier.height(40.dp))
             DermaAccountTypeSelector(
-                selectedType = uiState.accountType, //Quindi di default nel file della classe abbiamo messo che viene selezionato paziente
+                selectedType = uiState.accountType,
                 onTypeSelected = { viewModel.onAccountTypeSelected(it) }
             )
             Spacer(modifier = Modifier.height(40.dp))

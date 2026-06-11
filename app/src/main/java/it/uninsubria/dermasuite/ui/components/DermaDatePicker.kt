@@ -43,19 +43,16 @@ fun DermaDatePicker(
    modifier: Modifier = Modifier
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    //Creiamo una variabie che memorizza lo stato che assume il datepicker
-
 
     // Calcoliamo i due estremi temporali
     val dateLimits = remember {
         val calendar = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
 
-        // 1. Limite superiore: 18 anni fa (non puoi essere più giovane di così)
+        // Limite superiore: 18 anni fa (non puoi essere più giovane di così)
         calendar.add(java.util.Calendar.YEAR, -18)
         val maxDate = calendar.timeInMillis
 
-        // 2. Limite inferiore: 120 anni fa (non puoi essere più anziano di così)
-        // Reset del calendar a oggi prima di sottrarre 120
+        // Limite inferiore: 120 anni fa (non puoi essere più anziano di così)
         calendar.timeInMillis = System.currentTimeMillis()
         calendar.add(java.util.Calendar.YEAR, -120)
         val minDate = calendar.timeInMillis
@@ -69,7 +66,7 @@ fun DermaDatePicker(
         initialDisplayedMonthMillis = maxDateLimit, // Parte sempre dal 2008 (18 anni fa)
         selectableDates = object : androidx.compose.material3.SelectableDates {
 
-            // ABILITA SOLO LE DATE COMPRESE NEL RANGE
+            // abilita solo le date comprese nel range
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 return utcTimeMillis in minDateLimit..maxDateLimit
             }
@@ -146,7 +143,7 @@ fun DermaDatePickerDialog(
     onConfirm: () -> Unit
 ) {
     val bluScuroDerma = Color(0xFF001A3F)
-    val grigioTesto = Color(0xFF49454F)   // Grigio scuro per i numeri dei giorni
+    val grigioTesto = Color(0xFF49454F)
     val biancoPuro = Color.White
 
     DatePickerDialog(
@@ -192,13 +189,7 @@ fun DermaDatePickerDialog(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun DermaDatePickerPreview() {
-    it.uninsubria.dermasuite.ui.theme.DermaSuiteTheme() {
-    DermaDatePicker(label = "Data di Nascita", value = "12/12/2000", onDataSelected = {})
-    }
-}
+
 
 
 

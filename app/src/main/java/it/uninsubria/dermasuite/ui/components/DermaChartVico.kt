@@ -45,7 +45,7 @@ fun DermaChartVico(
 ) {
 
     //ALGORITMO DI CENTRAGGIO DELLE ETICHETTE
-    // Creiamo una mappa che associa l'indice esatto alla stringa da mostrare
+    // Creo una mappa che associa l'indice esatto alla stringa da mostrare
     val centeredLabelsMap = remember(xLabels) {
         val map = mutableMapOf<Int, String>()
         var i = 0
@@ -71,7 +71,7 @@ fun DermaChartVico(
     }
 
     //CREAZIONE DEL MODELLO DATI
-    // Usiamo 'remember' con 'yValues' come chiave affinché il modello venga ricreato solo se i dati cambiano.
+    // Uso 'remember' con 'yValues' come chiave affinché il modello venga ricreato solo se i dati cambiano.
     val model = remember(yValues) {
         CartesianChartModel(
             // LineCartesianLayerModel.build permette di costruire la serie di dati per un grafico a linee.
@@ -92,7 +92,7 @@ fun DermaChartVico(
             padding = Dimensions.of(8.dp, 4.dp),
         ),
         labelPosition = DefaultCartesianMarker.LabelPosition.AbovePoint,
-        // Formattiamo il testo del popup: Data precisa + Punteggio
+        // Formatto il testo del popup: Data precisa + Punteggio
         valueFormatter = { _, targets ->
             val lineTarget = targets.filterIsInstance<LineCartesianLayerMarkerTarget>().firstOrNull()
             // Accediamo ai punti e all'entry
@@ -141,13 +141,13 @@ fun DermaChartVico(
                     centeredLabelsMap[value.toInt()] ?: ""
                 }
             ),
-            marker = marker // Impostiamo il marker personalizzato
+            marker = marker // Imposto il marker personalizzato
         ),
-        model = model, // Colleghiamo il modello dati creato precedentemente.
+        model = model, // Collego il modello dati creato precedentemente.
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp), // Applichiamo dimensioni di default se non sovrascritte.
-        // Abilitiamo lo scorrimento orizzontale del grafico
+            .height(200.dp), // Applico dimensioni di default se non sovrascritte.
+
         scrollState = rememberVicoScrollState(scrollEnabled = true),
         // Lo zoom statico a 1.2f o superiore forza il grafico a essere più largo dello schermo,
         // rendendo effettivo lo scorrimento

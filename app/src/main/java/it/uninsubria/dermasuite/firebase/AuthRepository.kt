@@ -1,11 +1,9 @@
 package it.uninsubria.dermasuite.firebase
 
-import android.net.Uri
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import it.uninsubria.dermasuite.firebase.DermaUser
 import it.uninsubria.dermasuite.model.BmiRecord
 import it.uninsubria.dermasuite.model.BsaRecord
 import it.uninsubria.dermasuite.model.EasiRecord
@@ -23,10 +21,6 @@ class AuthRepository {
 
     //Per caricare file pesanti come le immagini di avatar, serve utilizzare firebase storage e non firestore che serve solo per i file di testo
     private val storage = FirebaseStorage.getInstance()
-
-    //Registra un nuovo utente in Firebase Auth e salva i suoi dati aggiuntivi su Firestore.
-    // Le funzioni suspend, vengono eseguite in modalità asincrona (al main thread), perchè sono operazioni
-     // che se svolte nel mainthread farebbero crashare l'app
 
     fun getCurrentUserId(): String? {
         return auth.currentUser?.uid
@@ -63,8 +57,8 @@ class AuthRepository {
                 email = state.email,
                 username = state.username,
                 dataNascita = timestampNascita,
-                sesso = state.sesso,             // Adesso va al posto giusto!
-                role = state.accountType,  // Adesso va al posto giusto!
+                sesso = state.sesso,
+                role = state.accountType,
                 deviceLanguage //salvo anche la lingua dell'utente in automatico senza che l'utente lo sappia
             )
 
@@ -81,8 +75,6 @@ class AuthRepository {
             Result.failure(e)
         }
     }
-
-    //Effettua il login dell'utente con email e password.
     suspend fun loginUser(email: String, pass: String): Result<Unit> {
         return try {
             auth.signInWithEmailAndPassword(email, pass).await()
@@ -91,8 +83,6 @@ class AuthRepository {
             Result.failure(e)
         }
     }
-
-    // Funzione per eliminare l'account utente
     suspend fun deleteAccount(currentPassword: String): Boolean {
         return try {
             val user = auth.currentUser ?: return false
@@ -133,8 +123,6 @@ class AuthRepository {
             false
         }
     }
-
-    // Effettua il logout dell'utente.
     fun signOut() {
         auth.signOut()
     }
@@ -150,26 +138,22 @@ class AuthRepository {
             null
         }
     }
-
-    // Metodo per aggiornare il campo username
     suspend fun updateUsername(uid: String, newUsername: String): Boolean {
         return try {
             // Aggiorna solo il campo "username" del documento corrispondente all'UID passatogli
             db.collection("users").document(uid).update("username", newUsername).await()
-            true // Restituisce true se l'operazione ha successo
+            true
         } catch (e: Exception) {
             e.printStackTrace()
-            false // Restituisce false se c'è un errore (es. no internet)
+            false
         }
     }
 
     // Funzione per la ri-autenticazione di sicurezza fatta nel pop-up per il cambio della password/email,
     // restituisce un Boolean (true se il login è confermato, false altrimenti).
     suspend fun reauthenticate(currentPassword: String): Boolean {
-        // Apriamo un blocco try-catch per gestire eventuali errori (es. password errata o assenza di rete).
         return try {
             // Recuperiamo l'istanza dell'utente attualmente loggato.
-            // Se non c'è nessun utente in sessione (null), la funzione si ferma e restituisce false.
             val user = auth.currentUser ?: return false
             // Creiamo un oggetto "Credential".
             // Firebase non accetta solo la password, ma vuole un pacchetto completo
@@ -178,11 +162,8 @@ class AuthRepository {
             // Chiamiamo il metodo reauthenticate fornito dall'SDK di Firebase.
             // '.await()' sospende l'esecuzione finché Firebase non risponde (successo o errore).
             user.reauthenticate(credential).await()
-            // Se siamo arrivati qui senza errori, la ri-autenticazione è riuscita.
             true
         } catch (e: Exception) {
-            // Se qualcosa va storto (es. la password è sbagliata), stampiamo l'errore in console
-            // e restituiamo false per avvisare il ViewModel del fallimento.
             e.printStackTrace()
             false
         }
@@ -193,17 +174,12 @@ class AuthRepository {
         return try {
             val user = auth.currentUser ?: return false
             // AGGIORNAMENTO LATO AUTENTICAZIONE ISTANTANEO:
-            // 'updateEmail' cambia l'email all'istante senza inviare link di verifica.
-            // '.await()' attende che la richiesta venga completata.
             user.updateEmail(newEmail).await()
 
             // AGGIORNAMENTO LATO DATABASE (FIRESTORE):
-            // Accediamo alla collezione "users", cerchiamo il documento con l'UID dell'utente
-            // e sovrascriviamo il campo "email" con il nuovo indirizzo.
             db.collection("users").document(uid).update("email", newEmail).await()
             true
         } catch (e: Exception) {
-            // In caso di errore (es. email già in uso o sessione scaduta), restituiamo false.
             e.printStackTrace()
             false
         }
@@ -216,20 +192,16 @@ class AuthRepository {
             // Chiamiamo il metodo 'updatePassword' fornito dall'SDK di Firebase.
             // Questa riga comunica ai server di Google di invalidare la vecchia password
             // e impostare quella nuova per i futuri accessi.
-            // '.await()' aspetta la conferma della modifica dai server.
             user.updatePassword(newPassword).await()
             true
         } catch (e: Exception) {
-            // Gestione errori (es. password troppo debole o necessità di ri-autenticazione).
             e.printStackTrace()
             false
         }
     }
 
-    // Metodo per aggiornare il campo specializzazione
     suspend fun updateSpecialization(uid: String, newSpecialization: String): Boolean {
         return try {
-            // Aggiorna il campo "specialization" del documento medico su Firestore
             db.collection("users").document(uid).update("specialization", newSpecialization).await()
             true
         } catch (e: Exception) {
@@ -238,10 +210,8 @@ class AuthRepository {
         }
     }
 
-    // Metodo per aggiornare il campo descrizione
     suspend fun updateDescription(uid: String, newDescription: String): Boolean {
         return try {
-            // Aggiorna il campo "description" del documento medico su Firestore
             db.collection("users").document(uid).update("description", newDescription).await()
             true
         } catch (e: Exception) {

@@ -1,6 +1,6 @@
 package it.uninsubria.dermasuite.model
 
-// Questa classe rappresenta esattamente i dati che servono alla tua DermaAverageCard
+// Questa classe rappresenta esattamente i dati che servono alla DermaAverageCard
 data class MetricSummaryState(
     val title: String = "",
     val averageValue: String = "0.0",

@@ -17,14 +17,14 @@ import kotlinx.coroutines.tasks.await
 
 class PasiPageViewModel(private val repository: AuthRepository = AuthRepository()): ViewModel() {
 
-    //Aggiungiamo una variabile per stampare la card del risultato, una volta fatto il calcolo il risultato finale
+    //variabile per stampare la card del risultato, una volta fatto il calcolo il risultato finale
     var showResult by mutableStateOf(false)
 
     // Un semplice contatore che incrementiamo a ogni calcolo
     //Ci serve per andare a far scorrere ad ogni pressione del bottone verso il basso la pagina in modo da visualizzare la card di result
     var scrollTrigger by mutableStateOf(0)
 
-    //Creiamo una variabile per tenere traccia del distretto attualmente selezionato
+    // variabile per tenere traccia del distretto attualmente selezionato
     var currentDistrict by mutableStateOf(DistrettoCorpo.HEAD)
     //by ci permette  di non dover sscrivere ogni volta setValue e getValue direttamente
 
@@ -33,21 +33,21 @@ class PasiPageViewModel(private val repository: AuthRepository = AuthRepository(
         //mutableStateOf va a controllare costantemente i valori aggiornati della mappa in modo tale da farli
         //cambiare istantaneamente anche nell'interfaccia grafica se i valori cambiano nella mappa
         DistrettoCorpo.values().associateWith { //associateWith trasforma l'elenco dei distretti in una
-            //mappa l chiavi sono i distretti, mentre i valori sono nuove istanze di districtState cioè quindi
+            //mappa dove le chiavi sono i distretti, mentre i valori sono nuove istanze di districtState cioè quindi
             //sono i valori dei parametri che dobbiamo andare a definire da 1 a 4
             PasiDistrictState()
         }
     )
 
-    //Creiamo la variabile per andare a salvare il risultato del calcolo del pasi
+    // variabile per andare a salvare il risultato del calcolo del pasi
     var totalPasiResult by mutableStateOf(0.0)
 
-    //Creiamo la variabile per andare a salvare la severità del risultato
+    // variabile per andare a salvare la severità del risultato
     var serverityClass by mutableStateOf("")
 
 
 
-    //Creiamo una funzione per andare ad aggiornare i parametri del distretto corrente
+    // funzione per andare ad aggiornare i parametri del distretto corrente
     fun updateDistrictParameters(
         eritema: Int? = null,
         indurimento: Int? = null,
@@ -67,11 +67,11 @@ class PasiPageViewModel(private val repository: AuthRepository = AuthRepository(
         districtValues = currentStateMap //Necessario per far aggiornare Compose
 
         // Quando un parametro cambia, nascondi il vecchio risultato.
-        // Questo farà sì che !showResult in abilitaCalcolo() torni true!
+        // Questo farà sì che !showResult in abilitaCalcolo() torni true
         showResult = false
     }
 
-    //Creiamo la funzione che calcola effettivamente il PASI una volta che abbiamo i dati aggiornati
+    // funzione che calcola effettivamente il PASI una volta che abbiamo i dati aggiornati
     fun calculateTotalPasiAndSave(onSucces: () -> Unit, onError: (String) -> Unit){
         // Calcolo del PASI
         var total = 0.0
@@ -93,11 +93,11 @@ class PasiPageViewModel(private val repository: AuthRepository = AuthRepository(
 
         salvaPasi(onSuccess = {
             showResult= true //Attiviamo la card quando il salvataggio è andato a buon fine
-            scrollTrigger++ //Incrementiamo il contatore per far scorrere la pagina verso il basso (vedi nel PASIPageScreen
+            scrollTrigger++ //Incrementiamo il contatore per far scorrere la pagina verso il basso (vedi nel PASIPageScreen)
             onSucces()},
             onError = onError,serverityClass)
         }
-    //Creiamo un metodo per andare a fare il salvataggio dei dati sul DB firestore
+    // funzione per andare a fare il salvataggio dei dati sul DB firestore
     private fun salvaPasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
        viewModelScope.launch{
            try {

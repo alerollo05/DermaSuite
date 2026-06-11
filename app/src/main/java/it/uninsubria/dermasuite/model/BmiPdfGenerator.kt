@@ -20,9 +20,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// Questa funzione si occupa di creare un file PDF con i dati dei test BMI.
-// È definita come 'suspend' per poter essere eseguita in background.
-
 suspend fun bmiPdfGenerator(
     title: String,             // Titolo del documento
     context: Context,           // Informazioni sull'app
@@ -42,7 +39,7 @@ suspend fun bmiPdfGenerator(
         val pageHeight = 842
         val margin = 40f
 
-        val recordHeight = 35f // Altezza ridotta rispetto al PASI perché il BMI è su una riga sola
+        val recordHeight = 35f
         var yPosition = 160f
         var currentPageNumber = 1
 

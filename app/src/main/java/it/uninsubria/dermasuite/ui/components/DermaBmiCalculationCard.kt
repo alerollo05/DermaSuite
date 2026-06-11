@@ -40,7 +40,7 @@ fun DermaBMICalculationCard (
 
     val uiState = viewModel.uiState
 
-    // Generiamo i range di valori
+    // Genero i range di valori
     val heightOptions = (110..220).toList()
     val weightOptions = (40..200).toList()
 

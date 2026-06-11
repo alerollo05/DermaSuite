@@ -25,7 +25,7 @@ fun DermaCheckRoleAndNavigateScreen(navController: NavController) {
     // LaunchedEffect viene eseguito una sola volta all'avvio della schermata
     LaunchedEffect(Unit) {
         if (currentUser != null) {
-            // Usiamo il tuo metodo getUserData per recuperare l'oggetto DermaUser
+            // Usiamo il metodo getUserData per recuperare l'oggetto DermaUser
             val userModel = repository.getUserData(currentUser.uid)
 
             if (userModel != null) {
