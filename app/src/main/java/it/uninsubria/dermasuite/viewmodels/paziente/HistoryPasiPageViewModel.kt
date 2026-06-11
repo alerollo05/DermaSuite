@@ -29,7 +29,7 @@ class HistoryPasiPageViewModel(var repository: AuthRepository = AuthRepository()
     private val _uiState = MutableStateFlow<List<PasiRecord>>(emptyList())
     val uiState: StateFlow<List<PasiRecord>> = _uiState.asStateFlow()
 
-    //Creiamo una variabile per andare a vedere che filtro è ativo nella UI (6 mesi, 1 anno, tutto)
+    // variabile per andare a vedere che filtro è ativo nella UI (6 mesi, 1 anno, tutto)
     private val _currentFilter = MutableStateFlow(TimeFilter.SIX_MONTHS)
     val currentFilter: StateFlow<TimeFilter> = _currentFilter.asStateFlow()
 
@@ -76,8 +76,6 @@ class HistoryPasiPageViewModel(var repository: AuthRepository = AuthRepository()
 
         viewModelScope.launch {
             try {
-
-                //Rimuoviamo il record dalla lista di calcoli
                 // Rimuoviamo il record dalla lista di calcoli su Firebase (collection EASI)
                 val isDeleted = repository.deletePasiRecord(UserId, record.id)
 

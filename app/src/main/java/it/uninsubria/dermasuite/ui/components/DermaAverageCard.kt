@@ -36,8 +36,8 @@ fun DermaAverageCard(
     trendPercentage: String,
     trendColor: Color,
     accentColor: Color,
-    historicalData: List<Float>, // Aggiungiamo la lista dei punteggi
-    onClick: () -> Unit // Fondamentale per navigare alla pagina dettagliata!
+    historicalData: List<Float>,
+    onClick: () -> Unit
 ){
     ElevatedCard(
         modifier = Modifier
@@ -99,7 +99,7 @@ fun DermaAverageCard(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
-                //Stampiamo i grafici
+                //Stampo i grafici
                 //Controlliamo se ci sono abbastanza dati per il grafico (almeno 2)
                 if (historicalData.size > 1) {
                     Box(modifier = Modifier.fillMaxWidth().height(48.dp)) {

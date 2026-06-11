@@ -57,7 +57,6 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
             val bsaRecords = repository.getBsaRecords(pazienteId)
             
             //Calcolo medie e trend per ogni metrica
-            // Invertiamo le liste (.reversed()) perché Vico vuole i dati dal più vecchio al più nuovo
             pasiSummary = calculateMetric(
                 title = pasiTitle,
                 scores = pasiRecords.map { it.PasiTot.toFloat() }.reversed(),
@@ -126,7 +125,7 @@ class DettagliPazienteViewModel (private val repository: AuthRepository = AuthRe
             worsening = if (isLowerBetter) diff > 0 else diff < 0
         }
 
-        // Definizione Severità (Esempio semplificato)
+        // Definizione Severità
         val severity = when {
             last < 7 -> mildLabel
             last < 15 -> moderateLabel

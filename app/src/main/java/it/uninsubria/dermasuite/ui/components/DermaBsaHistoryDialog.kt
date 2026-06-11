@@ -1,6 +1,6 @@
 package it.uninsubria.dermasuite.ui.components
 
-// Import per il layout e componenti Material Design 3
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,7 +23,7 @@ fun DermaBsaHistoryDialog(
     viewModel: HistoryBsaPageViewModel,
     userId: String?
 ) {
-    val scrollState = rememberScrollState() // Gestisce lo scorrimento se il contenuto è lungo
+    val scrollState = rememberScrollState()
 
     Dialog(
         onDismissRequest = onDismiss,

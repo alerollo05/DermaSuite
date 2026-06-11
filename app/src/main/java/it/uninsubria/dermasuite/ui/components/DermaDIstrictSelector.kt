@@ -20,7 +20,7 @@ import it.uninsubria.dermasuite.model.DistrettoCorpo
 fun DermaDistrictSelector(
     label: String,
     selectedDistrict: DistrettoCorpo,
-    chkComplete: (DistrettoCorpo) -> Boolean, //Devi fornirmi una funzione che accetta un distretto corpo e restituisce un bool
+    chkComplete: (DistrettoCorpo) -> Boolean, // funzione che accetta un distretto corpo e restituisce un bool
     onDistrictSelected: (DistrettoCorpo) -> Unit
 ){
     Column(

@@ -12,8 +12,6 @@ data class BsaRecord(
     // Senza questo, non sapremmo quale documento cancellare durante l'eliminazione.
     @DocumentId val id: String = "",
 
-    // Salviamo la data come stringa già formattata (es. "08/05/2026 12:02")
-    // per semplificare la lettura nel database e nella UI.
     val dataOra: String = "",
 
     val peso: Double = 0.0,

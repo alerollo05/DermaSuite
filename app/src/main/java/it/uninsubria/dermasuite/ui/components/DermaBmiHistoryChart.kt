@@ -15,7 +15,7 @@ fun DermaBmiHistoryChart (
     records: List<BmiRecord>,
     timeFilter: TimeFilter,
 ){
-    //Recuperiamo la lingua corrente per poi andare a stampare i valori della data nel formato corretto
+    //Recupero la lingua corrente per poi andare a stampare i valori della data nel formato corretto
     val currentLocale = Locale.getDefault()
 
     // Se la lista è vuota, esci subito cosi l'app non crasha in caso di errore

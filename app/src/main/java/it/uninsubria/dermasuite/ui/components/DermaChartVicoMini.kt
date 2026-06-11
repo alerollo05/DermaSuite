@@ -18,7 +18,7 @@ import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.compose.common.fill
 
-//Creiamo questa variante del grafico normale per poter visualizzare il grafico della media, senza però permettere all'utente di interagirci
+// variante del grafico normale per poter visualizzare il grafico della media, senza però permettere all'utente di interagirci
 @Composable
 fun DermaChartVicoMini(
     yValues: List<Float>,
@@ -48,7 +48,7 @@ fun DermaChartVicoMini(
                     )
                 )
             ),
-            // Rimuoviamo completamente gli assi e il marker per il look da Card
+            // Rimuovo completamente gli assi e il marker per il look da Card
             startAxis = null,
             bottomAxis = null,
             marker = null
@@ -56,8 +56,8 @@ fun DermaChartVicoMini(
         model = model,
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp), // Altezza ridotta per stare nella card
-        // Disabilitiamo scroll e zoom per non interferire con il tocco sulla Card
+            .height(48.dp),
+        // Disabilito scroll e zoom per non interferire con il tocco sulla Card
         scrollState = rememberVicoScrollState(scrollEnabled = false),
         zoomState = rememberVicoZoomState(zoomEnabled = false)
     )

@@ -25,7 +25,6 @@ class ProfileMedPageViewModel(private val repository: AuthRepository = AuthRepos
     var email by mutableStateOf<String?>(null); private set
     var password by mutableStateOf<String?>("********"); private set
 
-    // Nuovi campi per il medico
     var specializzazione by mutableStateOf<String?>(null); private set
     var descrizione by mutableStateOf<String?>(null); private set
 
@@ -100,7 +99,6 @@ class ProfileMedPageViewModel(private val repository: AuthRepository = AuthRepos
                 // Se l'eliminazione ha successo, chiamiamo la funzione che farà il logout/navigazione
                 onSuccess()
             } else {
-                // Se fallisce (es. password errata)
                 inputPopupError = context.getString(R.string.error_wrong_password) // "Password errata"
             }
         }

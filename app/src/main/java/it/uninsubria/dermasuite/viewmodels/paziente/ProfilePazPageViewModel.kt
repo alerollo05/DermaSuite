@@ -102,7 +102,6 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
                 // Se l'eliminazione ha successo, chiamiamo la funzione che farà il logout/navigazione
                 onSuccess()
             } else {
-                // Se fallisce (es. password errata)
                 inputPopupError = context.getString(R.string.error_wrong_password) // "Password errata"
             }
         }
@@ -196,17 +195,15 @@ class ProfilePazPageViewModel(private val repository: AuthRepository = AuthRepos
             return
         }
 
-        viewModelScope.launch {// La .launch serve per far partire una coroutine(un thread secondario) asincrona, perchè se no bloccherebbe l'interfaccia e l'app crasherebbe
-            // Chiamiamo il repository per aggiornare il dato nel database
+        viewModelScope.launch {
             val success = repository.updateUsername(uid, editUsernameText)
             if (success) {
-                // L'aggiornamento su Firestore è andato a buon fine!
+                // L'aggiornamento su Firestore è andato a buon fine
                 // Ora aggiorniamo lo stato locale per far cambiare il testo nella UI
                 user = editUsernameText
-                snackbarMessage = context.getString(R.string.msg_username_updated) // Questa andrà bene nello Scaffold principale
-                closeUsernameDialog() // Il popup si chiude, la patina sparisce e la Snackbar brilla!
+                snackbarMessage = context.getString(R.string.msg_username_updated)
+                closeUsernameDialog()
             } else {
-                // Se Firebase fallisce (es. no connessione)
                 inputPopupError = context.getString(R.string.error_connection)
             }
         }

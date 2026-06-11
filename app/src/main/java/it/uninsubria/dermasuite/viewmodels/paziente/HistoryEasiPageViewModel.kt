@@ -18,8 +18,6 @@ import java.util.Date
 
 class HistoryEasiPageViewModel(var repository: AuthRepository = AuthRepository()): ViewModel() {
 
-    // creazione della variabile per accedere a firebase
-
     // Creazione della lista dei calcoli fatti da un utente scaricati da firebase
     private var listaCalcoli = listOf<EasiRecord>()
 

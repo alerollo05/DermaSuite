@@ -62,7 +62,7 @@ class EasiPageViewModel(
         districtValues = currentStateMap // Assegna la nuova mappa per scatenare la ricomposizione della UI
 
         // Quando un parametro cambia, nascondi il vecchio risultato.
-        // Questo farà sì che !showResult in abilitaCalcolo() torni true!
+        // Questo farà sì che !showResult in abilitaCalcolo() torni true
         showResult = false
     }
 
@@ -100,12 +100,10 @@ class EasiPageViewModel(
     }
 
     // Funzione privata per gestire l'interazione con il database Firestore
-    // Funzione privata per gestire l'interazione con il database Firestore
     private fun salvaEasi(onSuccess: () -> Unit, onError: (String) -> Unit, severityClass: String){
         viewModelScope.launch {
             try {
-                // Prendi l'UID tramite FirebaseAuth (che è accessibile anche se non istanzi auth qui,
-                // ma se preferisci puoi aggiugnere un getCurrenUser() nel repository)
+                // Prendi l'UID tramite FirebaseAuth
                 val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
 
                 if (uid == null) {

@@ -22,8 +22,6 @@ import java.util.Date
 import java.util.Locale
 
 // Questa funzione si occupa di creare un file PDF con i dati dei test PASI.
-// È definita come 'suspend' per poter essere eseguita in background senza bloccare l'applicazione.
-
 suspend fun pdfGenerator(
     title: String,             // Titolo del documento
     context: Context,           // Informazioni sull'app necessarie per accedere a file e testi
@@ -73,8 +71,6 @@ suspend fun pdfGenerator(
 
             val endX = pageWidth - x
             canvas.drawLine(x, y - 15f, endX, y - 15f, linePaint)
-
-            // Aggiungiamo una colonna "Zona" per specificare il distretto
             canvas.drawText(stringaData, x + 0f, y, paint)
             canvas.drawText(stringaPasiTot, x + 70f, y, paint)
             canvas.drawText(stringaDistretto, x + 140f, y, paint)
@@ -196,7 +192,6 @@ suspend fun pdfGenerator(
 
         currentPage?.let { pdfDocument.finishPage(it) }
 
-        // --- INIZIO NUOVA LOGICA DI SALVATAGGIO DEL FILE ---
         val filename = "REPORT_PASI_${context.getString(timeFilter.displayName).uppercase()}_${SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())}.pdf"
         val stringaConfermaDownload = context.getString(R.string.stringa_conferma_download)
         val stringaErroreDownload = context.getString(R.string.stringa_errore_download)
@@ -256,6 +251,5 @@ suspend fun pdfGenerator(
         } finally {
             pdfDocument.close()
         }
-        // --- FINE NUOVA LOGICA DI SALVATAGGIO ---
     }
 }

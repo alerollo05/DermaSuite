@@ -24,9 +24,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.sqrt
 
-// ViewModel responsabile per la pagina di calcolo del BSA.
-// Gestisce gli input dell'utente, esegue il calcolo matematico
-// e salva il risultato su Firestore.
 class BsaPageViewModel(
     private val repository: AuthRepository = AuthRepository()
 ) : ViewModel() {
@@ -180,7 +177,7 @@ class BsaPageViewModel(
     }
     fun isCalcoloAbilitato(): Boolean {
         // Usiamo .value per leggere il testo attuale dentro lo StateFlow.
-        // Aggiungiamo anche il controllo su isLoading per evitare calcoli multipli!
+        // Aggiungiamo anche il controllo su isLoading per evitare calcoli multipli
         // Il bottone è attivo SOLO SE:
         // 1. I campi sono pieni
         // 2. Non sta salvando

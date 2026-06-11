@@ -12,7 +12,6 @@ import java.util.Locale
 
 // Raggruppa tutti i dati in un unico oggetto (Single Source of Truth).
 // È immutabile: per cambiare un valore, ne creiamo una copia. Questo evita bug di inconsistenza
-
 data class RegisterUiState(
     // Dati dei campi di testo
     val nome: String = "",
@@ -54,7 +53,6 @@ class RegisterPageViewModel : ViewModel() {
 
     // Creiamo delle funzioni di aggiornamento per ogni campo di testo
     // Ogni volta che l'utente scrive un carattere, chiamiamo una di queste funzioni
-
     fun onNomeChanged(nuovoNome: String) {
         // .copy() crea un NUOVO oggetto stato cambiando solo il campo 'nome'
         uiState = uiState.copy(nome = nuovoNome)
@@ -97,7 +95,6 @@ class RegisterPageViewModel : ViewModel() {
 
 
     //Funzione chiamata quando l'utente preme il tasto "Create Account"
-
     fun onRegisterClick() {
         //Reset degli errori precedenti
         uiState = uiState.copy(errorMessage = null)

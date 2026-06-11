@@ -63,7 +63,7 @@ fun DermaDoctorListDialog(
         ){
             Column(
                 modifier = Modifier
-                    .padding(24.dp) // Padding interno spazioso
+                    .padding(24.dp)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ){
@@ -71,10 +71,8 @@ fun DermaDoctorListDialog(
                 if(isLoadingDoctors){
                     DermaIsLoading()
                 }else{
-                    LazyColumn { // Usa LazyColumn per liste scrollabili
+                    LazyColumn {
                         if(filteredDoctorList.isEmpty()){
-
-                                // Inseriamo il titolo come primo elemento della lista
                                 item {
                                     Text(
                                         text = stringResource(R.string.dialog_doctor_title),
@@ -92,7 +90,6 @@ fun DermaDoctorListDialog(
                                     )
                                 }
                         }else {
-                            // Inseriamo il titolo come primo elemento della lista
                             item {
                                 Text(
                                     text = stringResource(R.string.dialog_doctor_title),

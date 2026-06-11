@@ -25,8 +25,6 @@ fun DermaColumnScreen(
     verticalArrangement: Arrangement.Vertical = Arrangement.Center, // Uguale a horizzontalAlignmet
     content: @Composable ColumnScope.() -> Unit // contenuto della column
 ) {
-    //Lo mettiamo in modo tale che se i campi sono troppi posso fare lo scrool per vederli tutti
-    // e tenere in memoria gli stati
 
     val columnModifier = modifier
         .fillMaxSize()
@@ -42,7 +40,6 @@ fun DermaColumnScreen(
 
     Column(
         modifier = finalModifier
-            // Infine il padding orizzontale interno
             .padding(horizontal = 16.dp),
         horizontalAlignment = horizontalAlignment,
         verticalArrangement = verticalArrangement

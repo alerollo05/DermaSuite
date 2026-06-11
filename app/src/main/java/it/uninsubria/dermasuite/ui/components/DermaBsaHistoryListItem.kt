@@ -37,7 +37,7 @@ fun DermaBsaHistoryListItem(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Row(modifier = Modifier.height(IntrinsicSize.Min)) { // Altezza riga basata sul contenuto
+        Row(modifier = Modifier.height(IntrinsicSize.Min)) {
             // Barretta colorata decorativa a sinistra
             Box(modifier = Modifier.fillMaxHeight().width(6.dp).background(MaterialTheme.colorScheme.primary))
 
@@ -68,7 +68,7 @@ fun DermaBsaHistoryListItem(
                         color = Color.Gray
                     )
                 }
-                // Icona freccia per suggerire che l'elemento è cliccabile
+
                 Icon(painter = painterResource(R.drawable.ic_mezza_freccia_destra), contentDescription = null, tint = Color.Gray)
             }
         }
