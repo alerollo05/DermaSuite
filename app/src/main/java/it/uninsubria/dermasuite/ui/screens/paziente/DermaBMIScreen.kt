@@ -36,12 +36,8 @@ fun DermaBMIScreen(
     viewModel: BmiPageViewModel = viewModel()
 
 ){
-    //Creiamo la variaibile per lo stato della snakbar
     val snakBarHostState = remember { SnackbarHostState() }
 
-
-
-    //Andiamo a definire una variabile che tiene a memoria in che pos si trova lo scroll della pagina
     val scrollState = rememberScrollState()
 
     LaunchedEffect(viewModel.scrollTrigger){
@@ -85,7 +81,7 @@ fun DermaBMIScreen(
     ) { padding ->
         DermaColumnScreen(
             innerPadding = padding,
-            //Andiamo a collegare lo stato dello scroll alla column che contiene tutti i componenti della pagina
+            //Collego lo stato dello scroll alla column che contiene tutti i componenti della pagina
             scrollState = scrollState) {
             DermaHeading(
                 titolo = stringResource(R.string.title_bmi_page),

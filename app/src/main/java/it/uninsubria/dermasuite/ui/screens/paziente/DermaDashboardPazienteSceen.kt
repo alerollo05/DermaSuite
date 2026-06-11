@@ -50,14 +50,14 @@ fun DermaDashBoardPazienteScreen(
     onNavigateDashboardEASI: () -> Unit = {},
     onNavigateDashboardBMI: () -> Unit = {},
     onNavigateDashboardBSA: () -> Unit = {},
-    viewModel: DashboardPagePazienteViewModel = viewModel() // Iniezione del ViewModel
+    viewModel: DashboardPagePazienteViewModel = viewModel()
 ){
-    // Definiamo le azioni per questa specifica schermata
+
     val dashboardActions = listOf(
         BottomBarAction("HOME", R.drawable.ic_home, "dashboard_screen_paziente", { /* Sei già qui */ }),
         BottomBarAction("PROFILE", R.drawable.ic_profile, "profile_screen_paziente", onNavigateToProfileP)
     )
-    val username = viewModel.username // Recupera l'username dal ViewModel
+    val username = viewModel.username
 
     Scaffold(
         topBar= {
@@ -71,7 +71,7 @@ fun DermaDashBoardPazienteScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             if (username == null) {
-                CircularProgressIndicator() // Mostra una rotellina di caricamento
+                CircularProgressIndicator()
             } else {
                 Text(text = stringResource(R.string.Hello) + "$username!" , style= MaterialTheme.typography.displayLarge)
             }
@@ -85,25 +85,24 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
                 Row(
-                    //Gli diamo questa altezza autoregolata in base all'altezza della card
                     modifier = Modifier.height(IntrinsicSize.Min)
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight() // Ora "riempie" l'altezza minima della Row
+                            .fillMaxHeight()
                             .width(6.dp)
                             .background(MaterialTheme.colorScheme.primary)
                     )
                     Column(
                         modifier = Modifier
-                            .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                            .padding(24.dp)
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
@@ -133,25 +132,24 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
                 Row(
-                    //Gli diamo questa altezza autoregolata in base all'altezza della card
                     modifier = Modifier.height(IntrinsicSize.Min)
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight() // Ora "riempie" l'altezza minima della Row
+                            .fillMaxHeight()
                             .width(6.dp)
                             .background(MaterialTheme.colorScheme.primary)
                     )
                     Column(
                         modifier = Modifier
-                            .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                            .padding(24.dp)
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
@@ -181,25 +179,24 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
                 Row(
-                    //Gli diamo questa altezza autoregolata in base all'altezza della card
                     modifier = Modifier.height(IntrinsicSize.Min)
                 ){
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight() // Ora "riempie" l'altezza minima della Row
+                            .fillMaxHeight()
                             .width(6.dp)
                             .background(MaterialTheme.colorScheme.primary)
                     )
                     Column(
                         modifier = Modifier
-                            .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                            .padding(24.dp)
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
@@ -228,25 +225,24 @@ fun DermaDashBoardPazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White // Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ) {
                 Row(
-                    //Gli diamo questa altezza autoregolata in base all'altezza della card
                     modifier = Modifier.height(IntrinsicSize.Min)
                 ){
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight() // Ora "riempie" l'altezza minima della Row
+                            .fillMaxHeight()
                             .width(6.dp)
                             .background(MaterialTheme.colorScheme.primary)
                     )
                     Column(
                         modifier = Modifier
-                            .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                            .padding(24.dp)
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {

@@ -39,17 +39,17 @@ import it.uninsubria.dermasuite.R
 fun DermaBMIScaleBar(
     bmiValue: Double
 ){
-    // Colori della scala BMI in base alla severità
-    val colorUnderweight = Color(0xFF9ECEFF) // Azzurro chiaro
-    val colorHealthy = Color(0xFF4EE2C0)     // Verde acqua/Menta
-    val colorOverweight = Color(0xFFFFD54F)  // Giallo
-    val colorObese = Color(0xFFD32F2F)       // Rosso
-    val colorDot = Color(0xFF001F3F)         // Blu scuro per il pallino
+    // Colori scala severità
+    val colorUnderweight = Color(0xFF9ECEFF)
+    val colorHealthy = Color(0xFF4EE2C0)
+    val colorOverweight = Color(0xFFFFD54F)
+    val colorObese = Color(0xFFD32F2F)
+    val colorDot = Color(0xFF001F3F)
 
-    // Range visivo del BMI per calcolare la posizione (da 10 a 40 secondo internet copre quasi tutti i casi di calcolo possibile)
+    // Range visivo del BMI per calcolare la posizione
     val minVisBmi = 10f
     val maxVisBmi = 40f
-    val clampedBmi = bmiValue.toFloat().coerceIn(minVisBmi, maxVisBmi) //Serve a dirci se è nel range
+    val clampedBmi = bmiValue.toFloat().coerceIn(minVisBmi, maxVisBmi) //Restituisce se è nel range
     val progressPercentage = (clampedBmi - minVisBmi) / (maxVisBmi - minVisBmi)
 
     Column(
@@ -64,13 +64,12 @@ fun DermaBMIScaleBar(
         ) {
             val totalWidth = maxWidth
 
-            // Barra segmentata proporzionale ai range medici reali
+
             Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(7.dp))
             ) {
-                // Barra segmentata proporzionale ai range medici reali
                 // Sottopeso (10 - 18.5) -> Peso: 8.5
                 Box(modifier = Modifier.weight(8.5f).fillMaxHeight().background(colorUnderweight))
                 // Normo peso (18.5 - 25) -> Peso: 6.5
@@ -80,7 +79,7 @@ fun DermaBMIScaleBar(
                 // Obeso (30 - 40) -> Peso: 10.0
                 Box(modifier = Modifier.weight(10.0f).fillMaxHeight().background(colorObese))
             }
-            // Indicatore (Pallino)
+            // Crea il pallino
             val dotXPosition = totalWidth * progressPercentage
             val dotRadius = 7.dp
 
@@ -89,7 +88,7 @@ fun DermaBMIScaleBar(
                     .offset(x = dotXPosition - dotRadius) // Centra il pallino rispetto al valore
                     .size(14.dp)
                     .background(Color.White, CircleShape) // Bordo bianco
-                    .padding(2.dp) // Spessore del bordo
+                    .padding(2.dp)
                     .background(colorDot, CircleShape) // Interno blu scuro
             )
 
@@ -117,7 +116,7 @@ fun DermaResultCard(
     result: Double,
     max: Int,
     severity: String,
-    isBMI: Boolean = false, //Per modificare la barra del risultato in base alla pagina
+    isBMI: Boolean = false,
     modifier: Modifier = Modifier
 ){
     ElevatedCard(
@@ -129,7 +128,7 @@ fun DermaResultCard(
         ),
         shape = MaterialTheme.shapes.medium
     ) {
-        //Creiamo una variabile per il colore azzurro
+
         val azzurro = Color(0xFF40E0D0)
         Column(
             modifier = Modifier.padding(16.dp)
@@ -161,7 +160,7 @@ fun DermaResultCard(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            //Andiamo a creare una riga per la severità
+            //Riga per severità
             Surface(
                 color = azzurro,
                 shape = MaterialTheme.shapes.large,
@@ -181,9 +180,9 @@ fun DermaResultCard(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-            // Logica condizionale per la barra in fondo
+
+            //BarraBMI
             if (isBMI) {
-                //Barra BMI
                 DermaBMIScaleBar(bmiValue = result)
             } else {
 
@@ -192,10 +191,10 @@ fun DermaResultCard(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(R.string.range_severità), // "Range di severità"
+                        text = stringResource(R.string.range_severità),
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
                     )
-                    val punteggio = stringResource(R.string.punteggio) // "Punteggio"
+                    val punteggio = stringResource(R.string.punteggio)
                     Text(
                         text = "$severity ($punteggio $result)",
                         color = MaterialTheme.colorScheme.onPrimary

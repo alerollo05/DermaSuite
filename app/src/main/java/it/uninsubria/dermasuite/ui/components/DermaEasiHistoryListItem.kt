@@ -51,7 +51,7 @@ fun DermaEasiHistoryListItem(
                     }
                 }
                 Column(modifier = Modifier.padding(start = 12.dp).weight(1f)) {
-                    // Visualizziamo il totale EASI (Float formattato)
+
                     Text(
                         text = "${stringResource(R.string.stringa_ris_easi)} ${String.format(Locale.getDefault(), "%.1f", record.EasiTot)}",
                         style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.SemiBold),

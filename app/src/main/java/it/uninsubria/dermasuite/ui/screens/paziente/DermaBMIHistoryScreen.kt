@@ -53,8 +53,8 @@ fun DermaBMIHistoryScreen(
         currentUser?.uid?.let { uid ->
             viewModel.getHistoryBMIList(
                 UserId = uid,
-                onSuccess = {}, //Logica successo opzionale
-                onError = {} // Logica errore opzionale
+                onSuccess = {},
+                onError = {}
             )
         }
     }
@@ -123,7 +123,7 @@ fun DermaBMIHistoryScreen(
                     modifier = Modifier.padding(16.dp),
                     currentFilter = currentFilter,
                     onFilterSelected = { nuovoFiltro ->
-                        viewModel.applyFilter(nuovoFiltro) // Riceve il filtro dalla card e ordina al ViewModel di aggiornare i dati
+                        viewModel.applyFilter(nuovoFiltro)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))

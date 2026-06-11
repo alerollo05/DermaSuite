@@ -29,15 +29,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterial3Api::class) //Altrimenti non possiamo usare le nuove API di ExposedDropdownMenuBox
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DermaSelectPicker(
     label: String,
     selectedValue: String,
     placeholder: String,
     onValueSelected: (String) -> Unit,
-    unitaMisura : String, // Es. kg, cm ecc
-    options: List<Int>, // Lista di numeri (es. 100..250)
+    unitaMisura : String,
+    options: List<Int>,
     leadingIconRes: Int? = null,
     modifier: Modifier = Modifier
 ){
@@ -71,7 +71,7 @@ fun DermaSelectPicker(
             onExpandedChange = { expanded = !expanded },
             modifier = Modifier.fillMaxWidth()
         ){
-            // Creiamo il testo da mostrare --> se c'è un valore e un suffisso, li uniamo.
+
             val displayText = if (selectedValue.isNotEmpty() && unitaMisura.isNotEmpty()) {
                 "$selectedValue $unitaMisura"
             } else {
@@ -79,15 +79,13 @@ fun DermaSelectPicker(
             }
 
             OutlinedTextField(
-                //In questo modo passiamo la variabile formattata alla UI displayText,
-                // senza cambiare il valore passato al viewmodel che se no poi nel calcolo del BMI farebbe crashare l'app
                 value = displayText,
-                onValueChange = {}, //Non facciamo nulla serve solo per stampare i dati
+                onValueChange = {},
                 readOnly = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor(//In questo modo colleghiamo il textField normale al menu a scorrimento
-                        type = ExposedDropdownMenuAnchorType.PrimaryNotEditable, //menu di sola lettura non modificabile
+                    .menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
                         enabled = true
                     ),
                 trailingIcon = {
@@ -105,7 +103,6 @@ fun DermaSelectPicker(
                 )
             )
 
-            //Creiamo il vero e proprio menu a scelta multipla andando a stampare la lista di numeri
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },

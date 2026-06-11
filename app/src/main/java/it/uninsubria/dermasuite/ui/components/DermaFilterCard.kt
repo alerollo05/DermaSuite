@@ -32,7 +32,7 @@ fun DermaFilterCard(
     subtitle: String,
     modifier: Modifier = Modifier,
     currentFilter : TimeFilter,
-    onFilterSelected: (TimeFilter) -> Unit // Invece di passare un viewmodel specifico, passiamo l'azione da eseguire
+    onFilterSelected: (TimeFilter) -> Unit // passa l'azione da eseguire
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -51,12 +51,12 @@ fun DermaFilterCard(
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        //Creazione della tabella dei filtri
+        //Tabella dei filtri
         Column(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Dividiamo i 4 filtri in due gruppi da due filtri
+            // Divide i 4 filtri in due gruppi
             val filterRows = TimeFilter.entries.chunked(2)
 
             filterRows.forEach { row ->

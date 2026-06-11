@@ -19,15 +19,14 @@ fun DermaProfileField(
     label: String,
     value: String?,
     modifier: Modifier = Modifier,
-    // Questo parametro ci permette di passare qualsiasi icona (o anche più di una) a destra
     modificaIcon: @Composable (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp) // Spazio verticale tra un campo e l'altro
+            .padding(vertical = 8.dp)
     ) {
-        // La Label in alto (es. "Nome")
+
         Text(
             text = label,
             fontSize = 12.sp,
@@ -36,28 +35,26 @@ fun DermaProfileField(
             modifier = Modifier.padding(bottom = 4.dp, start = 4.dp)
         )
 
-        // Il Box grigio con testo e icone
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color(0xFFF3F4F6), // Colore grigio chiaro per il Box
-                    shape = RoundedCornerShape(12.dp) // Bordi arrotondati
+                    color = Color(0xFFF3F4F6),
+                    shape = RoundedCornerShape(12.dp)
                 )
-                .padding(horizontal = 16.dp, vertical = 14.dp), // Spazio interno al box
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Il Testo principale
             if (value != null) {
                 Text(
                     text = value,
                     style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
-                    color = Color.Black, // Grigio molto scuro/nero
-                    modifier = Modifier.weight(1f) // Occupa tutto lo spazio a sinistra spingendo le icone a destra
+                    color = Color.Black,
+                    modifier = Modifier.weight(1f)
                 )
             }
 
-            // Se abbiamo passato un'icona, la disegna a destra
             if (modificaIcon != null) {
                 modificaIcon()
             }

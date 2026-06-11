@@ -43,7 +43,6 @@ fun DermaPASIHistoryScreen(
     val title = stringResource(R.string.title_PDF_PASI)
     val username = if (userData != null) "${userData?.nome} ${userData?.cognome}" else currentUser?.displayName
 
-    // Launcher per la richiesta dei permessi (necessario per Android < 10)
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -78,19 +77,19 @@ fun DermaPASIHistoryScreen(
                     IconButton(
                         onClick = {
                             when {
-                                // Caso 1: Android 10+ (Scoped Storage non richiede WRITE_EXTERNAL_STORAGE per Download)
+
                                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
                                     coroutineScope.launch {
                                         pdfGenerator(title, context, records, currentFilter, username)
                                     }
                                 }
-                                // Caso 2: Android < 10 ma permesso già concesso
+
                                 ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
                                     coroutineScope.launch {
                                         pdfGenerator(title, context, records, currentFilter, username)
                                     }
                                 }
-                                // Caso 3: Android < 10 e dobbiamo chiedere il permesso
+
                                 else -> {
                                     requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 }
@@ -121,7 +120,7 @@ fun DermaPASIHistoryScreen(
                 modifier = Modifier.padding(16.dp),
                 currentFilter = currentFilter,
                 onFilterSelected = { nuovoFiltro ->
-                    viewModel.applyFilter(nuovoFiltro) // Riceve il filtro dalla card e ordina al ViewModel di aggiornare i dati
+                    viewModel.applyFilter(nuovoFiltro)
                 }
             )
 

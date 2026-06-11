@@ -33,9 +33,8 @@ fun DermaSelectorParameterCard(
     subtitle: String,
     IconRes: Int,
     selectedValue: Int,
-    isCompleted: Boolean = selectedValue != -1, // Calcolato automaticamente se non passato
+    isCompleted: Boolean = selectedValue != -1,
     maxValue: Int,
-    //Il valore che viene modificato dall'utente
     onValueChange: (Int) -> Unit
 ){
     
@@ -48,7 +47,7 @@ fun DermaSelectorParameterCard(
         Row(modifier = Modifier.height(IntrinsicSize.Min)){
             Box(
                 modifier = Modifier
-                    .fillMaxHeight() // Ora "riempie" l'altezza minima della Row
+                    .fillMaxHeight()
                     .width(6.dp)
                     .background(MaterialTheme.colorScheme.primary)
             )
@@ -102,7 +101,7 @@ fun DermaSelectorParameterCard(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp)
-                                .padding(horizontal = 2.dp) // Piccolo padding tra i box
+                                .padding(horizontal = 2.dp)
                                 .clip(MaterialTheme.shapes.medium)
                                 .background(
                                     if (isSelected) MaterialTheme.colorScheme.primary else Color(

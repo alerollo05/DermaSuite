@@ -41,9 +41,8 @@ fun DermaPASIScreen(
     navController: NavController,
     viewModel: PasiPageViewModel = viewModel()
 ){
-    //Andiamo a definire una variabile che tiene a memoria in che pos si trova lo scroll della pagina
+
     val scrollState = rememberScrollState()
-    //Andiamo a creare una variabile per tenere traccia dello stato in cui si trova la snakbar
     val snakBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -68,6 +67,7 @@ fun DermaPASIScreen(
             "profile_screen_paziente"
         ) { onNavigateToProfileP() }
     )
+
     Scaffold(
         topBar = {
             DermaTopBar(
@@ -84,12 +84,10 @@ fun DermaPASIScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snakBarHostState) }
     ) { padding ->
-        //Andiamo a recuperare i dati relativi al distretto selezionato al momento
         val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: PasiDistrictState()
 
         DermaColumnScreen(
             innerPadding = padding,
-            //Andiamo a collegare lo stato dello scroll alla column che contiene tutti i componenti della pagina
             scrollState = scrollState
         ) {
             DermaHeading(
@@ -140,13 +138,10 @@ fun DermaPASIScreen(
                 onValueChange = { viewModel.updateDistrictParameters(percentualeArea = it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
-            //Creiamo quattro variabili con all'interno la stringa perchè la string Resource puoi usarla solo
-            //in componenti @Composable
             val succMess = stringResource(R.string.snak_success)
             val errMess = stringResource(R.string.snak_error)
             val completaDistretto = stringResource(R.string.complete_district)
             val completaAllDistretti = stringResource(R.string.complete_all_districts)
-            // Pre-mappiamo i nomi dei distretti per evitare l'uso di context.getString nel click listener
             val distrettiNomi = DistrettoCorpo.entries.associateWith { stringResource(it.nameResId) }
 
             DermaButton(
@@ -173,7 +168,6 @@ fun DermaPASIScreen(
                             }
                         )
                     }else{
-                        //Andiamo ad identificare il primo distretto mancante che viene trovato e messo in una variabile
                         val distrettoMancante = DistrettoCorpo.entries.find { !viewModel.isDistrictComplete(it) }
                         val messaggio = if (distrettoMancante != null) {
                             val distrettoDaCompletare = distrettiNomi[distrettoMancante] ?: ""
@@ -194,7 +188,6 @@ fun DermaPASIScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            //Creaimo una funzione per andare a mappare il livello di severità cambiando in base alla lingua
             val severityLabel = when(viewModel.serverityClass){
                 "LEVEL_LOW" -> stringResource(R.string.pasi_severity_low)
                 "LEVEL_MODERATE" -> stringResource(R.string.pasi_severity_moderate)

@@ -43,7 +43,7 @@ fun DermaPasiHistoryDialog (
     val scrollState = rememberScrollState()
 
     Dialog(
-        onDismissRequest = onDismiss, //Chiude il dialogo alla chiusura del popup, quando clicco fuori dallo schermo
+        onDismissRequest = onDismiss, //Chiude il dialogo alla chiusura del popup
         properties = DialogProperties(
             dismissOnBackPress = true, // Si chiude col tasto indietro del telefono
             dismissOnClickOutside = true, // Si chiude cliccando nello spazio vuoto
@@ -52,19 +52,19 @@ fun DermaPasiHistoryDialog (
     ){
         Card(
             modifier = Modifier
-                .fillMaxWidth(0.85f)// Occupa solo l'85% della larghezza, lasciando i bordi liberi
-                .wrapContentHeight(),// L'altezza si adatta solo al contenuto
+                .fillMaxWidth(0.85f)// Occupa solo l'85% dello schermo
+                .wrapContentHeight(),
             shape = MaterialTheme.shapes.extraLarge,
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)
         ){
             Column(
                 modifier = Modifier
-                    .padding(24.dp) // Padding interno spazioso
+                    .padding(24.dp)
                     .fillMaxWidth()
                     .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Titolo del popup
+
                 Text(
                     text = stringResource(R.string.dialog_title),
                     style = MaterialTheme.typography.headlineLarge,
@@ -72,7 +72,7 @@ fun DermaPasiHistoryDialog (
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                // Info Generali per il calcolo
+
                 DetailRow(
                     label = stringResource(R.string.data_pdf),
                     value = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(record.CalculationDate)
@@ -88,7 +88,7 @@ fun DermaPasiHistoryDialog (
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                //Stampiamo con il formato indentato tutti i parametri per ogni distretto
+                //Stampa i paramentri
                 DistrictDetailView(stringResource(id = DistrettoCorpo.HEAD.nameResId), record.ParameterDistrict.head)
                 DistrictDetailView(stringResource(id = DistrettoCorpo.ARMS.nameResId), record.ParameterDistrict.arms)
                 DistrictDetailView(stringResource(id = DistrettoCorpo.TRUNK.nameResId), record.ParameterDistrict.trunk)
@@ -97,7 +97,7 @@ fun DermaPasiHistoryDialog (
                 Button(
                     onClick = {
                         viewModel.deleteRecord(record,currentUser?.uid.toString());
-                        onDismiss()//cosi chiudiamo il popup una volta eliminato
+                        onDismiss()
                               },
                     modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
 
@@ -129,7 +129,7 @@ fun DistrictDetailView(districtName: String, district: PasiDistrictState){
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
-        // Colonna innestata con padding a sinistra (questo crea l'indentazione!)
+
         Column(
             modifier = Modifier.padding(start = 16.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)

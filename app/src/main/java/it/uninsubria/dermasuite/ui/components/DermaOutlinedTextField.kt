@@ -25,10 +25,10 @@ fun DermaOutlinedTextField(
     onValueChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
-    isPassword: Boolean = false, // Di default è falso, così puoi usarlo anche per email, nome, ecc.
+    isPassword: Boolean = false,
     singleLine: Boolean = true
 ) {
-    // La "memoria privata" del componente: vive solo qui dentro!
+
     var passwordVisible by remember { mutableStateOf(false) }
 
     OutlinedTextField(
@@ -36,9 +36,9 @@ fun DermaOutlinedTextField(
         onValueChange = onValueChange,
         label = { Text(label) },
         singleLine = singleLine,
-        modifier = modifier.fillMaxWidth(), // Si espande in larghezza di default
+        modifier = modifier.fillMaxWidth(),
 
-        // Se è una password, avvisa la tastiera per disattivare il correttore
+        // Se password disattivo il correttore
         keyboardOptions = if (isPassword) {
             KeyboardOptions(keyboardType = KeyboardType.Password)
         } else {
@@ -52,7 +52,7 @@ fun DermaOutlinedTextField(
             VisualTransformation.None
         },
 
-        // Se è una password, disegna l'icona dell'occhio a destra
+        // Se è una password disegna l'icona dell'occhio
         trailingIcon = if (isPassword) {
             {
                 val iconImage = if (passwordVisible) R.drawable.ic_password_eye_hide else R.drawable.ic_password_eye
@@ -66,6 +66,6 @@ fun DermaOutlinedTextField(
                     )
                 }
             }
-        } else null // Se NON è una password, non mette nessuna icona
+        } else null // Se NON è una password nessuna icona
     )
 }

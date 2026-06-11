@@ -49,22 +49,18 @@ fun DermaSpecialistCard(
     doctorMail: String,
     doctorLanguage: String,
     avatarURL: String? = null,
-    // Opzionale: passa l'ID della tua icona se ne hai una specifica per il medico
     iconResId: Int = R.drawable.ic_button_medico,
     viewModel: ProfilePazPageViewModel = viewModel()
 ) {
 
-    // Variabile di stato interna al componente per gestire l'apertura/chiusura del popup
     var showDialog by remember { mutableStateOf(false) }
 
 
-
-    // La Card del Medico
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clickable { showDialog = true }, // Al click apriamo il popup
+            .clickable { showDialog = true },
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
@@ -84,7 +80,7 @@ fun DermaSpecialistCard(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Testi centrali (Nome e Ruolo)
+
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -102,7 +98,7 @@ fun DermaSpecialistCard(
                 )
             }
 
-            // Freccia a destra
+
             Icon(
                 painter = painterResource(id=R.drawable.ic_mezza_freccia_destra),
                 contentDescription = "Vedi dettagli",
@@ -111,9 +107,9 @@ fun DermaSpecialistCard(
         }
     }
 
-    // Il Popup (Dialog) che appare quando showDialog è true
+
     if (showDialog) {
-        //Formattiamo la data da stampare
+
         val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val dataNascitaFormattata = formatter.format(doctorDataNascita?.toDate() ?: Date())
 
@@ -127,7 +123,7 @@ fun DermaSpecialistCard(
         ){
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(0.90f)// Occupa solo l'85% della larghezza, lasciando i bordi liberi
+                    .fillMaxWidth(0.90f)
                     .padding(20.dp)
             ) {
                 Column(modifier = Modifier

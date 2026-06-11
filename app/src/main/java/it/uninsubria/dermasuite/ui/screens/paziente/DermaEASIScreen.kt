@@ -41,17 +41,14 @@ fun DermaEASIScreen(
     navController: NavController,
     viewModel: EasiPageViewModel = viewModel()
 ){
-    // Stati per gestire lo scorrimento della pagina e le notifiche a comparsa (Snackbar)
     val scrollState = rememberScrollState()
     val snakBarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope() // Necessario per lanciare coroutine (es. mostrare Snackbar)
+    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(viewModel.scrollTrigger){ // Quando il valore dello scrollTrigger cambia viene eseguito il blocco
-        if(viewModel.scrollTrigger > 0){ // Se scrollTrigger è maggiore di 0 allora scrolla verso il basso
-            delay(150) // Piccolo delay per dare il tempo a Compose di aggiungere la card alla colonna
-            scrollState.animateScrollTo(scrollState.maxValue) // Questa è una suspend function, questo vuol dire che deve essere eseguita dentro una coroutine (cosa che LaunchedEffect ci permette di fare).
-            // La funzione invece di fare un salto brusco alla fine della pagina, esegue un movimento fluido (animato).
-            // scrollState.maxValue rappresenta il punto più basso possibile della tua DermaColumnScreen.
+    LaunchedEffect(viewModel.scrollTrigger){
+        if(viewModel.scrollTrigger > 0){
+            delay(150)
+            scrollState.animateScrollTo(scrollState.maxValue)
         }
     }
 
@@ -87,7 +84,7 @@ fun DermaEASIScreen(
         snackbarHost = { SnackbarHost(hostState = snakBarHostState) }
     ) { padding ->
 
-        // Recupera i dati del distretto che l'utente sta guardando in questo momento
+
         val currentData = viewModel.districtValues[viewModel.currentDistrict] ?: EasiDistrictState()
 
         DermaColumnScreen(
@@ -158,18 +155,17 @@ fun DermaEASIScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Traduzioni per i messaggi della Snackbar
+
             val succMess = stringResource(R.string.snak_success)
             val errMess = stringResource(R.string.snak_error)
             val completaDistretto = stringResource(R.string.complete_district)
             val completaAllDistretti = stringResource(R.string.complete_all_districts)
             val distrettiNomi = DistrettoCorpo.entries.associateWith { stringResource(it.nameResId) }
 
-            // Bottone per avviare il calcolo
             DermaButton(
                 text = stringResource(R.string.easi_btn_calculate),
                 onClick = {
-                    if (viewModel.abilitaCalcolo()) { // Se tutto è inserito correttamente
+                    if (viewModel.abilitaCalcolo()) {
                         viewModel.calculateTotalEasiAndSave(
                             onSucces = {
                                 scope.launch {
@@ -188,7 +184,7 @@ fun DermaEASIScreen(
                                 }
                             }
                         )
-                    } else {// Se mancano dati, identifica il distretto incompleto e avvisa l'utente
+                    } else {
                         val distrettoMancante =
                             DistrettoCorpo.entries.find { !viewModel.isDistrictComplete(it) }
                         val messaggio = if (distrettoMancante != null) {
@@ -216,7 +212,6 @@ fun DermaEASIScreen(
                 else -> ""
             }
 
-            // Visualizzazione condizionale della card dei risultati
             if(viewModel.showResult){
                 DermaResultCard(
                     title = stringResource(R.string.easi_result_title),

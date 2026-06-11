@@ -54,12 +54,12 @@ fun DermaPasiHistoryListItem(
         )
     ){
         Row(
-            //Gli diamo questa altezza atuoregolat in base all'altezza della card
+            //Autoregola l'altezza della riga
             modifier = Modifier.height(IntrinsicSize.Min)
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxHeight() // Ora "riempie" l'altezza minima della Row
+                    .fillMaxHeight()
                     .width(6.dp)
                     .background(MaterialTheme.colorScheme.primary)
             )
@@ -69,7 +69,6 @@ fun DermaPasiHistoryListItem(
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                //Creiamo il blocco della data
                 Card(
                     modifier = Modifier.size(height = 60.dp, width = 60.dp),
                     shape = MaterialTheme.shapes.medium,

@@ -40,7 +40,7 @@ fun DermaEASIHistoryScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    val title = stringResource(R.string.title_PDF_EASI) // Da aggiungere ai file strings!
+    val title = stringResource(R.string.title_PDF_EASI)
     val username = if (userData != null) "${userData?.nome} ${userData?.cognome}" else currentUser?.displayName
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
@@ -94,8 +94,8 @@ fun DermaEASIHistoryScreen(
     ){ padding ->
         DermaColumnScreen(innerPadding = padding){
             DermaHeading(
-                titolo = stringResource(R.string.title_HistoryEASI), // Da aggiungere in strings
-                sottotitolo = stringResource(R.string.description_Hist_EASI), // Da aggiungere in strings
+                titolo = stringResource(R.string.title_HistoryEASI),
+                sottotitolo = stringResource(R.string.description_Hist_EASI),
                 modifier = Modifier.padding(16.dp)
             )
 
@@ -105,7 +105,7 @@ fun DermaEASIHistoryScreen(
                 modifier = Modifier.padding(16.dp),
                 currentFilter = currentFilter,
                 onFilterSelected = { nuovoFiltro ->
-                    viewModel.applyFilter(nuovoFiltro) // Riceve il filtro dalla card e ordina al ViewModel di aggiornare i dati
+                    viewModel.applyFilter(nuovoFiltro)
                 }
             )
 

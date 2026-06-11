@@ -39,7 +39,7 @@ fun DermaGridItem(
     onSelect: () -> Unit, //Funzione da eseguire quando viene selezionato
     modifier: Modifier
 ){
-    //Setup dei colori
+    //Setup colori
     val backgroundColor = if (isSelected) Color.White else Color(0xFFF8F9FA)
     val indicatorColor = if (isSelected) MaterialTheme.colorScheme.primary else Color(0xFF40E0D0)  // Turchese per la percentuale
 

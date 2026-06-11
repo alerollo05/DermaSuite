@@ -74,15 +74,13 @@ fun DermaProfilePazienteScreen(
     onNavigateToDashboardP: () -> Unit,
     viewModel: ProfilePazPageViewModel = viewModel()
 ){
-    // Creiamo il "controllore" della Snackbar
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
 
-    // Estraiamo il medico corrente dal ViewModel
     val currentDoctor = viewModel.currentDoctor
 
-    //Usiamo questa funzione per andare ad aprire la galleria
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia()
         ) { uri ->
@@ -91,25 +89,18 @@ fun DermaProfilePazienteScreen(
             }
         }
 
-
-    // Ascoltiamo i cambiamenti del messaggio nel ViewModel
     LaunchedEffect(viewModel.snackbarMessage) {
-        // Se il messaggio non è nullo, mostriamo la Snackbar
         viewModel.snackbarMessage?.let { message ->
             snackbarHostState.showSnackbar(message = message)
-            // Una volta mostrata, puliamo lo stato nel ViewModel
-            // per evitare che riappaia se si ruota lo schermo
             viewModel.clearSnackbarMessage()
         }
     }
 
-    // Definiamo le azioni per questa specifica schermata
     val dashboardActions = listOf(
         BottomBarAction(stringResource(R.string.label_bottom_home), R.drawable.ic_home, "dashboard_screen_paziente", onNavigateToDashboardP),
         BottomBarAction(stringResource(R.string.label_bottom_profile), R.drawable.ic_profile, "profile_screen_paziente", { /* Sei già qui */ }),
     )
 
-    // Recupero dei campi dalla ViewModel
     val username = viewModel.user
     val nomeUtente = viewModel.nomeUtente
     val cognomeUtente = viewModel.cognomeUtente
@@ -141,31 +132,29 @@ fun DermaProfilePazienteScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                shape = RoundedCornerShape(24.dp), // Arrotonda gli angoli della card
+                shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White// Colore di sfondo della card
+                    containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Ombra sotto la card
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
             ){
                 Column(
                     modifier = Modifier
-                        .padding(24.dp) // Padding interno per distanziare i campi dai bordi della card
+                        .padding(24.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Box(
                         modifier = Modifier
-                            .clickable{// Al click si apre la galleria foto
+                            .clickable{
                             launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))}
                     ) {
                         if (viewModel.isUploading) {
-                            // Se sta caricando mostriamo la rotellina
                             DermaIsLoading()
                         } else{
-                            // Se c'è un url salvato, usiamo Coil per scaricare e mostrare la foto
                             DermaAvatar(
                                 avatarURL = viewModel.avatarUrl,
-                                isComplex = "\u270F\uFE0F", //Le grandezze dei componenti sono calcolati in automatico
+                                isComplex = "\u270F\uFE0F",
                                 size = 100
                             )
                         }
@@ -186,7 +175,7 @@ fun DermaProfilePazienteScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.dati_anagrafici_title),
-                            style = MaterialTheme.typography.headlineMedium, // Usato il nuovo stile da Type.kt
+                            style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -209,7 +198,6 @@ fun DermaProfilePazienteScreen(
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_modifica),
                                     contentDescription = stringResource(R.string.modifica_username_title),
-                                    // Rendiamo l'icona cliccabile, dicendogli cosa fare una volta cliccata (apertura del popup)
                                     modifier = Modifier.clickable { viewModel.openUsernameDialog()}
                                 )
                             }
@@ -243,34 +231,29 @@ fun DermaProfilePazienteScreen(
 
             Text(
                 text = stringResource(R.string.specialista_riferimento_title),
-                style = MaterialTheme.typography.headlineMedium, // Usato il nuovo stile da Type.kt
-                color = MaterialTheme.colorScheme.primary, // O usa un blu scuro specifico se lo hai nei theme
-                textAlign = TextAlign.Center, // Forza il testo al centro
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth() // Occupa tutta la larghezza per permettere il centraggio
+                    .fillMaxWidth()
                     .padding(top = 24.dp, bottom = 8.dp)
             )
 
-            // LOGICA CONDIZIONALE PER LA CARD DEL MEDICO
             if (currentDoctor == null) {
-                //Nessun medico assegnato
                 DermaSpecialistCard(
                     doctorName = stringResource(R.string.label_no_doctor_assigned),
                     doctorRole = stringResource(R.string.label_dermatology),
                     doctorDescription = stringResource(R.string.desc_no_doctor_assigned),
-                    iconResId = R.drawable.ic_button_medico,// Se hai un'icona tipo un punto di domanda o un "+" sarebbe perfetta qui
+                    iconResId = R.drawable.ic_button_medico,
                     doctorMail = "",
                     doctorLanguage = "",
                     doctorDataNascita = null
                 )
             } else {
-                //Medico assegnato, mostro i dati reali
-                //Metto le stringhe formattate in modo corretto
                 val stringaNome = currentDoctor.nome.lowercase().replaceFirstChar { it.uppercase() }
                 val stringaCognome = currentDoctor.cognome.lowercase().replaceFirstChar { it.uppercase() }
                 DermaSpecialistCard(
                     doctorName = "${stringResource(R.string.label_doctor_prefix)} $stringaNome$stringaCognome",
-                    // Usiamo l'operatore Elvis ?: per fornire un testo di default nel caso in cui specializzazione o descrizione siano null
                     doctorRole = currentDoctor.specialization ?: stringResource(R.string.label_default_specialization),
                     doctorDescription = currentDoctor.description ?: stringResource(R.string.desc_no_doctor_description),
                     doctorDataNascita = currentDoctor.dataNascita,
@@ -283,26 +266,25 @@ fun DermaProfilePazienteScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Bottone "Cambia Medico"
             Button(
                 onClick = { viewModel.openDoctorDialog() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .height(56.dp), // Altezza uguale al DermaButton
+                    .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary, // Sfondo pieno (stesso del DermaButton)
-                    contentColor = Color.White // Testo e icona bianchi
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = Color.White
                 ),
-                shape = MaterialTheme.shapes.medium, // Usiamo lo stesso arrotondamento del tema
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp) // Piatto come da design
+                shape = MaterialTheme.shapes.medium,
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_profile), // Icona omino
+                        painter = painterResource(id = R.drawable.ic_profile),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )
@@ -335,36 +317,27 @@ fun DermaProfilePazienteScreen(
         }
 
 
-        // --- POPUP (ALERT DIALOG) PER MODIFICARE USERNAME ---
-        // Il popup viene "disegnato" solo se showUsernameDialog è vera.
-        // Se nel ViewModel showUsernameDialog diventa false, Compose rimuove istantaneamente il popup dallo schermo.
         if (viewModel.showUsernameDialog) {
-            // Componente Standard Material 3: AlertDialog è il contenitore predefinito per i messaggi di sistema.
+
             AlertDialog(
-                //Gestione della chiusura "esterna": Questa lambda viene eseguita se l'utente clicca fuori dal popup
-                // o preme il tasto "Indietro" del telefono. Chiamiamo la funzione che resetta lo stato a false.
                 onDismissRequest = { viewModel.closeUsernameDialog() },
                 title = {
                     Text(
                         text = stringResource(R.string.modifica_username_title),
-                        style = MaterialTheme.typography.headlineMedium // Stile per il titolo del popup
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
-                // Qui inseriamo la logica di input.
                 text = {
                     Column {
                         Text(
                             text = stringResource(R.string.modifica_username_desc),
-                            style = MaterialTheme.typography.bodyMedium, // Stile corretto dal tuo Type.kt
+                            style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                         DermaOutlinedTextField(
                             value = viewModel.editUsernameText,
-                            // Ogni volta che l'utente preme un tasto, inviamo il nuovo carattere
-                            // al ViewModel che aggiorna la variabile. Senza questa riga, non riusciresti a scrivere nulla.
                             onValueChange = {
                                 viewModel.updateEditUsernameText(it)
-                                // Opzionale: cancella l'errore appena l'utente ricomincia a scrivere
                                 if (viewModel.inputPopupError != null) {
                                     viewModel.clearInputPopupError()
                                 }
@@ -372,40 +345,37 @@ fun DermaProfilePazienteScreen(
                             label = stringResource(R.string.label_nuovo_username),
                             modifier = Modifier.fillMaxWidth()
                         )
-                        // --- MESSAGGIO DI ERRORE INLINE ---
                         if (viewModel.inputPopupError != null) {
                             Text(
                                 text = viewModel.inputPopupError!!,
-                                color = MaterialTheme.colorScheme.error, // Rosso standard
-                                style = MaterialTheme.typography.labelSmall, // Usato labelSmall (12sp) per l'errore
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
                             )
                         }
                     }
                 },
-                // Pulsante di Conferma (posizionato solitamente in basso a destra) :
-                // Quando cliccato, esegue la logica di salvataggio (confirmUsernameChange).
                 confirmButton = {
                     TextButton(onClick = { viewModel.confirmUsernameChange(context) }) {
                         Text(
                             text = stringResource(R.string.btn_conferma),
-                            style = MaterialTheme.typography.labelLarge // Stile del bottone
+                            style = MaterialTheme.typography.labelLarge
                         )
                     }
                 },
-                // Pulsante di Annullamento: Chiude semplicemente il popup senza salvare nulla.
+
                 dismissButton = {
                     TextButton(onClick = { viewModel.closeUsernameDialog() }) {
                         Text(
                             text = stringResource(R.string.btn_annulla),
                             color = Color.Gray,
-                            style = MaterialTheme.typography.labelLarge // Stile del bottone
+                            style = MaterialTheme.typography.labelLarge
                         )
                     }
                 }
             )
         }
-        // --- POPUP MODIFICA EMAIL ---
+
         if (viewModel.showEmailDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeEmailDialog() },
@@ -442,7 +412,7 @@ fun DermaProfilePazienteScreen(
                                 }
                             },
                             label = stringResource(R.string.label_password_attuale),
-                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            isPassword = true,
                             modifier = Modifier.fillMaxWidth()
                         )
                         if (viewModel.inputPopupError != null) {
@@ -467,7 +437,7 @@ fun DermaProfilePazienteScreen(
             )
         }
 
-        // --- POPUP MODIFICA PASSWORD ---
+
         if (viewModel.showPasswordDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closePasswordDialog() },
@@ -493,7 +463,7 @@ fun DermaProfilePazienteScreen(
                                 }
                             },
                             label = stringResource(R.string.label_password_attuale),
-                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            isPassword = true,
                             modifier = Modifier.fillMaxWidth()
                         )
                         DermaOutlinedTextField(
@@ -505,7 +475,7 @@ fun DermaProfilePazienteScreen(
                                 }
                             },
                             label = stringResource(R.string.label_nuova_password),
-                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            isPassword = true,
                             modifier = Modifier.fillMaxWidth()
                         )
                         DermaOutlinedTextField(
@@ -517,7 +487,7 @@ fun DermaProfilePazienteScreen(
                                 }
                             },
                             label = stringResource(R.string.label_conferma_password),
-                            isPassword = true, // Nasconde i caratteri della password e aggiunge l'occhio (Gestito dal componente)
+                            isPassword = true,
                             modifier = Modifier.fillMaxWidth()
                         )
                         if (viewModel.inputPopupError != null) {
@@ -542,19 +512,18 @@ fun DermaProfilePazienteScreen(
             )
         }
 
-        //PopUp del dottore
         if(viewModel.showDoctorDialog){
             DermaDoctorListDialog(viewModel, context)
         }
-        // --- POPUP ELIMINA ACCOUNT ---
+
         if (viewModel.showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.closeDeleteDialog() },
                 title = {
                     Text(
-                        text = "Elimina Account", // Se hai una string resource, usala qui
+                        text = "Elimina Account",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.error // Lo facciamo rosso per attirare l'attenzione
+                        color = MaterialTheme.colorScheme.error
                     )
                 },
                 text = {
@@ -583,14 +552,13 @@ fun DermaProfilePazienteScreen(
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            // Passiamo onLogout come callback di onSuccess!
                             viewModel.confirmDeleteAccount(context) { onLogout() }
                         }
                     ) {
                         Text(
                             text = "Elimina definitivamente",
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.error // Bottone rosso
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 },

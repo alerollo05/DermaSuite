@@ -17,7 +17,6 @@ fun DermaEasiHistoryChart (
     val currentLocale = Locale.getDefault()
     if (records.isEmpty()) return
 
-    // EASI utilizza Float, gestiamo correttamente i dati per il grafico
     val scores = records.map{ it.EasiTot }
     val months = records.map{ SimpleDateFormat("MMM",currentLocale).format(it.CalculationDate).uppercase() }
     val fullDates = records.map { SimpleDateFormat("d MMMM yyyy", currentLocale).format(it.CalculationDate).uppercase() }

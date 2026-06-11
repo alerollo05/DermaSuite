@@ -22,7 +22,7 @@ fun DermaHeading(
         Text(
             text = titolo,
             style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.primary, // Blu scuro Dermasuite
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(

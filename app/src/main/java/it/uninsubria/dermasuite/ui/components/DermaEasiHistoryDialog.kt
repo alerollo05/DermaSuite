@@ -56,7 +56,7 @@ fun DermaEasiHistoryDialog (
 
                 Text(text = stringResource(R.string.dialog_subtitle), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
 
-                // Indentazione dei 5 parametri dell'EASI
+                // indenta i 5 parametri dell'EASI
                 EasiDistrictDetailView(stringResource(id = DistrettoCorpo.HEAD.nameResId), record.ParameterDistrict.head)
                 EasiDistrictDetailView(stringResource(id = DistrettoCorpo.ARMS.nameResId), record.ParameterDistrict.arms)
                 EasiDistrictDetailView(stringResource(id = DistrettoCorpo.TRUNK.nameResId), record.ParameterDistrict.trunk)
@@ -76,7 +76,7 @@ fun DermaEasiHistoryDialog (
     }
 }
 
-// Visualizzazione dei 5 parametri EASI
+
 @Composable
 fun EasiDistrictDetailView(districtName: String, district: EasiDistrictState){
     Column(modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)) {
