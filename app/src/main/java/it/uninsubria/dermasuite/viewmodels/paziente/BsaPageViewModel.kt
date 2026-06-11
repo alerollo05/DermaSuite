@@ -28,8 +28,6 @@ class BsaPageViewModel(
     private val repository: AuthRepository = AuthRepository()
 ) : ViewModel() {
 
-    // STATI DI INPUT DELLA UI
-    // StateFlow per raccogliere i dati digitati dall'utente in tempo reale.
     private val _peso = MutableStateFlow("")
     val peso: StateFlow<String> = _peso.asStateFlow()
 
@@ -39,17 +37,12 @@ class BsaPageViewModel(
     private val _sesso = MutableStateFlow("")
     val sesso: StateFlow<String> = _sesso.asStateFlow()
 
-    // --- EVENTI E STATI DI OUTPUT ---
-    // Usiamo SharedFlow invece di StateFlow per la Snackbar perché è un evento
-    // "one-shot" (deve scattare una volta sola e non ripresentarsi se l'utente ruota lo schermo).
     private val _saveSuccess = MutableSharedFlow<Boolean>()
     val saveSuccess: SharedFlow<Boolean> = _saveSuccess.asSharedFlow()
 
-    // SharedFlow per inviare messaggi di errore alla UI
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> = _errorMessage.asSharedFlow()
 
-    // Stati per mostrare il risultato e il caricamento
     private val _risultatoBsa = MutableStateFlow<Double?>(null)
     val risultatoBsa: StateFlow<Double?> = _risultatoBsa.asStateFlow()
 
@@ -60,7 +53,6 @@ class BsaPageViewModel(
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
 
-    // Blocco init per recuperare automaticamente il sesso del paziente all'avvio
     init {
         recuperaSessoPaziente()
     }
@@ -88,7 +80,6 @@ class BsaPageViewModel(
 
 
     // Funzione principale attivata dal pulsante "Calcola".
-    // Passiamo il context per poter estrarre le stringhe tradotte!
     @RequiresApi(Build.VERSION_CODES.O)
     fun calcolaBsa(context: Context) {
         val pesoVal = _peso.value.toDoubleOrNull()
@@ -162,7 +153,6 @@ class BsaPageViewModel(
         )
 
         viewModelScope.launch {
-            // CHIAMATA AL REPOSITORY E GESTIONE DELL'ESITO
             val isSuccess = repository.salvaBsaRecord(userId, record)
 
             if (isSuccess) {
@@ -176,12 +166,8 @@ class BsaPageViewModel(
         }
     }
     fun isCalcoloAbilitato(): Boolean {
-        // Usiamo .value per leggere il testo attuale dentro lo StateFlow.
         // Aggiungiamo anche il controllo su isLoading per evitare calcoli multipli
-        // Il bottone è attivo SOLO SE:
-        // 1. I campi sono pieni
-        // 2. Non sta salvando
-        // 3. NON stiamo già mostrando il risultato di questo esatto calcolo
+        // Non stiamo già mostrando il risultato di questo esatto calcolo
         return peso.value.isNotBlank() &&
                 altezza.value.isNotBlank() &&
                 !isLoading.value &&

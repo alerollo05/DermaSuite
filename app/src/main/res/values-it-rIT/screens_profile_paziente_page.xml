@@ -46,7 +46,6 @@
     <string name="error_empty_username">L\'username non può essere vuoto!</string>
     <string name="msg_username_updated">Username aggiornato!</string>
     <string name="error_connection">Errore di connessione.</string>
-    <string name="error_fill_all_fields">Compila tutti i campi.</string>
     <string name="error_wrong_password">La password inserita è errata.</string>
     <string name="msg_email_updated">Email aggiornata con successo!</string>
     <string name="error_update_failed">Errore durante l\'aggiornamento.</string>

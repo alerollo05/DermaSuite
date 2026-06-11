@@ -7,4 +7,13 @@
     <string name = "menu_chat">CHAT</string>
     <string name = "menu_history">HISTORY</string>
     <string name = "menu_profile">PROFILE</string>
+
+    <string name="error_fill_all_fields">Please fill all required fields.</string>
+    <string name="error_invalid_name">The name contains numbers or invalid characters.</string>
+    <string name="error_invalid_surname">The last name contains numbers or invalid characters.</string>
+    <string name="error_name_too_short">First and last name must be at least 2 characters long.</string>
+    <string name="error_invalid_email">Please enter a valid email address.</string>
+    <string name="error_password_too_short_reg">Password must be at least 6 characters long.</string>
+    <string name="error_passwords_not_match_reg">Passwords do not match!</string>
+    <string name="error_registration_failed">Error during registration</string>
 </resources>

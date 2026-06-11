@@ -155,9 +155,30 @@ fun DermaRegisterPageScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Spacer(modifier = Modifier.height(24.dp))
+            // Recupero delle stringhe di errore localizzate
+            val errorFillAll = stringResource(R.string.error_fill_all_fields)
+            val errorInvalidName = stringResource(R.string.error_invalid_name)
+            val errorInvalidSurname = stringResource(R.string.error_invalid_surname)
+            val errorNameTooShort = stringResource(R.string.error_name_too_short)
+            val errorInvalidEmail = stringResource(R.string.error_invalid_email)
+            val errorPassTooShort = stringResource(R.string.error_password_too_short_reg)
+            val errorPassNotMatch = stringResource(R.string.error_passwords_not_match_reg)
+            val errorRegFailed = stringResource(R.string.error_registration_failed)
+
             DermaButton(
                 text = if (uiState.isLoading) stringResource(R.string.loading_button) else stringResource(R.string.btn_register_create_account),
-                onClick = { viewModel.onRegisterClick() }
+                onClick = {
+                    viewModel.onRegisterClick(
+                        errorFillAll,
+                        errorInvalidName,
+                        errorInvalidSurname,
+                        errorNameTooShort,
+                        errorInvalidEmail,
+                        errorPassTooShort,
+                        errorPassNotMatch,
+                        errorRegFailed
+                    )
+                }
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(verticalAlignment = Alignment.CenterVertically){

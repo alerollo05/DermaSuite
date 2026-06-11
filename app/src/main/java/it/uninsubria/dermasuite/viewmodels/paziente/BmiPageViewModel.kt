@@ -69,10 +69,8 @@ class BmiPageViewModel(
 
     // Funzione usata per vedere se i campi sono stati inseriti tutti per il calcolo del bmi
     fun isCalcoloAbilitato(): Boolean {
-        // Il bottone è abilitato SOLO SE:
-        // 1. I campi contengono dati reali
-        // 2. Non stiamo già effettuando un salvataggio (evita i click multipli)
-        // 3. NON stiamo già mostrando il risultato di questo esatto calcolo
+        // Non stiamo già effettuando un salvataggio (evita i click multipli)
+        // Non stiamo già mostrando il risultato di questo esatto calcolo
         return uiState.height.isNotBlank() && uiState.weight.isNotBlank() && !uiState.isSaving && !showResult
     }
 
